@@ -1,0 +1,8 @@
+{
+    "sql_db_host": "127.0.0.1",
+    "sql_db_user": "root",
+    "sql_db_pass": "",
+    "sql_db_name": "mersal",
+    "site_url": "http://localhost/wowonder-the-ultimate-php-social-network-platform-4.1.4/Script",
+    "purchase_code": "mersal"
+}
