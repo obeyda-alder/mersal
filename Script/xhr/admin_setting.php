@@ -3157,8 +3157,11 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                 Wo_SaveConfig('cloud_file_path', $media['filename']);
             }
         }
+
         foreach ($_POST as $key => $value) {
-            if ($key == 'bank' || $key == 'p_paypal' || $key == 'skrill' || $key == 'custom') {
+            // var_dump($key, $value);
+            if ($key == 'bank' || $key == 'p_paypal' || $key == 'skrill' || $key == 'custom' || $key == 'manual_method') {
+
                 if (in_array($value, array(0,1))) {
                     $p_key = $key;
                     if ($key == 'p_paypal') {
@@ -3402,7 +3405,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                         $saveSetting = Wo_SaveConfig('live_video', 1);
                     } else {
                         if ($wo['config']['millicast_live_video'] != 1) {
-                            $saveSetting = Wo_SaveConfig('live_video', 0);
+                            $saveSetting = Wo_SaveConfig('live_vicustomdeo', 0);
                         }
                     }
                 }

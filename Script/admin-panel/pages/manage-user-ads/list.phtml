@@ -1,28 +1,49 @@
-<tr class="setting-userads" id="userad_<?php echo $wo['user_ad']['id']?>" data-userad-id="<?php echo $wo['user_ad']['id']?>" data_selected="<?php echo($wo['user_ad']['id']) ?>">
-  <td><input type="checkbox" id="check-data-<?php echo($wo['user_ad']['id']) ?>" class="delete-checkbox filled-in"><label for="check-data-<?php echo($wo['user_ad']['id']) ?>"></label></td>
-   <td><?php echo $wo['user_ad']['id']?></td>
-   <td>
-      <a href="<?php echo $wo['user_ad']['url']; ?>"> <?php echo Wo_UrlDomain($wo['user_ad']['url']); ?></a>
-   </td>
-   <td>
-      <a href="<?php echo $wo['user_ad']['user_data']['url']; ?>">
-        <img src="<?php echo $wo['user_ad']['user_data']['avatar']; ?>" class="setting-avatar" alt="<?php echo $wo['user_ad']['user_data']['name']?> Avatar Picture">
-         <?php echo $wo['user_ad']['user_data']['name']; ?>
-      </a>
-   </td>
-   <td>
-     <div class="ajax-time" title="<?php echo date('c',$wo['user_ad']['posted']); ?>">
-         <?php echo Wo_Time_Elapsed_String($wo['user_ad']['posted']);?>
-     </div>
-   </td>
-   <td>
-     <?php echo $wo['user_ad']['clicks']?>
-   </td>
-   <td>
-     <?php echo $wo['user_ad']['views']?>
-   </td>
-   <td>
-      <?php if (Wo_IsAdmin() == true) { ?><!-- <a href="<?php echo $wo['user_ad']['edit-url']?>" class="btn btn-info waves-effect waves-light" target="_blank">EDIT</a><?php } ?> -->
-      <button type="button" class="btn bg-danger admn_table_btn delete-ad" id="<?php echo $wo['user_ad']['id']?>" onclick="Wo_DeleteAd('<?php echo($wo['user_ad']['id']) ?>','hide');">Delete</button>
-   </td>
+<tr class="setting-userads" id="userad_<?php echo $wo['user_ad']['id'] ?>" data-userad-id="<?php echo $wo['user_ad']['id'] ?>" data_selected="<?php echo ($wo['user_ad']['id']) ?>">
+  <td><input type="checkbox" id="check-data-<?php echo ($wo['user_ad']['id']) ?>" class="delete-checkbox filled-in"><label for="check-data-<?php echo ($wo['user_ad']['id']) ?>"></label></td>
+  <td><?php echo $wo['user_ad']['id'] ?></td>
+  <td>
+    <a href="<?php echo $wo['user_ad']['url']; ?>"> <?php echo Wo_UrlDomain($wo['user_ad']['url']); ?></a>
+  </td>
+  <td>
+    <a href="<?php echo $wo['user_ad']['user_data']['url']; ?>">
+      <img src="<?php echo $wo['user_ad']['user_data']['avatar']; ?>" class="setting-avatar" alt="<?php echo $wo['user_ad']['user_data']['name'] ?> Avatar Picture">
+      <?php echo $wo['user_ad']['user_data']['name']; ?>
+    </a>
+  </td>
+  <td>
+    <div class="ajax-time" title="<?php echo date('c', $wo['user_ad']['posted']); ?>">
+      <?php echo Wo_Time_Elapsed_String($wo['user_ad']['posted']); ?>
+    </div>
+  </td>
+  <td>
+    <?php echo $wo['user_ad']['clicks'] ?>
+  </td>
+  <td>
+    <?php echo $wo['user_ad']['views'] ?>
+  </td>
+  <td>
+    <?php if ($wo['user_ad']['status'] == 1) : ?>
+      <span class="wow_ad_sts_actv"><?php echo $wo['lang']['active']; ?></span>
+    <?php elseif ($wo['user_ad']['status'] == 0) : ?>
+      <span class="wow_ad_sts_noactv"><?php echo $wo['lang']['not_active']; ?></span>
+    <?php elseif ($wo['user_ad']['status'] == 2) : ?>
+      <span class="wow_ad_sts_noapproved"><?php echo $wo['lang']['not_approved']; ?></span>
+    <?php endif; ?>
+  </td>
+  <td>
+    <?php
+    if (Wo_IsAdmin() == true) { ?>
+      <a href="<?php echo $wo['user_ad']['edit-url'] ?>" class="btn-sm m-1 btn btn-info waves-effect waves-light" target="_blank">EDIT</a><?php
+                                                                                                                                        }
+                                                                                                                                        ?>
+
+<button type="button" class="btn-sm m-1 btn bg-danger admn_table_btn delete-ad" id="<?php echo $wo['user_ad']['id'] ?>" onclick="Wo_DeleteAd('<?php echo ($wo['user_ad']['id']) ?>','hide');">Delete</button>
+<button type="button" class="btn-sm m-1 btn bg-info admn_table_btn approved-ad" id="<?php echo $wo['user_ad']['id'] ?>" onclick="Wo_ApprovedAd('<?php echo ($wo['user_ad']['id']) ?>','hide');">
+  <?php if ($wo['user_ad']['status'] == 1) : ?>
+    Disapprov
+  <?php elseif (in_array($wo['user_ad']['status'], [2, 0])) : ?>
+    Approved
+   <?php endif; ?>
+  </button>
+  </td>
 </tr>

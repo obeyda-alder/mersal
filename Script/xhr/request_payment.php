@@ -36,7 +36,8 @@ if ($f == 'request_payment') {
                     $errors[] = $error_icon . $wo['lang']['invalid_amount_value_withdrawal'] . ' ' . Wo_GetCurrency($wo['config']['ads_currency']) . $wo['config']['m_withdrawal'];
                 }
                 if (empty($errors)) {
-                    $insert_array = array('type' => Wo_Secure($_POST['withdraw_method']));
+                    $insert_array['type']    =  Wo_Secure($_POST['withdraw_method']);
+                    $insert_array['network'] =  Wo_Secure($_POST['withdraw_network']);
 
                     if (!empty($_POST['paypal_email']) && $_POST['withdraw_method'] == 'paypal') {
                         $userU = Wo_UpdateUserData($wo['user']['user_id'], array(

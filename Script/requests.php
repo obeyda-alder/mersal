@@ -36,6 +36,7 @@ $allow_array     = array(
     'coinbase',
     'load_more_products',
     'yoomoney',
+    'ads',
     'iyzipay',
     'fluttewave',
     'fortumo',

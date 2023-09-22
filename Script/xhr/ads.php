@@ -365,4 +365,37 @@ if ($f == 'ads') {
         echo json_encode($data);
         exit();
     }
+    if ($s == 'approved_from_cms') {
+        // $data    = array(
+        //     'status' => 304
+        // );
+        $request = (!empty($_GET['ad_id']) && is_numeric($_GET['ad_id']));
+        // $user_id = $wo['user']['id'];
+        if ($request === true) {
+            $ad_id   = Wo_Secure($_GET['ad_id']); 
+            $ad_data = $db->where('id', $ad_id)->getOne(T_USER_ADS); //->where('user_id', $user_id)
+            if (!empty($ad_data)) {
+                $up_data = array(
+                    'status' => ((in_array($ad_data->status, [0, 2])) ? 1 : 2)
+                );
+                $db->where('id', $ad_id)->update(T_USER_ADS, $up_data); //->where('user_id', $user_id)
+                $data['status'] = 200;
+
+                $Status = "";
+                if($ad_data->status == 0) {
+                    $Status = $wo['lang']['not_active'];
+                } else if($ad_data->status == 1) {
+                    $Status = $wo['lang']['active'];
+                }elseif($ad_data->status == 2) {
+                    $Status = $wo['lang']['not_approved'];
+                }
+
+
+                $data['ad'] = $Status; //($ad_data->status == 1) ? $wo['lang']['not_approved'] : $data['ad'] = $wo['lang']['active'];
+            }
+        }
+        header("Content-type: application/json");
+        echo json_encode($data);
+        exit();
+    }
 }

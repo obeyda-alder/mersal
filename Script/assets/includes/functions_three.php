@@ -25,7 +25,7 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
     } else {
         $user_id = Wo_Secure($wo["user"]["id"]);
         if (empty($user_id) || !is_numeric($user_id) || $user_id < 1) {
-            return fasle;
+            return false;
         }
     }
     if (empty($wo["user"]["point_day_expire"])) {
@@ -995,10 +995,40 @@ function Wo_RequestNewPayment($user_id = 0, $amount = 0, $insert_array = array()
         "swift_code" => "",
         "address" => "",
         "type" => "",
+        "network" => "",
         "transfer_info" => "",
     );
+
+    if($insert_array['type'] == "manual_method") {
+        $options     = array(
+            "iban"          => "",
+            "country"       => "",
+            "full_name"     => "",
+            "swift_code"    => "",
+            "address"       => "",
+            "type"          => "",
+            "network"       => "",
+            "transfer_info" => "",
+        );
+    } else {
+        $options     = array(
+            "iban"          => "",
+            "country"       => "",
+            "full_name"     => "",
+            "swift_code"    => "",
+            "address"       => "",
+            "type"          => "",
+            "transfer_info" => "",
+        );
+    }
     $args        = array_merge($options, $insert_array);
-    $query_text  = "INSERT INTO " . T_A_REQUESTS . " (`user_id`, `amount`, `full_amount`, `time`, `iban`, `country`, `full_name`, `swift_code`, `address`, `type`, `transfer_info`) VALUES ('$user_id', '$amount', '$full_amount', '$time', '" . $args['iban'] . "', '" . $args['country'] . "', '" . $args['full_name'] . "', '" . $args['swift_code'] . "', '" . $args['address'] . "', '" . $args['type'] . "', '" . $args['transfer_info'] . "')";
+
+    if($args['type'] == "manual_method") {
+        $query_text  = "INSERT INTO " . T_A_REQUESTS . " (`user_id`, `amount`, `full_amount`, `time`, `iban`, `country`, `full_name`, `swift_code`, `address`, `type`, `network`, `transfer_info`) VALUES ('$user_id', '$amount', '$full_amount', '$time', '" . $args['iban'] . "', '" . $args['country'] . "', '" . $args['full_name'] . "', '" . $args['swift_code'] . "', '" . $args['address'] . "', '" . $args['type'] . "', '" . $args['network'] . "', '" . $args['transfer_info'] . "')";
+    } else {
+        $query_text  = "INSERT INTO " . T_A_REQUESTS . " (`user_id`, `amount`, `full_amount`, `time`, `iban`, `country`, `full_name`, `swift_code`, `address`, `type`, `transfer_info`) VALUES ('$user_id', '$amount', '$full_amount', '$time', '" . $args['iban'] . "', '" . $args['country'] . "', '" . $args['full_name'] . "', '" . $args['swift_code'] . "', '" . $args['address'] . "', '" . $args['type'] . "', '" . $args['transfer_info'] . "')";
+    }
+
     $query       = mysqli_query($sqlConnect, $query_text);
     if ($query) {
         $notification_data_array = array(
