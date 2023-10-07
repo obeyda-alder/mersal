@@ -3159,7 +3159,6 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         }
 
         foreach ($_POST as $key => $value) {
-            // var_dump($key, $value);
             if ($key == 'bank' || $key == 'p_paypal' || $key == 'skrill' || $key == 'custom' || $key == 'manual_method') {
 
                 if (in_array($value, array(0,1))) {
@@ -3524,7 +3523,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     }
     if ($s == 'generate_fake_users') {
         require "assets/libraries/fake-users/vendor/autoload.php";
-        $faker = Faker\Factory::create();
+        $faker = Faker\Factory::create('ar_SA');
         if (empty($_POST['password'])) {
             $_POST['password'] = '123456789';
         }
@@ -5826,5 +5825,13 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data);
         exit();
+    }
+    if($s == 'set_point_when_share' && isset($_POST['post_id'])) {
+         //obeyda
+        $data['status'] = array('status' => 500);
+        if(Wo_RegisterPoint($_POST['post_id'], $_POST['name'], $_POST['action'])) {
+            $data['status'] = 200;
+        }
+        echo json_encode($data);
     }
 }

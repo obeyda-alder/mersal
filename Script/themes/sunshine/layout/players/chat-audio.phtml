@@ -1,5 +1,4 @@
 <?php $rand = rand(0000,9999); ?>
-<div style="display: table-cell">
 <div id="audio_m_<?php echo($rand); ?>">
     <audio crossorigin preload="none">
         <source src="<?php echo $wo['media']['filename'];?>" type="audio/mpeg">
@@ -12,4 +11,3 @@
         new GreenAudioPlayer('#audio_m_<?php echo($rand); ?>', { showTooltips: true, showDownloadButton: false, enableKeystrokes: true });
     });
 </script>
-</div>

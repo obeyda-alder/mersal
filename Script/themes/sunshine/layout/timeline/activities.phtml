@@ -1,8 +1,12 @@
-<div class="list-group profile-lists sun_side_widget">
-	<h3 class="sun_side_widget_title mainpage">
-		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#3d8cfa" d="M3,13H5.79L10.1,4.79L11.28,13.75L14.5,9.66L17.83,13H21V15H17L14.67,12.67L9.92,18.73L8.94,11.31L7,15H3V13Z"></path></svg> <?php echo $wo['lang']['activities'];?>
-	</h3>
-    <div class="sun_profile_page_padd">
+<div class="page-margin mt-0">
+	<div class="wow_content popular_posts_hdr">
+		<h2><svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.83327 7.85308C2.44858 5.1685 4.49673 3.07236 7.11985 2.44264C9.01424 1.98787 10.9858 1.98787 12.8801 2.44264C15.5033 3.07236 17.5514 5.1685 18.1667 7.85308C18.6111 9.79185 18.6111 11.8096 18.1667 13.7483C17.5514 16.4329 15.5033 18.5291 12.8801 19.1588C10.9858 19.6135 9.01424 19.6135 7.11986 19.1588C4.49673 18.5291 2.44858 16.4329 1.83327 13.7483C1.38891 11.8096 1.38891 9.79185 1.83327 7.85308Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6.07031 1.5V4.01375M13.9302 1.5V4.01375" class="icon_main" stroke-width="1.5" stroke-linecap="round"/><path d="M10 11.5H13M7 14.5H13" class="icon_main" stroke-width="1.5" stroke-linecap="round"/></svg>&nbsp;<?php echo $wo['lang']['activities']; ?></h2>
+	</div>
+</div>
+
+<div class="list-group profile-lists">
+
+    <div id="following-list" class="row" style="margin: 0;">
         <?php $activities = Wo_GetActivities(array('me' => true, 'limit' => 20));?>
         <ul class="activity-container no-padding-left-list">
             <li >
@@ -11,7 +15,7 @@
                         echo '<h2><div class="no-activities-profile text-center">' . $wo['lang']['no_activities'] . '</div><h2>';
                     } else {
                         foreach ($activities as $wo['activity']) {
-                            echo Wo_LoadPage('timeline/activities-list');
+                            echo Wo_LoadPage('sidebar/activities-list');
                         }
                     }
                     ?>
@@ -24,14 +28,16 @@
     </div>
     <div class="clear"></div>
 </div>
-<?php if (count($activities) > 19) { ?>
-	<div class="load-more">
-	<button class="btn btn-default text-center wo_load_more" onclick="Wo_GetMoreActivities(<?php echo $wo['user_profile']['user_id'];?>);">
-		<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_activities']; ?>
-	</button>
-	</div>
-<?php } ?>
-
+<?php
+        if (count($activities) > 19) {
+         	?>
+         	<div class="load-more">
+    				<button class="btn btn-default text-center pointer" onclick="Wo_GetMoreActivities(<?php echo $wo['user_profile']['user_id'];?>);">
+    				<i class="fa fa-arrow-down progress-icon" data-icon="arrow-down"></i> <?php echo $wo['lang']['load_more_activities']; ?></button>
+    			</div>
+         	<?php
+        } 
+        ?>
 <script>
 function Wo_GetMoreActivities(user_id) {
       var activity_container = $('.activity-container');

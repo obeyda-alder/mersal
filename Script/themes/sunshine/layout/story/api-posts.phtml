@@ -55,7 +55,7 @@ $current_post = $wo['current_post'] = $wo['story'];
 
 <?php else: ?>
 
-<div class="post-container sun_post" id="post-container-">
+<div class="post-container" id="post-container-">
 	<div class="post<?php echo (!empty($wo['story']['post_is_promoted'])) ? ' boosted': '';?>" id="post-<?php echo $wo['story']['id']; ?>" data-post-id="<?php echo $wo['story']['id'];?>">
 		<?php
 			if (empty($wo['page'])) {
@@ -91,7 +91,7 @@ $current_post = $wo['current_post'] = $wo['story'];
 										<?php echo $wo['lang']['edit_post'];?>
 									</div>
 								</li>
-								<?php } else if (!empty($wo['story']['product_id']) && empty($wo['story']['parent_id'])) { 
+								<?php } else if (!empty($wo['story']['product_id'])) { 
 								if ($wo['story']['product']['status'] == 0) { ?>
 								<!-- <li>
 									<div class="pointer mark-as-sold-post" onclick="Wo_MarkAsSold(<?php echo $wo['story']['id']; ?>, <?php echo $wo['story']['product_id']; ?>);">
@@ -197,7 +197,6 @@ $current_post = $wo['current_post'] = $wo['story'];
 						<?php //if ($wo['story']['shared_from'] && is_array($wo['story']['shared_from'])): ?>
 							<span><a href="<?php echo $wo['story']['post_url']; ?>" class="pointer"><span style="color: #666;"><?php echo strtolower($wo['lang']['post']); ?></span></a></span>
 						<?php //endif; ?>
-
 						<?php if (empty($wo['story']['parent_id'])) { ?>
 
 
@@ -317,6 +316,8 @@ $current_post = $wo['current_post'] = $wo['story'];
 							}
 						?>
 						<?php }else{$extra_exists = 1;} ?>
+
+
 
 
 
@@ -450,18 +451,6 @@ $current_post = $wo['current_post'] = $wo['story'];
 				</div>
 			</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
 	       <?php }elseif (empty($wo['story']['parent_id'])) {
        ?>
 			<div class="post-heading">
@@ -474,7 +463,7 @@ $current_post = $wo['current_post'] = $wo['story'];
 					<?php  if ($wo['story']['admin'] === true || $wo['story']['group_admin'] === true) { ?>
 					<span class="dropdown" id="bottom_sheet_menu_<?php echo $wo['story']['id']; ?>">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather" style="margin: 0;width: 22px;height: 22px;"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
 						</a>
 						<ul class="dropdown-menu post-privacy-menu post-options" role="menu">
 								<?php if ($wo['story']['admin'] === true && empty($wo['story']['product_id'])) { ?>
@@ -484,7 +473,7 @@ $current_post = $wo['current_post'] = $wo['story'];
 										<?php echo $wo['lang']['edit_post'];?>
 									</div>
 								</li>
-								<?php } else if (!empty($wo['story']['product_id']) && empty($wo['story']['parent_id'])) { 
+								<?php } else if (!empty($wo['story']['product_id'])) { 
 								if ($wo['story']['product']['status'] == 0) { ?>
 								<li>
 									<div class="pointer mark-as-sold-post" onclick="Wo_MarkAsSold(<?php echo $wo['story']['id']; ?>, <?php echo $wo['story']['product_id']; ?>);">
@@ -537,7 +526,7 @@ $current_post = $wo['current_post'] = $wo['story'];
 					<?php  } elseif ($wo['loggedin'] == true) { ?>
 					<span class="dropdown" id="bottom_sheet_menu_<?php echo $wo['story']['id']; ?>">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather" style="margin: 0;width: 22px;height: 22px;"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
 						</a>
 						<ul class="dropdown-menu post-privacy-menu post-options post-recipient" role="menu"  >
 								<li>
@@ -570,12 +559,19 @@ $current_post = $wo['current_post'] = $wo['story'];
 				
 				<div class="meta">
 					<div class="title h5">
-						<b onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => $wo['story']['publisher']['type'], 'profile_id' => $wo['story']['publisher']['id']))); ?>', event);" style="margin-right: 2px;float: left;"><?php echo $wo['story']['publisher']['name']; ?></b>
+						<b onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => $wo['story']['publisher']['type'], 'profile_id' => $wo['story']['publisher']['id']))); ?>', event);" style="margin-right: 2px;"><?php echo $wo['story']['publisher']['name']; ?></b>
 						<?php if($wo['story']['publisher']['verified'] == 1) { ?>
 							<span class="verified-color">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather feather-check-circle" title="<?php echo $wo['lang']['verified_user'];?>" data-toggle="tooltip"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z" /></svg>
 							</span>
 						<?php } ?>
+						<?php if (isset($wo['story']['publisher']['is_pro'])) { 
+							if(Wo_IsUserPro($wo['story']['publisher']['is_pro']) === true) { ?>
+						<?php 
+							$user_pro_type = Wo_GetUserProType($wo['story']['publisher']['pro_type']);
+						?>
+							<span style="color:<?php echo $user_pro_type['color_name'];?>"><i class="fa fa-<?php echo $user_pro_type['icon'];?> fa-fw" title="<?php echo $user_pro_type['type_name'];?>" data-toggle="tooltip"></i></span>
+						<?php } } ?>
 						<?php if ($wo['story']['shared_from'] && is_array($wo['story']['shared_from'])): ?>
 							<span class="user-popover" data-type="<?php echo $wo['story']['shared_from']['type']; ?>" data-id="<?php echo $wo['story']['shared_from']['id']; ?>">
 								<span><?php echo $wo['lang']['shared']; ?></span> 
@@ -707,83 +703,87 @@ $current_post = $wo['current_post'] = $wo['story'];
 					</div>
 					
 					<h6>
+						<span class="time">
+							<span  style="color:#9197a3" class="ajax-time" href="<?php echo $wo['story']['url'];?>" title="<?php echo date('c',$wo['story']['time']); ?>" target="_blank"><?php echo Wo_Time_Elapsed_String($wo['story']['time']); ?></span>
+						</span>
 						<?php  if ($wo['story']['admin'] === true && $wo['story']['group_recipient_exists'] == false && empty($wo['story']['product_id'])) { ?>
 							<?php  if (empty($wo['story']['page_id'])) { ?>
 							<span class="dropdown wo_post_privacy_menu" style="color:#9197a3">
-									<span class="dropdown-toggle pointer" data-toggle="dropdown" role="button" aria-expanded="false">
-										<span class="pointer post-privacy" style="color:#9197a3">
-											<?php  if($wo['story']['postPrivacy'] == 0) { ?>
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" title="<?php echo $wo['lang']['everyone'];?>"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg>
-											<?php  } ?>
-											<?php  if($wo['story']['postPrivacy'] == 1) { ?>
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" title="<?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_i_follow'];?>"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg>
-											<?php  }  ?>
-											<?php  if($wo['story']['postPrivacy'] == 2) { ?>
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" title="<?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_follow_me'];?>"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg>
-											<?php  }  ?>
-											<?php  if($wo['story']['postPrivacy'] == 3) { ?>
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" title="<?php echo $wo['lang']['only_me'];?>"><path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"></path></svg>
-											<?php  }  ?>
-										</span>
-										<span class="caret" style="color:#9197a3"></span>
+								<span class="dropdown-toggle pointer" data-toggle="dropdown" role="button" aria-expanded="false">
+									<span class="pointer post-privacy" style="color:#9197a3">
+										<?php  if($wo['story']['postPrivacy'] == 0) { ?>
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe" data-toggle="tooltip" title="<?php echo $wo['lang']['everyone'];?>"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+										<?php  } ?>
+										<?php  if($wo['story']['postPrivacy'] == 1) { ?>
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" data-toggle="tooltip" title="<?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_i_follow'];?>"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+										<?php  }  ?>
+										<?php  if($wo['story']['postPrivacy'] == 2) { ?>
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user" data-toggle="tooltip" title="<?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_follow_me'];?>"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+										<?php  }  ?>
+										<?php  if($wo['story']['postPrivacy'] == 3) { ?>
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock" data-toggle="tooltip" title="<?php echo $wo['lang']['only_me'];?>"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+										<?php  }  ?>
 									</span>
-									<ul class="dropdown-menu post-privacy-menu post-privacy-options" role="menu">
-										<li>
-											<div class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,3,event);">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"></path></svg> <?php echo $wo['lang']['only_me'];?>
-											</div>
-										</li>
-										<li>
-											<div class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg> <?php echo $wo['lang']['everyone'];?>
-											</div>
-										</li>
-										<?php if ($wo['config']['connectivitySystem'] == 1) { ?>
-										<li>
-											<div class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg> <?php echo $wo['lang']['my_friends'];?>
-											</div>
-										</li>
-										<?php } else { ?>
-										<li>
-											<div class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg> <?php echo $wo['lang']['people_i_follow'];?>
-											</div>
-										</li>
-										<li>
-											<div class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg> <?php echo $wo['lang']['people_follow_me'];?>
-											</div>
-										</li>
-										<?php } ?>
-									</ul>
+									<span class="caret" style="color:#9197a3"></span>
 								</span>
+								<ul class="dropdown-menu post-privacy-menu" role="menu">
+									<li>
+										<div onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,3,event);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> <?php echo $wo['lang']['only_me'];?>
+										</div>
+									</li>
+									<li>
+										<div onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> <?php echo $wo['lang']['everyone'];?>
+										</div>
+									</li>
+									<?php if ($wo['config']['connectivitySystem'] == 1) { ?>
+									<li>
+										<div onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> <?php echo $wo['lang']['my_friends'];?>
+										</div>
+									</li>
+									<?php } else { ?>
+									<li>
+										<div onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> <?php echo $wo['lang']['people_i_follow'];?>
+										</div>
+									</li>
+									<li>
+										<div onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> <?php echo $wo['lang']['people_follow_me'];?>
+										</div>
+									</li>
+									<?php } ?>
+								</ul>
+							</span>
 							<?php } else { ?>
-								<span class="dropdown wo_post_privacy_menu">
-									<span class="dropdown-toggle pointer" data-toggle="dropdown" role="button" aria-expanded="false">
-										<span class="pointer post-privacy" style="color:#9197a3">
-											<?php  if($wo['story']['postPrivacy'] == 0) { ?>
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" title="<?php echo $wo['lang']['everyone'];?>"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg>
-											<?php  } ?>
-											<?php  if($wo['story']['postPrivacy'] == 2) { ?>
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" title="Liked My Page"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg>
-											<?php  }  ?>
-										</span>
-										<span class="caret"></span>
+							<span class="dropdown wo_post_privacy_menu">
+								<span class="dropdown-toggle pointer" data-toggle="dropdown" role="button" aria-expanded="false">
+									<span class="pointer post-privacy" style="color:#9197a3">
+									<?php  if($wo['story']['postPrivacy'] == 0) { ?>
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe" data-toggle="tooltip" title="<?php echo $wo['lang']['everyone'];?>"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+									<?php  } ?>
+									<?php  if($wo['story']['postPrivacy'] == 2) { ?>
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user" data-toggle="tooltip" title="Liked My Page"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+									<?php  }  ?>
 									</span>
-									<ul class="dropdown-menu post-privacy-menu post-privacy-options" role="menu">
-										<li>
-											<div class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg> <?php echo $wo['lang']['everyone'];?>
-											</div>
-										</li>
-										<li>
-											<div class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg> Liked My Page
-											</div>
-										</li>
-									</ul>
+									<span class="caret"></span>
 								</span>
+								<ul class="dropdown-menu post-privacy-menu" role="menu">
+									<li>
+										<div onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> <?php echo $wo['lang']['everyone'];?>
+										</div>
+									</li>
+									<hr>
+									<li>
+										<div onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Liked My Page
+										</div>
+									</li>
+								</ul>
+							</span>
 							<?php } ?>
 						<?php }  ?>
 						<?php if(!empty($wo['story']['postMap'])) { ?>
@@ -827,9 +827,6 @@ $current_post = $wo['current_post'] = $wo['story'];
 						?>
 						<span style="color:#9197a3"> - <i class="fa fa-<?php echo $small_icon; ?>"></i> <?php echo $icon_type; ?></span>
 						<?php  } } ?>
-						<span class="time">
-							&nbsp;&nbsp;<a  style="color:#9197a3" class="ajax-time" href="<?php echo $wo['story']['url'];?>" title="<?php echo date('c',$wo['story']['time']); ?>" target="_blank"><?php echo Wo_Time_Elapsed_String($wo['story']['time']); ?></a>
-						</span>
 					</h6>
 				</div>
 			</div>
@@ -893,7 +890,7 @@ $current_post = $wo['current_post'] = $wo['story'];
         <?php } ?>
     </div>
 
-    <div class="clear"></div>
+      <div class="clear"></div>
       <?php  $wo['story'] = $current_post;
 
        ?>
@@ -925,7 +922,7 @@ $current_post = $wo['current_post'] = $wo['story'];
 						$text =  (!empty($wo['currencies'][$wo['story']['product']['currency']]['text'])) ? $wo['currencies'][$wo['story']['product']['currency']]['text'] : $wo['config']['classified_currency'];
 						$status = '<span class="product-description">' . $wo['lang']['currently_unavailable'] . '</span>';
 			            if ($wo['story']['product']['units'] > 0) {
-			            	$status = ($wo['story']['product']['status'] == 0) ? '<span class="product-description">' . $wo['lang']['in_stock'] . '</span>' : '<span class="product-status-sold">' . $wo['lang']['sold'] . '</span><br><br>';
+			              $status = ($wo['story']['product']['status'] == 0) ? '<span class="product-description">' . $wo['lang']['in_stock'] . '</span>' : '<span class="product-status-sold">' . $wo['lang']['sold'] . '</span><br><br>';
 			            }
 						$type = ($wo['story']['product']['type'] == 0) ? '<span class="product-description">' . $wo['lang']['new'] . '</span>' : '<span class="product-description">' . $wo['lang']['used'] . '</span><br>';
 						echo '<div class="product-name"><h4 class="product-description">' . $wo['story']['product']['name'] . '</h4></div>';
@@ -1126,7 +1123,8 @@ $current_post = $wo['current_post'] = $wo['story'];
 
        ?>
         <!-- Hide Post Owner -->
-				<?php  if (empty($current_post['parent_id'])) { ?>
+        <?php  if (empty($current_post['parent_id'])) { ?>
+				
 				
 				<?php
 					if (!empty($wo['story']['product_id'])) {
@@ -1153,7 +1151,7 @@ $current_post = $wo['current_post'] = $wo['story'];
 						$text =  (!empty($wo['currencies'][$wo['story']['product']['currency']]['text'])) ? $wo['currencies'][$wo['story']['product']['currency']]['text'] : $wo['config']['classified_currency'];
 						$status = '<span class="product-description">' . $wo['lang']['currently_unavailable'] . '</span>';
 			            if ($wo['story']['product']['units'] > 0) {
-			            	$status = ($wo['story']['product']['status'] == 0) ? '<span class="product-description">' . $wo['lang']['in_stock'] . '</span>' : '<span class="product-status-sold">' . $wo['lang']['sold'] . '</span><br><br>';
+			              $status = ($wo['story']['product']['status'] == 0) ? '<span class="product-description">' . $wo['lang']['in_stock'] . '</span>' : '<span class="product-status-sold">' . $wo['lang']['sold'] . '</span><br><br>';
 			            }
 						$type = ($wo['story']['product']['type'] == 0) ? '<span class="product-description">' . $wo['lang']['new'] . '</span>' : '<span class="product-description">' . $wo['lang']['used'] . '</span><br>';
 						echo '<div class="product-name"><h4 class="product-description">' . $wo['story']['product']['name'] . '</h4></div>';
@@ -1180,7 +1178,6 @@ if (empty($wo['story']['color_id']) || (!empty($wo['story']['color_id']) && empt
 						<span class="feeling-text"> — <i class="fa fa-headphones"></i> <?php echo $wo['lang']['listening'];?> <?php echo $wo['story']['postListening'];?></span>
 					<?php } ?></p>
 					<?php } ?>
-
 					<?php if (!empty($wo['story']['color_id']) && !empty($wo['post_colors'][$wo['story']['color_id']])) { ?>
 						<div dir="auto" 
 							<?php if($wo['config']['colored_posts_system'] == 1){ ?>
@@ -1369,11 +1366,10 @@ if (empty($wo['story']['color_id']) || (!empty($wo['story']['color_id']) && empt
 						echo Wo_LoadPage('story/entries/options');
 					}
 				?>
-				<?php } ?>
+	<?php } ?>
 				<div class="clear"></div>
-
-								        
         
+								        
 				<?php if ($wo['loggedin'] == true) { ?>
 					<div class="stats post-actions <?php echo Wo_RightToLeft('pull-left');?>" id="active_react">
 						<?php if ($wo['config']['second_post_button'] == 'reaction') { ?>
@@ -1435,7 +1431,7 @@ if (empty($wo['story']['color_id']) || (!empty($wo['story']['color_id']) && empt
 				<div class="clear"></div>
 				<div class="post-footer post-reacted"></div>
 				<div class="clear"></div>
-				<div class="post-footer post-comments <?php echo ($wo['page'] != 'story') ? '' : ''; ?>" id="post-comments-<?php echo $wo['story']['id']; ?>">
+				<div class="post-footer post-comments <?php echo ($wo['page'] != 'story') ? 'hidden' : ''; ?>" id="post-comments-<?php echo $wo['story']['id']; ?>">
 					<div id="hidden_inputbox_comment"></div>
 					<?php if($wo['story']['post_comments'] > 3 && $wo['story']['limited_comments'] === true && $wo['story']['comments_status'] == 1) { ?>
 						<div class="view-more-wrapper load-more-comments page-margin" onclick="Wo_loadAllComments(<?php echo $wo['story']['id']; ?>,this);">
@@ -1451,50 +1447,43 @@ if (empty($wo['story']['color_id']) || (!empty($wo['story']['color_id']) && empt
 							}
 						?>
 					</div>
-					<?php if ($wo['story']['comments_status'] == 1) { ?> 
-						<div class="post-commet-textarea">
-							<div class="loading_cont">
-								<div class="loading hidden"></div>
+						<?php if ($wo['story']['comments_status'] == 1) { ?> 
+					<div class="post-commet-textarea dropdown">
+						<div id="wo_comment_combo" class="wo_comment_combo_<?php echo $wo['story']['id']; ?>">
+							<div style="display: flex;">
+								<img class="avatar" src="<?php echo $wo['user']['avatar'];?>"/>
+								<textarea class="form-control comment-textarea textarea" placeholder="<?php echo $wo['lang']['write_comment'];?>" type="text" onclick="Wo_ShowCommentCombo(<?php echo $wo['story']['id']; ?>);" onkeydown="Wo_RegisterComment(this.value,<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, event, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)" onkeyup="textAreaAdjust(this, 31,'comm'); " dir="auto"></textarea>
 							</div>
-							<div id="wo_comment_combo" class="remove_combo_on_click wo_comment_combo_<?php echo $wo['story']['id']; ?>" onclick="Wo_ShowCommentCombo(<?php echo $wo['story']['id']; ?>);">
-								<div style="display: flex;">
-									<img class="avatar" src="<?php echo $wo['user']['avatar'];?>"/>
-									<textarea class="form-control comment-textarea textarea" placeholder="<?php echo $wo['lang']['write_comment'];?>" type="text" onkeyup="Wo_RegisterComment(this.value,<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, event, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)" onkeydown="textAreaAdjust(this, 31,'comm'); " dir="auto"></textarea>
-									<nav class="sun_comm_addmore dropdown">
-										<div data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg></div>
-										<ul class="dropdown-menu dropdown-menu-right">
-											<li class="rec">
-												<span data-record="0" class="btn record-comment-audio" id="<?php echo $wo['story']['id']; ?>">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"></path></svg>
-												</span>
-												<span class="sun_comm_rec_time hidden" data-comment-rtime="<?php echo $wo['story']['id']; ?>">00:00</span>
-											</li>
-											<li class="emo dropdown-submenu">
-												<span data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle" onclick="load_ajax_emojii('<?php echo $wo["story"]["id"];?>','<?php echo $wo['config']['theme_url'];?>/emoji/');">
-													<span class="btn btn-file">	
-														<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M9.153 11.603c.795 0 1.439-.879 1.439-1.962s-.644-1.962-1.439-1.962-1.439.879-1.439 1.962.644 1.962 1.439 1.962zm-3.204 1.362c-.026-.307-.131 5.218 6.063 5.551 6.066-.25 6.066-5.551 6.066-5.551-6.078 1.416-12.129 0-12.129 0zm11.363 1.108s-.669 1.959-5.051 1.959c-3.505 0-5.388-1.164-5.607-1.959 0 0 5.912 1.055 10.658 0zM11.804 1.011C5.609 1.011.978 6.033.978 12.228s4.826 10.761 11.021 10.761S23.02 18.423 23.02 12.228c.001-6.195-5.021-11.217-11.216-11.217zM12 21.354c-5.273 0-9.381-3.886-9.381-9.159s3.942-9.548 9.215-9.548 9.548 4.275 9.548 9.548c-.001 5.272-4.109 9.159-9.382 9.159zm3.108-9.751c.795 0 1.439-.879 1.439-1.962s-.644-1.962-1.439-1.962-1.439.879-1.439 1.962.644 1.962 1.439 1.962z"></path></svg>
-													</span>
-												</span>
-												<ul class="dropdown-menu dropdown-menu-right emo-comment-container-<?php echo $wo["story"]["id"];?>" id="wo_comm_emojis"></ul>
-											</li>
-											<li class="img">
-												<form action="#" method="post" class="hidden">
-													<input accept="image/x-png, image/jpeg" type="file" name="comment_image" id="comment_image_<?php echo $wo['story']['id']; ?>" onchange="Wo_UploadCommentImage(<?php echo $wo['story']['id']; ?>);">
-													<input type="hidden" value="" id="comment_src_image">
-												</form>
-												<span class="btn btn-file btn-upload-comment">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" onclick="document.getElementById('comment_image_<?php echo $wo['story']['id'];?>').click(); return false"><path fill="currentColor" d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6"></path></svg>
-												</span>
-											</li>
-										</ul>
-									</nav>
+							<div class="comment_combo_footer">
+								<div class="ball-pulse"><div></div><div></div><div></div></div>
+								<div class="wo_comment_fopt">
+									<a href="#" class="emo-comment dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" >
+										<span class="btn btn-file">	
+											<svg fill="#009da0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" class="feather feather-user-plus"><path d="M0 0h24v24H0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+										</span>
+									</a>
+									<ul class="dropdown-menu">
+										<?php  
+											foreach ($wo['emo'] as $code => $name) {
+												$code   = $code;
+												echo  '<span onclick="Wo_AddEmoToCommentInput(' . $wo["story"]["id"] . ', \'' . $code . '\');"><i class="pointer twa-lg twa twa-' . $name . '"></i></span>'; 
+											} 
+										?>
+									</ul>
+									<div class="image-comment">
+										<div class="comment-btn-wrapper">
+											<span class="btn btn-file btn-upload-comment" onclick="Wo_RegisterCommentClick($('#post-comments-<?php echo $wo["story"]["id"];?> .textarea').val(),<?php echo $wo['story']['id']; ?>,'<?php print ($wo['story']['publisher']['user_id']); ?>', <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right" color="#009da0"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div id="comment-image" class="hidden comment-image-con"></div>
+					</div>
 					<?php } else { ?>
-						<small style="color: #777; font-size: 12px;"><?php echo str_replace('%d', $wo['story']['publisher']['name'],$wo['lang']['comments_disabled']);?></small>
-					<?php } ?>
+         <small style="color: #777; font-size: 12px;"><?php echo str_replace('%d', $wo['story']['publisher']['name'],$wo['lang']['comments_disabled']);?></small>
+          <?php } ?>
 				</div>
 			<?php } ?>
 			
@@ -1516,7 +1505,7 @@ $(function () {
 		trigger: "@" 
 	});
 	$('[data-toggle="tooltip"]').tooltip();
-	$('.dropdown-menu.post-recipient, .dropdown-menu.post-options, .wo_emoji_post, .sun_comm_addmore > .dropdown-menu').click(function (e) {
+	$('.dropdown-menu.post-recipient, .dropdown-menu.post-options, .wo_emoji_post').click(function (e) {
 		e.stopPropagation();
 	});
 });
@@ -1525,14 +1514,6 @@ jQuery(document).click(function(event){
 	if (!(jQuery(event.target).closest(".remove_combo_on_click").length)) {
         jQuery('.remove_combo_on_click').removeClass('comment-toggle');
     }
-});
-
-$(document).ready(function(){
-  $('.sun_comm_addmore > .dropdown-menu .dropdown-toggle').on("click", function(e){
-    $(this).next('ul').toggle();
-    e.stopPropagation();
-    e.preventDefault();
-  });
 });
 </script>
 <?php endif; ?>

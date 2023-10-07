@@ -32,6 +32,8 @@
 
 
 
+
+
 function getCameraDevices() {
   console.log("Checking for Camera Devices.....")
   client.getCameras (function(cameras) {
@@ -105,12 +107,8 @@ function changeStreamSource (deviceIndex, deviceType) {
 }
 
 
-
-
-
-
-
 var agoraAppId = '<?php echo($wo['config']['agora_app_id']) ?>'; // set app id
+//var channelName = "stream_<?php echo($wo['user']['id']) ?>_"+rand; // set channel name
 var channelName = "<?php echo($wo['AgorachannelName']) ?>"; // set channel name
 
 // create client instance
@@ -290,16 +288,12 @@ function joinChannel() {
                         console.log("complete");
                       });
                     },500);
-
-                      
 	                }
 	              });
   }, function(err) {
       console.log('[ERROR] : join channel failed', err);
   });
 }
-
-
 
 // video streams for channel
 function createCameraStream(uid, deviceIds) {

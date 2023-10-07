@@ -9709,3 +9709,13 @@ function checkIfThereIsError($object) {
 function isfuncEnabled($func) {
     return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
 }
+
+function dd($data, $json = true)
+{
+    if ($json) {
+        echo json_encode($data, true);
+    } else {
+        echo $data;
+    }
+    die();
+}

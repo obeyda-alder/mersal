@@ -1,20 +1,19 @@
-<div class="modal fade sun_modal" id="edit-post" role="dialog">
-	<div class="modal-dialog modal-md">
+<div class="modal fade" id="edit-post" role="dialog">
+	<div class="modal-dialog modal-md wow_mat_mdl">
 		<form id="edit-post-form-<?php echo $wo['story']['id'];?>" method="post">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button>
-					<h4 class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg> <?php echo $wo['lang']['edit_post']; ?></h4>
+					<h4 class="modal-title"><svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.75 5.05741C9.23497 5.56243 7.21492 3.54238 7.71993 2.02734M8.34238 1.40489L5.07836 4.66891C3.65936 6.08791 2.65269 7.86589 2.16597 9.81274L2.00826 10.4436C1.95912 10.6402 2.13717 10.8182 2.33374 10.7691L2.9646 10.6114C4.91146 10.1247 6.68943 9.11798 8.10843 7.69898L11.3725 4.43496C11.7743 4.03315 12 3.48818 12 2.91993C12 1.73661 11.0407 0.777344 9.85742 0.777344C9.28917 0.777344 8.74419 1.00308 8.34238 1.40489Z" stroke="currentColor" stroke-width="1.5"></path><path d="M8.34217 1.40489C8.74398 1.00308 9.28895 0.777344 9.8572 0.777344C11.0405 0.777344 11.9998 1.73661 11.9998 2.91993C11.9998 3.48818 11.7741 4.03315 11.3722 4.43496L10.7498 5.05741C9.23475 5.56243 7.21471 3.54238 7.71972 2.02734L8.34217 1.40489Z" class="icon_main" stroke-width="1.5"></path><path d="M12.8332 14.1113H1.1665" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <?php echo $wo['lang']['edit_post']; ?></h4>
 				</div>
-				<?php //var_dump($wo['story']); ?>
-				<div class="modal-body edit-textarea-<?php echo $wo['story']['id'];?>">
+				<div class="modal-body edit-textarea-<?php echo $wo['story']['id'];?>" style="padding:0;">
 					<div class="edit_alert"></div>
-					<textarea class="form-control" style="padding: 0px; border: 0" placeholder="<?php echo $wo['lang']['edit_post']?>" dir="auto" rows="5" onkeyup="Wo_Get_Mention(this)" name="text"><?php
-
-
-
-					 echo $wo['story']['Orginaltext']?></textarea>
-					 <?php 
+					
+					<div class="wow_form_fields">
+						<textarea placeholder="<?php echo $wo['lang']['edit_post']?>" dir="auto" rows="5" onkeyup="Wo_Get_Mention(this)" name="text"><?php echo $wo['story']['Orginaltext']?></textarea>
+					</div>
+					
+					<?php 
 					$show_images = false;
 					if (!empty($wo['story']['postFile'])) {
 						$file_extension = pathinfo($wo['story']['postFile'], PATHINFO_EXTENSION);
@@ -29,7 +28,7 @@
 					?>
 					<br>
 					<div class="wow_prod_imgs">
-						<input type="file" name="images[]" id="publisher-post-photos-<?php echo $wo['story']['id']; ?>" class="hidden" class="edit_post_r_images" multiple="multiple" accept="image/x-png, image/gif, image/jpeg">
+						<input type="file" name="images[]" id="publisher-post-photos-<?php echo $wo['story']['id']; ?>" class="hidden" multiple="multiple" accept="image/x-png, image/gif, image/jpeg">
 						<div class="upload-product-image" onclick="document.getElementById('publisher-post-photos-<?php echo $wo['story']['id']; ?>').click(); return false">
 							<div class="upload-image-content">
 								<svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" /></svg>
@@ -62,8 +61,7 @@
 				</div>
 				<div class="modal-footer" style="border: none">
 					<div class="ball-pulse"><div></div><div></div><div></div></div>
-					<button type="submit" class="btn btn-main" id="edit-post-button"><?php echo $wo['lang']['update']; ?>
-					</button>
+					<button type="submit" class="btn main btn-mat" id="edit-post-button"><?php echo $wo['lang']['update']; ?></button>
 				</div>
 			</div>
 		</form>

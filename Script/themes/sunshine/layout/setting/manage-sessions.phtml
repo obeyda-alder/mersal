@@ -1,18 +1,22 @@
-<div class="wo_settings_page sun_sett_page">
-	<h3><?php echo $wo['lang']['manage_sessions'] ?></h3>
-	<br>
+<div class="page-margin mt-0">
+	<div class="wow_content popular_posts_hdr flex">
+		<h2>&nbsp;<?php echo $wo['lang']['manage_sessions']; ?></h2>
+		<a href="javascript:void();" class="btn btn-danger btn-mat" id="upgrade-button" onclick="Wo_RemoveAllSessions();"><?php echo $wo['lang']['remove_all_sessions'];?></a>
+	</div>
+</div>
+
+<div class="wo_settings_page wow_content">
+	
 	<div class="active_sessions">
-		<a href="javascript:void();" class="btn btn-sm btn-main" id="upgrade-button" onclick="Wo_RemoveAllSessions();"><?php echo $wo['lang']['remove_all_sessions'];?></a>
-		<br>
 		<div class="row">
-					<?php
-						$get_sessions = Wo_GetAllSessionsFromUserID($wo['setting']['user_id']);
-						if (count($get_sessions) > 0) {
-							foreach ($get_sessions as $wo['key'] => $wo['session']) {
-							     echo Wo_LoadPage('setting/includes/sessions');
-							}
-						}
-					?>
+			<?php
+				$get_sessions = Wo_GetAllSessionsFromUserID($wo['setting']['user_id']);
+				if (count($get_sessions) > 0) {
+					foreach ($get_sessions as $wo['key'] => $wo['session']) {
+						echo Wo_LoadPage('setting/includes/sessions');
+					}
+				}
+				 ?>
 		</div>
 		<?php if (count($get_sessions) == 10) { ?>
 			<div class="load-more">

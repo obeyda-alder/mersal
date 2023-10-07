@@ -1,8 +1,13 @@
 <div class="page-margin">
-	<h2 class="ch_checkout_title"><?php echo $wo['lang']['checkout'] ?></h2>
+	<div class="wow_content popular_posts_hdr">
+		<h2><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.66667 4.83331L5.499 5.23252C5.22832 5.877 5.16028 6.58862 5.30394 7.27272C5.52315 8.31654 6.35414 9.12274 7.40412 9.31024L7.49657 9.32675C7.82956 9.38621 8.17044 9.38621 8.50343 9.32675L8.59588 9.31024C9.64586 9.12274 10.4769 8.31654 10.6961 7.27272C10.8397 6.58862 10.7717 5.877 10.501 5.23252L10.3333 4.83331" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M14.8507 11.6191C14.3756 13.7086 12.7514 15.3503 10.6686 15.8543C8.91827 16.2778 7.08186 16.2778 5.3315 15.8543C3.24876 15.3503 1.62459 13.7086 1.14945 11.6191C0.724914 9.7522 0.828162 7.80397 1.44764 5.99237L1.53968 5.72322C2.2213 3.72988 3.92409 2.25844 5.9952 1.87305L6.56236 1.76751C7.51269 1.59068 8.48749 1.59068 9.43782 1.76752L10.005 1.87305C12.0761 2.25844 13.7789 3.72988 14.4605 5.72324L14.5525 5.99237C15.172 7.80397 15.2752 9.7522 14.8507 11.6191Z" class="icon_main" stroke-width="1.5"></path></svg>&nbsp;<?php echo $wo['lang']['checkout'] ?></h2>
+	</div>
+</div>
+
+<div class="page-margin">
 	<div class="row">
 		<div class="col-md-5">
-			<h4><?php echo $wo['lang']['delivery_address'] ?></h4>
+			<h4 class="ch_h4"><?php echo $wo['lang']['delivery_address'] ?></h4>
 			<div class="panel panel-white ch_card ch_summary">
 				<div class="checkout_alert"></div>
 
@@ -21,46 +26,46 @@
 					<?php  } } ?>
 				</ul>
 			</div>
-			<h4><?php echo $wo['lang']['add_new_address'] ?></h4>
+			<h4 class="ch_h4"><?php echo $wo['lang']['add_new_address'] ?></h4>
 			<form class="form form-horizontal address_form" method="post" action="#">
 				<div class="panel panel-white ch_card ch_address">
 					<div class="modal_add_address_modal_alert"></div>
 					<div class="clear"></div>
 					<div class="row">
 						<div class="col-md-12">
-							<div class="sun_input">
-								<label><?php echo $wo['lang']['name']; ?></label>
-								<input name="name" type="text" class="form-control input-md" autocomplete="off" placeholder="<?php echo $wo['lang']['name']; ?>" value="<?php echo($wo['user']['name']) ?>">
+							<div class="wow_form_fields mt-0">
+								<label class="mt-0"><?php echo $wo['lang']['name']; ?></label>
+								<input name="name" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['name']; ?>" value="<?php echo($wo['user']['name']) ?>">
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="sun_input">
+							<div class="wow_form_fields">
 								<label><?php echo $wo['lang']['phone_number']; ?></label>
-								<input name="phone" type="text" class="form-control input-md" autocomplete="off" placeholder="<?php echo $wo['lang']['phone_number']; ?>" value="<?php echo($wo['user']['phone_number']) ?>">
+								<input name="phone" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['phone_number']; ?>" value="<?php echo($wo['user']['phone_number']) ?>">
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="sun_input">
+							<div class="wow_form_fields">
 								<label><?php echo $wo['lang']['country']; ?></label>
-								<input id="country" name="country" type="text" class="form-control input-md" autocomplete="off" placeholder="<?php echo $wo['lang']['country']; ?>">
+								<input id="country" name="country" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['country']; ?>">
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="sun_input">
+							<div class="wow_form_fields">
 								<label><?php echo $wo['lang']['city']; ?></label>
-								<input id="city" name="city" type="text" class="form-control input-md" autocomplete="off" placeholder="<?php echo $wo['lang']['city']; ?>">
+								<input id="city" name="city" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['city']; ?>">
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="sun_input">
+							<div class="wow_form_fields">
 								<label><?php echo $wo['lang']['zip']; ?></label>
-								<input id="zip" name="zip" type="text" class="form-control input-md" autocomplete="off" placeholder="<?php echo $wo['lang']['zip']; ?>">
+								<input id="zip" name="zip" type="text" autocomplete="off" placeholder="<?php echo $wo['lang']['zip']; ?>">
 							</div>
 						</div>
 						<div class="col-md-12">
-							<div class="sun_input">
+							<div class="wow_form_fields">
 								<label><?php echo $wo['lang']['address']; ?></label>
-								<textarea class="form-control input-md" placeholder="<?php echo $wo['lang']['address']; ?>" name="address"></textarea>
+								<textarea placeholder="<?php echo $wo['lang']['address']; ?>" name="address"></textarea>
 							</div>
 						</div>
 					</div>
@@ -99,8 +104,8 @@
 					<h4><?php echo $wo['lang']['total'] ?></h4>
 					<p><?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']]; ?><?php echo $wo['total']; ?></p>
 					<div class="divider border-bottom"></div>
-					<button type="button" class="btn btn-success btn-mat buy_button" onclick="BuyProducts('hide','<?php echo $wo['total']; ?>')" <?php if ($wo['topup'] == 'show' || empty($wo['addresses'])) { ?>disabled="true"<?php } ?>><?php echo $wo['lang']['buy'] ?></button>
-					<svg width="371" height="218" viewBox="0 0 371 218" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.4" d="M275.008 41.3416C307.369 28.1561 375.43 47.6713 391.786 57.0941L410.44 43.2371L532.518 -219.202L71.3192 -143.669C60.4225 -120.263 39.7451 -60.5365 44.2096 -8.88462C49.7902 55.6802 112.183 99.047 174.223 94.1242C232.5 89.5 234.557 57.8234 275.008 41.3416Z" fill="#48B774" stroke="white"/><path d="M300.467 72.6242C332.827 59.4387 663.274 90.2678 679.63 99.6906L766.842 -127.791L557.976 -187.919L96.7778 -112.387C85.881 -88.9802 65.2036 -29.2539 69.6681 22.398C75.2487 86.9628 136.92 125.407 199.682 125.407C262.5 125.407 260.016 89.1061 300.467 72.6242Z" stroke="#48B774" stroke-width="6"/></svg>
+					<button type="button" class="btn btn-main btn-mat buy_button" onclick="BuyProducts('hide','<?php echo $wo['total']; ?>')" <?php if ($wo['topup'] == 'show' || empty($wo['addresses'])) { ?>disabled="true"<?php } ?>><?php echo $wo['lang']['buy'] ?></button>
+					<svg width="371" height="218" viewBox="0 0 371 218" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.4" d="M275.008 41.3416C307.369 28.1561 375.43 47.6713 391.786 57.0941L410.44 43.2371L532.518 -219.202L71.3192 -143.669C60.4225 -120.263 39.7451 -60.5365 44.2096 -8.88462C49.7902 55.6802 112.183 99.047 174.223 94.1242C232.5 89.5 234.557 57.8234 275.008 41.3416Z" fill="<?php echo $wo['config']['btn_background_color'];?>" stroke="white"/><path d="M300.467 72.6242C332.827 59.4387 663.274 90.2678 679.63 99.6906L766.842 -127.791L557.976 -187.919L96.7778 -112.387C85.881 -88.9802 65.2036 -29.2539 69.6681 22.398C75.2487 86.9628 136.92 125.407 199.682 125.407C262.5 125.407 260.016 89.1061 300.467 72.6242Z" stroke="<?php echo $wo['config']['btn_background_color'];?>" stroke-width="6"/></svg>
 				</div>
 			</div>
 		</div>
@@ -108,7 +113,6 @@
 </div>
 
 <script>
-
 $(document).ready(function() {
     var options = {
       url: Wo_Ajax_Requests_File() + '?f=address&s=add&hash=' + $('.main_session').val(),

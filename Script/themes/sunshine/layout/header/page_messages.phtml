@@ -12,15 +12,12 @@ if (!empty($wo['page_message']['message']) && isset($wo['page_message']['message
 
 
 $page_info = Wo_PageData($wo['page_message']['message']['page_id']);
-
-
 if ($page_info['user_id'] == $wo['page_message']['message']['from_id']) {
    $message_event = "Wo_OpenChatTab(0,0,0,".$wo['page_message']['message']['page_id'].",".$wo['page_message']['message']['to_id'].");";
 }
 else{
    $message_event = "Wo_OpenChatTab(0,0,0,".$wo['page_message']['message']['page_id'].",".$wo['page_message']['message']['from_id'].");";
 }
-
 $avatar = $page_info['avatar'];
 $name = $page_info['page_name'];
 if ($page_info['is_page_onwer'] == 1) {
@@ -42,14 +39,14 @@ $wo['page_message']['message']['text'] = Wo_Emo($wo['page_message']['message']['
             <img src="<?php echo $avatar;?>" alt="<?php echo $name; ?> Profile picture">
          </div>
          <div class="notification-text">
-			<div class="notification-time active <?php echo Wo_RightToLeft('pull-right');?>">
-               <div class="ajax-time" title="<?php echo (!empty($wo['page_message']['message']['time'])) ? date('c',$wo['page_message']['message']['time']) : '';?>">
-                <?php echo (!empty($wo['page_message']['message']['time'])) ? Wo_Time_Elapsed_String($wo['page_message']['message']['time']) : '';?>
-               </div>
+            <div class="color">
+				<b><?php echo $name; ?></b>
+				<span class="notification-time active">
+					<span class="ajax-time" title="<?php echo (!empty($wo['page_message']['message']['time'])) ? date('c',$wo['page_message']['message']['time']) : '';?>">
+						<?php echo (!empty($wo['page_message']['message']['time'])) ? Wo_Time_Elapsed_String($wo['page_message']['message']['time']) : '';?>
+					</span>
+				</span>
             </div>
-            <span class="main-color">
-            <?php echo $name; ?>
-            </span>
             <?php if (!empty($wo['page_message']['message']['from_id'])): ?>
             <div class="header-message">
                   <?php echo ($wo['user']['id'] == $wo['page_message']['message']['from_id']) ? $wo['lang']['me'] . ': ' : '';?>
@@ -60,4 +57,3 @@ $wo['page_message']['message']['text'] = Wo_Emo($wo['page_message']['message']['
          <div class="clear"></div>
    </div>
 </li>
-<li class="divider"></li>

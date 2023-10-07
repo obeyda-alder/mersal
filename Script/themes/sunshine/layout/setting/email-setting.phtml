@@ -1,5 +1,12 @@
-<div class="wo_settings_page sun_sett_page">
-	<h3><?php echo $wo['lang']['email_notification']; ?></h3>
+<div class="wo_settings_page wow_content">
+	<div class="avatar-holder notifications">
+		<img src="<?php echo $wo['setting']['avatar']?>" alt="<?php echo $wo['setting']['name']?> Profile Picture" class="avatar">
+		<div class="infoz">
+			<h5 title="<?php echo $wo['setting']['name']?>"><a href="<?php echo Wo_SeoLink('index.php?link1=timeline&u=' . $wo['setting']['username'] . '');?>" data-ajax="?link1=timeline&u=<?php echo $wo['setting']['username'] ?>"><?php echo $wo['setting']['name']?></a></h5>
+			<p><?php echo $wo['lang']['email_notification']; ?></p>
+		</div>
+	</div>
+	<hr>
 	
 	<?php if ($wo['config']['emailNotification'] == 1) {?>
 	<ul class="sett_tab_noti">
@@ -21,7 +28,7 @@
 		
 		<div class="setting-panel row">
 			<!-- Multiple Radios (inline) -->
-         	<div class="col-md-3"><h5 class="bold"><?php echo $wo['lang']['email_me_when']; ?></h5></div>
+         	<div class="col-md-3"><h5><?php echo $wo['lang']['email_me_when']; ?></h5></div>
          	<div class="col-lg-9">
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
@@ -153,10 +160,11 @@
 				</div>
 			</div>
          </div>
-		 <div class="form-group last-sett-btn modal-footer">
-			<div class="ball-pulse"><div></div><div></div><div></div></div>
-			<button type="submit" class="btn btn-main setting-panel-mdbtn"><?php echo $wo['lang']['save']; ?></button>
-         </div>
+		
+		<div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised add_wow_loader"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+
          <input type="hidden" name="user_id" value="<?php echo $wo['setting']['user_id'];?>">
          <input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
    </form>
@@ -166,7 +174,7 @@ $(function() {
   $('form.setting-general-form').ajaxForm({
     url: Wo_Ajax_Requests_File() + '?f=update_email_settings',
     beforeSend: function() {
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeIn(100);
+      $('.wo_settings_page').find('.add_wow_loader').addClass('btn-loading');
     },
     success: function(data) {
       scrollToTop();
@@ -178,7 +186,7 @@ $(function() {
             });
         });
       } 
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeOut(100);
+      $('.wo_settings_page').find('.add_wow_loader').removeClass('btn-loading');
     }
   });
 });

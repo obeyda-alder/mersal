@@ -1,5 +1,10 @@
-<div class="wo_settings_page sun_sett_page">
-	<h3><?php echo $wo['lang']['my_earnings'] ?>: <b><?php echo Wo_GetCurrency($wo['config']['ads_currency']) . ($wo['setting']['balance']);?></b></h3>
+<div class="page-margin mt-0">
+	<div class="wow_content popular_posts_hdr">
+		<h2><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.40417 7.37396C2.96471 5.11653 4.75469 3.37111 7.02514 2.86802L7.40337 2.78421C9.11351 2.40526 10.8858 2.40526 12.596 2.78421L12.9742 2.86802C15.2447 3.37111 17.0346 5.11653 17.5952 7.37396C18.0234 9.09846 18.0234 10.9015 17.5952 12.626C17.0346 14.8835 15.2447 16.6289 12.9742 17.132L12.596 17.2158C10.8858 17.5947 9.11351 17.5947 7.40337 17.2158L7.02514 17.132C4.75469 16.6289 2.96471 14.8835 2.40417 12.626C1.97595 10.9015 1.97595 9.09846 2.40417 7.37396Z" class="icon_main" stroke-width="1.5"/><path d="M7.40337 2.78421C9.11351 2.40526 10.8858 2.40526 12.596 2.78421L12.9742 2.86802C15.2447 3.37111 17.0346 5.11653 17.5952 7.37396C18.0234 9.09846 18.0234 10.9015 17.5952 12.626C17.0346 14.8835 15.2447 16.6289 12.9742 17.132L12.596 17.2158C10.8858 17.5947 9.11351 17.5947 7.40337 17.2158L7.02514 17.132C4.75469 16.6289 2.96471 14.8835 2.40417 12.626C2.19006 11.7638 2.08301 10.8819 2.08301 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0002 5.83301C10.3188 5.83301 10.5771 6.07633 10.5771 6.37649V6.82112H10.641C11.7139 6.82112 12.5 7.6998 12.5 8.68212C12.5 8.98228 12.2417 9.2256 11.9231 9.2256C11.6045 9.2256 11.3462 8.98228 11.3462 8.68212C11.3462 8.20915 10.9842 7.90808 10.641 7.90808H10.5771V9.61905L11.3561 9.88588C12.0639 10.1284 12.5 10.7878 12.5 11.4862C12.5 12.3752 11.7876 13.1782 10.8055 13.1782H10.5771V13.6229C10.5771 13.923 10.3188 14.1663 10.0002 14.1663C9.68158 14.1663 9.42328 13.923 9.42328 13.6229V13.1782H9.35897C8.28606 13.1782 7.5 12.2995 7.5 11.3172C7.5 11.017 7.7583 10.7737 8.07692 10.7737C8.39555 10.7737 8.65385 11.017 8.65385 11.3172C8.65385 11.7901 9.01577 12.0912 9.35897 12.0912H9.42328V10.3804L8.64393 10.1134C7.93608 9.87093 7.5 9.21149 7.5 8.51309C7.5 7.62412 8.21243 6.82112 9.1945 6.82112H9.42328V6.37649C9.42328 6.07633 9.68158 5.83301 10.0002 5.83301ZM9.42328 7.90808H9.1945C8.94213 7.90808 8.65385 8.13347 8.65385 8.51309C8.65385 8.80339 8.83339 9.02172 9.03825 9.09189L9.42328 9.22379V7.90808ZM10.5771 10.7756V12.0912H10.8055C11.0579 12.0912 11.3462 11.8658 11.3462 11.4862C11.3462 11.1959 11.1666 10.9776 10.9618 10.9074L10.5771 10.7756Z" class="icon_main_fill"/></svg>&nbsp;<?php echo $wo['lang']['my_earnings'] ?> <?php echo Wo_GetCurrency($wo['config']['ads_currency']) . number_format($wo['setting']['balance'], 2);?></h2>
+	</div>
+</div>
+
+<div class="wo_settings_page wow_content">
   
 	<?php if ($wo['setting']['balance'] < $wo['config']['m_withdrawal']): ?>
 	<div class="alert alert-danger">
@@ -17,8 +22,7 @@
 	<form class="setting-general-form form-horizontal" method="post">
 		<div class="setting-general-alert setting-update-alert"></div>
 		
-		<div class="setting-panel row">
-			<!-- Text input-->
+		<div class="row">
 				<div class="col-md-12">
 					<div class="wow_form_fields">
 						<label for="withdraw_method"><?php echo $wo['lang']['withdraw_method']; ?></label>  
@@ -39,15 +43,15 @@
 					</div>
 				</div>
 			<div class="paypal_withdrawal" <?php echo($first == 'paypal' ? '' : 'style="display: none;"'); ?>>
-				<div class="form-group col-lg-6">
-					<label class="col-md-12" for="paypal_email"><?php echo $wo['lang']['paypal_email']; ?></label>  
-					<div class="col-md-12">
+				<div class="col-md-6">
+					<div class="wow_form_fields">
+						<label for="paypal_email"><?php echo $wo['lang']['paypal_email']; ?></label>  
 						<input id="paypal_email" name="paypal_email" type="text" class="form-control input-md" value="<?php echo $wo['setting']['email']?>" autocomplete="off">
-						<span class="help-block checking"></span>  
+						<span class="help-block checking"></span>
 					</div>
 				</div>
 			</div>
-			<div class="transfer_to_withdrawal"  <?php echo(($first == 'skrill' || $first == 'custom') ? '' : 'style="display: none;"'); ?>>
+			<div class="transfer_to_withdrawal" <?php echo(($first == 'skrill' || $first == 'custom') ? '' : 'style="display: none;"'); ?>>
 				<div class="col-md-6">
 					<div class="wow_form_fields">
 						<label for="transfer_to"><?php echo $wo['lang']['transfer_to']; ?></label>
@@ -56,70 +60,73 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group col-lg-6">
-				<label class="col-md-12" for="amount"><?php echo $wo['lang']['amount']; ?></label>  
-				<div class="col-md-12">
+			<div class="col-md-6">
+				<div class="wow_form_fields">
+					<label for="amount"><?php echo $wo['lang']['amount']; ?></label>  
 					<input name="amount" id="amount" type="text" class="form-control input-md" value="<?php echo $wo['setting']['balance'];?>">
 				</div>
 			</div>
 				<div class="bank_withdrawal" <?php echo($first == 'bank' ? '' : 'style="display: none;"'); ?>>
-					<div class="form-group col-lg-6">
-						<label class="col-md-12" for="iban"><?php echo $wo['lang']['iban']; ?></label>  
-						<div class="col-md-12">
+					<div class="col-md-6">
+						<div class="wow_form_fields">
+							<label for="iban"><?php echo $wo['lang']['iban']; ?></label>  
 							<input name="iban" id="iban" type="text" class="form-control input-md">
 						</div>
 					</div>
-					<div class="form-group col-lg-6">
-						<label class="col-md-12" for="country"><?php echo $wo['lang']['country']; ?></label>  
-						<div class="col-md-12">
+					<div class="col-md-6">
+						<div class="wow_form_fields">
+							<label for="country"><?php echo $wo['lang']['country']; ?></label>  
 							<input name="country" id="country" type="text" class="form-control input-md">
 						</div>
 					</div>
-					<div class="form-group col-lg-6">
-						<label class="col-md-12" for="full_name"><?php echo $wo['lang']['full_name']; ?></label>  
-						<div class="col-md-12">
+					<div class="col-md-6">
+						<div class="wow_form_fields">
+							<label for="full_name"><?php echo $wo['lang']['full_name']; ?></label>  
 							<input name="full_name" id="full_name" type="text" class="form-control input-md">
 						</div>
 					</div>
-					<div class="form-group col-lg-6">
-						<label class="col-md-12" for="swift_code"><?php echo $wo['lang']['swift_code']; ?></label>  
-						<div class="col-md-12">
+					<div class="col-md-6">
+						<div class="wow_form_fields">
+							<label for="swift_code"><?php echo $wo['lang']['swift_code']; ?></label>  
 							<input name="swift_code" id="swift_code" type="text" class="form-control input-md">
 						</div>
 					</div>
-					<div class="form-group col-lg-12">
-						<label class="col-md-12" for="address"><?php echo $wo['lang']['address']; ?></label>  
-						<div class="col-md-12">
+					<div class="col-md-12">
+						<div class="wow_form_fields">
+							<label for="address"><?php echo $wo['lang']['address']; ?></label>  
 							<textarea name="address" id="address" type="text" class="form-control input-md"></textarea>
 						</div>
 					</div>
 				</div>
 		</div>
-		<div class="form-group last-sett-btn modal-footer">
-			<div class="ball-pulse"><div></div><div></div><div></div></div>
-			<button type="submit" class="btn btn-main setting-panel-mdbtn"><?php echo $wo['lang']['request_withdrawal']; ?></button>
+		<div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised add_wow_loader"><?php echo $wo['lang']['request_withdrawal']; ?></button>
 		</div>
 		<input type="hidden" name="user_id" value="<?php echo $wo['setting']['user_id'];?>">
 		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
 	</form>
-	<br>
-	<div class="payment-history">
-		<h4><?php echo $wo['lang']['payment_history']; ?></h4>
-		<div class="table-responsive">
-			<table class="table table-bordered table-condensed setting-table">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th><?php echo $wo['lang']['amount']; ?></th>
-						<th><?php echo $wo['lang']['requested']; ?></th>
-						<th><?php echo $wo['lang']['status']; ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-						$get_payment = Wo_GetPaymentsHistory($wo['setting']['user_id']);
-						if (count($get_payment) > 0) {
-							foreach ($get_payment as $wo['key'] => $wo['payment']) {
+</div>
+
+<div class="popular_posts_hdr empty">
+	<h2>&nbsp;<?php echo $wo['lang']['payment_history']; ?></h2>
+</div>
+
+<div class="wow_content page-margin">
+	<div class="table-responsive">
+		<table class="table table-condensed setting-table wow_pymnt_table">
+			<thead>
+				<tr>
+					<th></th>
+					<th><?php echo $wo['lang']['amount']; ?></th>
+					<th><?php echo $wo['lang']['requested']; ?></th>
+					<th><?php echo $wo['lang']['status']; ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					$get_payment = Wo_GetPaymentsHistory($wo['setting']['user_id']);
+					if (count($get_payment) > 0) {
+						foreach ($get_payment as $wo['key'] => $wo['payment']) {
 							$wo['key'] = ($wo['key'] + 1);
 							$wo['html_class'] = 'label-warning';
 							$wo['html_text'] = $wo['lang']['pending'];
@@ -131,14 +138,14 @@
 								$wo['html_text'] = $wo['lang']['declined'];
 							}
 							echo Wo_LoadPage('setting/payment-history');
-							}
 						}
-					?>
-				</tbody>
-			</table>
-		</div>
+					}
+				?>
+			</tbody>
+		</table>
 	</div>
 </div>
+
 <script type="text/javascript">
 function Wo_ShowWithdrawMethod(self) {
 	if ($(self).val() == 'bank') {
@@ -161,7 +168,7 @@ $(function() {
   $('form.setting-general-form').ajaxForm({
     url: Wo_Ajax_Requests_File() + '?f=request_payment',
     beforeSend: function() {
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeIn(100);
+      $('.wo_settings_page').find('.add_wow_loader').addClass('btn-loading');
     },
     success: function(data) {
       scrollToTop();
@@ -173,7 +180,7 @@ $(function() {
           $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
           $('.alert-danger').fadeIn(300);
       }
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeOut(100);
+      $('.wo_settings_page').find('.add_wow_loader').removeClass('btn-loading');
     }
   });
 });

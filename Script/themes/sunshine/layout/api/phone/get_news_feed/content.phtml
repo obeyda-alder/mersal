@@ -92,7 +92,7 @@ if (!empty($_GET['event_id'])) {
 		<input type="hidden" value="true" id="api">
 		<div class="load-more pointer" id="load-more-posts" onclick="<?php echo (!empty($_GET['hashtag'])) ? 'Wo_GetMoreHashTagsPosts();' : 'Wo_GetMorePosts();' ?>">
 			<span class="btn btn-default">
-			<i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i>&nbsp; <?php echo $wo['lang']['load_more_posts'];?><span>
+			<i class="fa fa-chevron-circle-down progress-icon" data-icon="chevron-circle-down"></i> &nbsp;<?php echo $wo['lang']['load_more_posts'];?><span>
 		</div>
 	<?php } ?>
 	<div id="load-more-filter">
@@ -107,7 +107,7 @@ if (!empty($_GET['event_id'])) {
 .api_posts {overflow:hidden;}
 .api_posts #post-textarea {height: 55px;}
 .api_posts .publisher-box .post-avatar {width: 40px;height: 40px;top: 50%;transform: translateY(-50%);}
-.api_posts .publisher-box textarea.postText {padding: 20px 15px 20px 60px;height: 55px !important;font-size: 15px;line-height: 1;min-height: auto;}
+.api_posts .publisher-box textarea.postText {padding: 20px 15px 20px 60px;height: 55px !important;font-size: 15px;line-height: 1;}
 .api_posts .panel {border-radius: 0;}
 .api_posts .post .post-heading {padding: 10px;height: 60px;}
 .api_posts .meta h6 {margin-top: 5px;}

@@ -14,19 +14,18 @@ if (!empty($_GET['url'])) {
 			<div class="wo_pub_txtara_combo">
 				<?php //if ($wo['page'] != 'events') { ?>
 					<img class="post-avatar" src="<?php echo (empty($wo['page_profile']['avatar'])) ? $wo['user']['avatar'] : $wo['page_profile']['avatar'];?>">
-					<div class="sun_pub_name">
-						<span><?php echo (empty($wo['page_profile']['name'])) ? $wo['user']['name'] : $wo['page_profile']['name'];?></span>
-					</div>
 				<?php //} ?>
 				<i class="fa fa-spinner fa-spin" id="loading_indicator"></i>
 				<textarea onkeyup="textAreaAdjust(this, 70)" name="postText" class="form-control postText" cols="10" rows="3" placeholder="<?php echo TextForMode('publisher_box_placeholder'); ?>" dir="auto"><?php echo $url; ?></textarea>
+				
+				<button class="btn btn-main"><?php echo $wo['lang']['create_post']; ?></button>
 				<!--Add Emojis-->
 				<div class="dropdown add-emoticons">
 					<a href="#" class="dropdown-toggle" type="button" id="dropdownEmo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onclick="load_ajax_publisher_emojii('<?php echo $wo['config']['theme_url'];?>/emoji/');">
 						<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="feather feather-emoticons"><path d="M12,23 C5.92486775,23 1,18.0751322 1,12 C1,5.92486775 5.92486775,1 12,1 C18.0751322,1 23,5.92486775 23,12 C23,18.0751322 18.0751322,23 12,23 Z M12,21 C16.9705627,21 21,16.9705627 21,12 C21,7.02943725 16.9705627,3 12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 Z M15.2746538,14.2978292 L16.9105622,15.4483958 C15.7945475,17.0351773 13.9775544,18 12,18 C10.0224456,18 8.20545254,17.0351773 7.08943782,15.4483958 L8.72534624,14.2978292 C9.4707028,15.3575983 10.6804996,16 12,16 C13.3195004,16 14.5292972,15.3575983 15.2746538,14.2978292 Z M14,11 L14,9 L16,9 L16,11 L14,11 Z M8,11 L8,9 L10,9 L10,11 L8,11 Z" /></svg>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-right publisher-box-emooji" aria-labelledby="dropdownEmo">
-
+						
 					</ul>
 				</div>
 			</div>
@@ -91,12 +90,12 @@ if (!empty($_GET['url'])) {
 			</div>
 			<div class="publisher-hidden-option" id="photo-form">
 				<div class="inner-addon <?php echo Wo_RightToLeft('left-addon');?>">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="feather feather-image"><rect x="11" y="5" width="4" height="4" rx="2" class="icon_main" stroke-width="1.5"></rect><path d="M2.71809 15.2014L4.45698 13.4625C6.08199 11.8375 8.71665 11.8375 10.3417 13.4625L12.0805 15.2014M12.0805 15.2014L12.7849 14.497C14.0825 13.1994 16.2143 13.2961 17.3891 14.7059L17.802 15.2014M12.0805 15.2014L14.6812 17.802M1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35288C8.95626 0.882375 11.0437 0.882374 13.0496 1.35288C15.827 2.00437 17.9956 4.17301 18.6471 6.95044C19.1176 8.95626 19.1176 11.0437 18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95044 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 					<input name="phtoscount" type="text" class="form-control bg_read_input" readonly>
 				</div>
 				<?php if ($wo['config']['website_mode'] != 'askfm' && $wo['config']['website_mode'] != 'instagram') { ?>
 				<div class="create-album <?php echo Wo_RightToLeft('pull-right');?>" onclick="Wo_OpenAlbum();">
-					<div class="create-text"><?php echo $wo['lang']['create_album'];?></div>
+					<div class="create-text"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95043 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496C0.882374 11.0437 0.882375 8.95626 1.35288 6.95044C2.00437 4.17301 4.173 2.00437 6.95043 1.35288C8.95625 0.882376 11.0437 0.882376 13.0496 1.35288C15.827 2.00437 17.9956 4.173 18.6471 6.95043C19.1176 8.95625 19.1176 11.0437 18.6471 13.0496Z" class="icon_main" stroke-width="1.5"></path><path d="M18.6471 13.0496C19.1176 11.0437 19.1176 8.95625 18.6471 6.95043C17.9956 4.173 15.827 2.00437 13.0496 1.35288C11.0437 0.882376 8.95625 0.882376 6.95043 1.35288C4.173 2.00437 2.00437 4.17301 1.35288 6.95044C0.882375 8.95626 0.882375 11.0437 1.35288 13.0496C2.00437 15.827 4.17301 17.9956 6.95043 18.6471" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M12.5 10H7.5M10 12.5L10 7.5" class="icon_main" stroke-width="1.5" stroke-linecap="round"></path></svg> <?php echo $wo['lang']['create_album'];?></div>
 				</div>
 				<?php } ?>
 				<div class="clear"></div>
@@ -113,7 +112,7 @@ if (!empty($_GET['url'])) {
 		<!--Set Location-->
 		<div class="publisher-hidden-option" id="map-form">
 			<div class="inner-addon <?php echo Wo_RightToLeft('left-addon');?>">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+				<svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="feather feather-map-pin"><path d="M17 9.17548C17 13.6907 13.4183 19 9 19C4.58172 19 1 13.6907 1 9.17548C1 4.66029 4.58172 1 9 1C13.4183 1 17 4.66029 17 9.17548Z" stroke="currentColor" stroke-width="1.5"></path><path d="M6.5 8.5C6.5 7.11929 7.61929 6 9 6C10.3807 6 11.5 7.11929 11.5 8.5C11.5 9.88071 10.3807 11 9 11C7.61929 11 6.5 9.88071 6.5 8.5Z" class="icon_main" stroke-width="1.5"></path></svg>
 				<input name="postMap" id="searchTextField" type="text" class="form-control" placeholder="<?php echo $wo['lang']['maps_placeholder']?>">
 				<?php if ($wo['config']['yandex_map'] == 1) { ?>
           <div class="yandex_search_publisher"></div>
@@ -174,7 +173,7 @@ if (!empty($_GET['url'])) {
 			<div id="progress">
 				<span id="percent" class="<?php echo Wo_RightToLeft('pull-right');?>">0%</span>
 				<div class="progress">
-					<div id="bar" class="progress-bar active"></div> 
+					<div id="bar" class="progress-bar progress-bar-striped active"></div> 
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -205,32 +204,62 @@ if (!empty($_GET['url'])) {
 			<!--Uploaded Image-->
 			<div class="poster-left-buttons" onclick="Wo_ShowPosInfo();">
 				<span class="btn btn-file img">
-					<img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-img.svg" alt="<?php echo $wo['lang']['upload_images'] ?>" /> <?php echo $wo['lang']['upload_images']; ?>
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="11" y="5" width="4" height="4" rx="2" class="icon_main" stroke-width="1.5"/>
+<path d="M2.71809 15.2014L4.45698 13.4625C6.08199 11.8375 8.71665 11.8375 10.3417 13.4625L12.0805 15.2014M12.0805 15.2014L12.7849 14.497C14.0825 13.1994 16.2143 13.2961 17.3891 14.7059L17.802 15.2014M12.0805 15.2014L14.6812 17.802M1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35288C8.95626 0.882375 11.0437 0.882374 13.0496 1.35288C15.827 2.00437 17.9956 4.17301 18.6471 6.95044C19.1176 8.95626 19.1176 11.0437 18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95044 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+ <?php echo $wo['lang']['upload_images']; ?>
 					<input type="file" id="publisher-photos" accept="image/x-png, image/gif, image/jpeg" name="postPhotos[]" multiple="multiple">
 				</span>
 			</div>
 			<?php if ($wo['config']['website_mode'] == 'linkedin' && empty($wo['page_profile']) && ($wo['page'] == 'timeline' || $wo['page'] == 'home')) { ?>
 				<div class="poster-left-buttons" onclick="OpenLinkedinJobModal()">
 					<span class="btn btn-file">
-						<img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-job.png" alt="<?php echo $wo['lang']['create_job'] ?>" /> <?php echo $wo['lang']['create_job']; ?>
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.05872 1.62224L7.86715 0.89712L8.05872 1.62224ZM9.94206 1.62224L9.75048 2.34736V2.34736L9.94206 1.62224ZM8.2503 2.34736C8.74164 2.21755 9.25914 2.21755 9.75048 2.34736L10.1336 0.897121C9.39117 0.70096 8.60961 0.70096 7.86715 0.89712L8.2503 2.34736ZM13.2313 4.88596C13.2313 3.00996 11.9544 1.37818 10.1336 0.89712L9.75048 2.34736C10.9251 2.65769 11.7313 3.70324 11.7313 4.88596L13.2313 4.88596ZM6.26953 4.88596C6.26953 3.70324 7.07569 2.65769 8.2503 2.34736L7.86715 0.89712C6.04635 1.37818 4.76953 3.00995 4.76953 4.88596L6.26953 4.88596Z" fill="currentColor"></path><path d="M1.81958 12.6692L2.54079 12.4634L1.81958 12.6692ZM1.81665 8.11341L2.53785 8.31922L1.81665 8.11341ZM16.1834 8.11341L15.4621 8.31922V8.31922L16.1834 8.11341ZM16.1804 12.6692L16.9016 12.875L16.1804 12.6692ZM12.3274 16.1822L12.1854 15.4458L12.3274 16.1822ZM5.67259 16.1822L5.81458 15.4458L5.67259 16.1822ZM6.31081 4.46702L6.4528 5.20346L6.31081 4.46702ZM11.6892 4.46702L11.8312 3.73059L11.6892 4.46702ZM12.5838 4.63952L12.4418 5.37595V5.37595L12.5838 4.63952ZM16.1059 7.84185L16.8271 7.63604V7.63604L16.1059 7.84185ZM5.41618 4.63952L5.27418 3.90308V3.90308L5.41618 4.63952ZM1.89414 7.84185L1.17293 7.63604L1.17293 7.63604L1.89414 7.84185ZM5.55817 5.37595L6.4528 5.20346L6.16882 3.73059L5.27418 3.90308L5.55817 5.37595ZM11.5472 5.20346L12.4418 5.37595L12.7258 3.90308L11.8312 3.73059L11.5472 5.20346ZM15.3847 8.04767L15.4621 8.31922L16.9046 7.9076L16.8271 7.63604L15.3847 8.04767ZM2.53785 8.31922L2.61535 8.04766L1.17293 7.63604L1.09544 7.90759L2.53785 8.31922ZM2.54079 12.4634C2.15476 11.1107 2.15237 9.67003 2.53785 8.31922L1.09544 7.90759C0.632629 9.52936 0.636111 11.2552 1.09837 12.875L2.54079 12.4634ZM15.4621 8.31922C15.8476 9.67004 15.8452 11.1107 15.4592 12.4634L16.9016 12.875C17.3639 11.2552 17.3674 9.52937 16.9046 7.9076L15.4621 8.31922ZM12.1854 15.4458C10.0817 15.8514 7.91826 15.8514 5.81458 15.4458L5.5306 16.9187C7.82188 17.3605 10.1781 17.3605 12.4694 16.9187L12.1854 15.4458ZM6.4528 5.20346C8.13499 4.87912 9.86501 4.87912 11.5472 5.20346L11.8312 3.73059C9.9614 3.37008 8.0386 3.37008 6.16882 3.73059L6.4528 5.20346ZM5.81458 15.4458C4.24038 15.1423 2.97333 13.9791 2.54079 12.4634L1.09837 12.875C1.68724 14.9385 3.40511 16.5089 5.5306 16.9187L5.81458 15.4458ZM12.4694 16.9187C14.5949 16.5089 16.3128 14.9385 16.9016 12.875L15.4592 12.4634C15.0267 13.9791 13.7596 15.1423 12.1854 15.4458L12.4694 16.9187ZM12.4418 5.37595C13.8611 5.6496 14.9962 6.68632 15.3847 8.04767L16.8271 7.63604C16.281 5.7224 14.6917 4.28213 12.7258 3.90308L12.4418 5.37595ZM5.27418 3.90308C3.30826 4.28213 1.71903 5.7224 1.17293 7.63604L2.61535 8.04766C3.00384 6.68632 4.1389 5.6496 5.55817 5.37595L5.27418 3.90308ZM1.77809 8.94371C6.43453 10.6661 11.5655 10.6661 16.2219 8.94371L15.7015 7.53686C11.3809 9.13501 6.6191 9.13501 2.29847 7.53686L1.77809 8.94371Z" class="icon_main_fill"></path><path d="M5.66602 7.75V10.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M12.334 7.75V10.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg> <?php echo $wo['lang']['create_job']; ?>
 					</span>
 				</div>
 			<?php } else { ?>
-				<?php if ($wo['config']['post_poll'] == 1) { ?>
+				<?php if ($wo['config']['post_poll'] == 1 && (time() > 1691331060 || $wo['config']['ai_image_system'] != 1)) { ?>
 				<!--Create Poll-->
 				<div class="poster-left-buttons" onclick="Wo_ShowPosInfo();">
 					<span class="btn btn-file poll-form pol">
-						<img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-poll.svg" alt="<?php echo $wo['lang']['create_poll'] ?>" /> <?php echo $wo['lang']['create_poll']; ?>
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35287C8.95625 0.882372 11.0437 0.882372 13.0496 1.35287C15.827 2.00437 17.9956 4.17301 18.6471 6.95043C19.1176 8.95625 19.1176 11.0437 18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95044 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043Z" class="icon_main" stroke-width="1.5"/>
+<path d="M1.35288 6.95043C0.882374 8.95625 0.882374 11.0437 1.35288 13.0496C2.00437 15.827 4.17301 17.9956 6.95044 18.6471C8.95626 19.1176 11.0437 19.1176 13.0496 18.6471C15.827 17.9956 17.9956 15.827 18.6471 13.0496C19.1176 11.0437 19.1176 8.95625 18.6471 6.95043C17.9956 4.17301 15.827 2.00437 13.0496 1.35287" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M5.31836 7.39934L6.35863 8.43962L8.43918 6.35907M11.0399 7.91948H14.6808M5.31836 12.6007L6.35863 13.641L8.43918 11.5604M11.0399 13.1208H14.6808" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+ <?php echo $wo['lang']['create_poll']; ?>
+					</span>
+				</div>
+				<?php } ?>
+				<?php if ($wo['config']['ai_image_system'] == 1 && time() < 1691331060) { ?>
+				<!--Create Poll-->
+				<div class="poster-left-buttons" onclick="Wo_ShowPosInfo();">
+					<span class="new-feature"><?php echo $wo['lang']['new']; ?></span>
+					<span class="btn btn-file" onclick="openAIModel()">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 10C10.1046 10 11 9.10457 11 8C11 6.89543 10.1046 6 9 6C7.89543 6 7 6.89543 7 8C7 9.10457 7.89543 10 9 10Z" class="icon_main" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><g><path d="M15.75 5H21.25" class="icon_main" stroke-width="2" stroke-linecap="round"/><path d="M18.5 7.75V2.25" class="icon_main" stroke-width="2" stroke-linecap="round"/></g><path d="M2.67188 18.9486L7.60187 15.6386C8.39187 15.1086 9.53187 15.1686 10.2419 15.7786L10.5719 16.0686C11.3519 16.7386 12.6119 16.7386 13.3919 16.0686L17.5519 12.4986C18.3319 11.8286 19.5919 11.8286 20.3719 12.4986L22.0019 13.8986" class="icon_main" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> <?php echo $wo['lang']['generate_ai_image']; ?>
 					</span>
 				</div>
 				<?php } ?>
 			<?php } ?>
 			<?php if ($wo['config']['website_mode'] != 'askfm') { ?>
+				<?php if ($wo['config']['ai_post_system'] == 1 && time() < 1691331060) { ?>
+					<div class="poster-left-buttons" onclick="Wo_ShowPosInfo();">
+						<span class="new-feature"><?php echo $wo['lang']['new']; ?></span>
+					<span class="btn btn-file" onclick="openPostModel()">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path d="M9.56055 18V13" class="icon_main" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15.5H7" class="icon_main" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M8 2V5" stroke="currentColor" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 2V5" stroke="currentColor" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.8098 3.42188C19.1498 3.54187 20.8398 4.77188 20.9398 9.47188L21.0698 15.6419C21.1498 19.7619 20.1998 21.8319 15.1998 21.9419L9.19983 22.0619C4.19983 22.1619 3.15983 20.1219 3.07983 16.0119L2.93983 9.83187C2.83983 5.13188 4.48983 3.83187 7.80983 3.58187L15.8098 3.42188Z" stroke="currentColor" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg> <?php echo $wo['lang']['generate_ai_post']; ?>
+					</span>
+				</div>
+				<?php } ?>
 			<!--Uploaded Video-->
-			<?php if ($wo['config']['video_upload'] == 1) { ?>
+			<?php if ($wo['config']['video_upload'] == 1 && (time() > 1691331060 || $wo['config']['ai_post_system'] != 1)) { ?>
 				<div class="poster-left-buttons" onclick="Wo_ShowPosInfo();">
 					<span class="btn btn-file vid">
-						<img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-vid.svg" alt="<?php echo $wo['lang']['upload_video'] ?>" /> <?php echo $wo['lang']['upload_video']; ?>
+						<svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.1579 5.60503C15.614 7.1139 15.614 10.8861 13.1579 12.395L6.52631 16.4689C4.07017 17.9778 1 16.0917 1 13.074L1 4.92602C1 1.90827 4.07018 0.0221756 6.52632 1.53105L13.1579 5.60503Z" class="icon_main" stroke-width="1.5"/>
+<path d="M6.52631 16.4689C4.07017 17.9778 1 16.0917 1 13.074L1 4.92602C1 1.90827 4.07018 0.0221756 6.52632 1.53105L13.1579 5.60503" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+ <?php echo $wo['lang']['upload_video']; ?>
 						<input type="file" id="publisher-video" name="postVideo" accept="<?php echo($wo['config']['ffmpeg_system'] == 'on' ? '*/*' : 'video/*') ?>">
 					</span>
 				</div>
@@ -238,7 +267,12 @@ if (!empty($_GET['url'])) {
 			
 			<div class="poster-left-buttons" onclick="Wo_ShowPosInfo();">
 				<span class="btn mor">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg> <span><?php echo $wo['lang']['more']; ?></span>
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95043 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496C0.882374 11.0437 0.882375 8.95626 1.35288 6.95044C2.00437 4.17301 4.173 2.00437 6.95043 1.35288C8.95625 0.882376 11.0437 0.882376 13.0496 1.35288C15.827 2.00437 17.9956 4.173 18.6471 6.95043C19.1176 8.95625 19.1176 11.0437 18.6471 13.0496Z" class="icon_main" stroke-width="1.5"/>
+<path d="M18.6471 13.0496C19.1176 11.0437 19.1176 8.95625 18.6471 6.95043C17.9956 4.173 15.827 2.00437 13.0496 1.35288C11.0437 0.882376 8.95625 0.882376 6.95043 1.35288C4.173 2.00437 2.00437 4.17301 1.35288 6.95044C0.882375 8.95626 0.882375 11.0437 1.35288 13.0496C2.00437 15.827 4.17301 17.9956 6.95043 18.6471" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M12.5 10H7.5M10 12.5L10 7.5" class="icon_main" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+ <span><?php echo $wo['lang']['more']; ?></span>
 				</span>
 			</div>
 			<?php } ?>
@@ -256,7 +290,11 @@ if (!empty($_GET['url'])) {
 				<div class="sun_pub_more_items">
 				<div class="poster-left-buttons" onclick="Wo_ShowPosInfo();">
 					<span class="btn btn-file poll-form pol">
-						<span><img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-poll.svg" alt="<?php echo $wo['lang']['create_poll'] ?>" /></span> <?php echo $wo['lang']['create_poll']; ?>
+						<span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35287C8.95625 0.882372 11.0437 0.882372 13.0496 1.35287C15.827 2.00437 17.9956 4.17301 18.6471 6.95043C19.1176 8.95625 19.1176 11.0437 18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95044 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043Z" class="icon_main" stroke-width="1.5"></path>
+<path d="M1.35288 6.95043C0.882374 8.95625 0.882374 11.0437 1.35288 13.0496C2.00437 15.827 4.17301 17.9956 6.95044 18.6471C8.95626 19.1176 11.0437 19.1176 13.0496 18.6471C15.827 17.9956 17.9956 15.827 18.6471 13.0496C19.1176 11.0437 19.1176 8.95625 18.6471 6.95043C17.9956 4.17301 15.827 2.00437 13.0496 1.35287" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+<path d="M5.31836 7.39934L6.35863 8.43962L8.43918 6.35907M11.0399 7.91948H14.6808M5.31836 12.6007L6.35863 13.641L8.43918 11.5604M11.0399 13.1208H14.6808" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg></span> <?php echo $wo['lang']['create_poll']; ?>
 					</span>
 				</div>
 				</div>
@@ -267,7 +305,13 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items gif-form">
 				<div class="poster-left-buttons">
 					<span class="btn btn-file btngif gif" style="padding: 0px;">
-						<span><img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-gif.svg" alt="<?php echo $wo['lang']['gif'] ?>" /></span> <?php echo $wo['lang']['gif']; ?>
+						<span><svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.35288 7.39477C2.00437 4.61734 4.17301 2.44871 6.95043 1.79721C8.95626 1.32671 11.0437 1.32671 13.0496 1.79721C15.827 2.44871 17.9956 4.61735 18.6471 7.39477C19.1176 9.40059 19.1176 11.4881 18.6471 13.4939C17.9956 16.2713 15.827 18.44 13.0496 19.0915C11.0437 19.562 8.95626 19.562 6.95044 19.0915C4.17301 18.44 2.00437 16.2713 1.35288 13.4939C0.882374 11.4881 0.882374 9.40059 1.35288 7.39477Z" class="icon_main" stroke-width="1.5"/>
+<path d="M18.6471 13.4939C19.1176 11.4881 19.1176 9.40059 18.6471 7.39477C17.9956 4.61735 15.827 2.44871 13.0496 1.79721C11.0437 1.32671 8.95626 1.32671 6.95043 1.79721C4.17301 2.44871 2.00437 4.61734 1.35288 7.39477C0.882374 9.40059 0.882374 11.4881 1.35288 13.4939C2.00437 16.2713 4.17301 18.44 6.95044 19.0915C7.87029 19.3072 8.80731 19.424 9.74576 19.4419" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<rect x="7" y="7.44434" width="6" height="6" rx="3" class="icon_main" stroke-width="1.5"/>
+<circle cx="14" cy="5.44434" r="1" class="icon_main_fill"/>
+</svg>
+</span> <?php echo $wo['lang']['gif']; ?>
 					</span>
 				</div>
 			</div>
@@ -277,7 +321,10 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items" id="recordPostAudioWrapper">
 				<div class="poster-left-buttons">
 					<span class="btn btn-file rec">
-						<span id="recordPostAudio" data-record="0"><img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-rec.svg" alt="<?php echo $wo['lang']['record_voice'] ?>" /></span> <?php echo $wo['lang']['record_voice']; ?>
+						<span id="recordPostAudio" data-record="0"><svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.75 9.45306C15.75 9.03885 15.4142 8.70306 15 8.70306C14.5858 8.70306 14.25 9.03885 14.25 9.45306H15.75ZM1.75 9.45306C1.75 9.03885 1.41421 8.70306 1 8.70306C0.585786 8.70306 0.25 9.03885 0.25 9.45306H1.75ZM7.25 19C7.25 19.4142 7.58579 19.75 8 19.75C8.41421 19.75 8.75 19.4142 8.75 19H7.25ZM14.25 9.45306C14.25 13.1821 11.4107 16.1284 8 16.1284V17.6284C12.3213 17.6284 15.75 13.9259 15.75 9.45306H14.25ZM8 16.1284C4.58929 16.1284 1.75 13.1821 1.75 9.45306H0.25C0.25 13.9259 3.67872 17.6284 8 17.6284V16.1284ZM7.25 16.8784V19H8.75V16.8784H7.25Z" fill="currentColor"></path>
+<path d="M8.45001 13.6323L8.55647 14.3747L8.55648 14.3747L8.45001 13.6323ZM7.55926 13.6323L7.66572 12.8899H7.66572L7.55926 13.6323ZM7.55259 1.03274L7.44457 0.290562L7.55259 1.03274ZM8.45668 1.03274L8.5647 0.290562H8.5647L8.45668 1.03274ZM3.88008 9.91268L3.13809 10.022L3.88008 9.91268ZM3.88027 4.75693L3.13829 4.64758L3.88027 4.75693ZM12.1266 4.77402L12.8687 4.66576L12.1266 4.77402ZM12.1268 9.8956L11.3846 9.78734L12.1268 9.8956ZM8.54978 13.618L8.44332 12.8756L8.44331 12.8756L8.54978 13.618ZM8.55343 1.04682L8.44541 1.789H8.44541L8.55343 1.04682ZM7.44044 1.04907L7.54846 1.79125L7.44044 1.04907ZM7.4441 13.6158L7.33764 14.3582H7.33764L7.4441 13.6158ZM7.54846 1.79125L7.66061 1.77492L7.44457 0.290562L7.33242 0.306886L7.54846 1.79125ZM8.34866 1.77492L8.44541 1.789L8.66145 0.304644L8.5647 0.290562L8.34866 1.77492ZM8.44331 12.8756L8.34354 12.8899L8.55648 14.3747L8.65624 14.3604L8.44331 12.8756ZM7.66572 12.8899L7.55056 12.8734L7.33764 14.3582L7.4528 14.3747L7.66572 12.8899ZM8.34355 12.8899C8.11859 12.9221 7.89068 12.9221 7.66572 12.8899L7.4528 14.3747C7.81899 14.4272 8.19029 14.4272 8.55647 14.3747L8.34355 12.8899ZM7.66061 1.77492C7.88893 1.74169 8.12034 1.74169 8.34866 1.77492L8.5647 0.290562C8.1931 0.236479 7.81617 0.236479 7.44457 0.290562L7.66061 1.77492ZM4.62206 9.80333C4.38107 8.16812 4.38124 6.5016 4.62226 4.86628L3.13829 4.64758C2.87592 6.4278 2.87571 8.2417 3.13809 10.022L4.62206 9.80333ZM11.3844 4.88228C11.6215 6.50721 11.6217 8.16253 11.3846 9.78734L12.8689 10.0039C13.1269 8.23535 13.1267 6.43416 12.8687 4.66576L11.3844 4.88228ZM11.3846 9.78734C11.1451 11.4291 9.92649 12.6629 8.44332 12.8756L8.65623 14.3604C10.8489 14.046 12.5412 12.2505 12.8689 10.0039L11.3846 9.78734ZM12.8687 4.66576C12.5413 2.42095 10.8522 0.623499 8.66145 0.304644L8.44541 1.789C9.92762 2.00473 11.145 3.24066 11.3844 4.88228L12.8687 4.66576ZM4.62226 4.86628C4.86285 3.23377 6.07433 2.0058 7.54846 1.79125L7.33242 0.306886C5.15066 0.624428 3.46766 2.41269 3.13829 4.64758L4.62226 4.86628ZM3.13809 10.022C3.46773 12.2587 5.15401 14.0451 7.33764 14.3582L7.55056 12.8734C6.07546 12.6618 4.86268 11.436 4.62206 9.80333L3.13809 10.022Z" class="icon_main_fill"></path>
+</svg></span> <?php echo $wo['lang']['record_voice']; ?>
 					</span>
 					<span id="postRecordingTime" class="hidden">00:00</span>
 				</div>
@@ -288,7 +335,11 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items emo-form">
 				<div class="poster-left-buttons">
 					<span class="btn btn-file fel">
-						<span><img src="<?php echo $wo['config']['theme_url'];?>/img/1f600.png" alt="<?php echo $wo['lang']['feelings'] ?>" /></span>
+						<span><svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.98389 9.05491L7.11798 15.955C8.59549 17.9408 11.4045 17.9408 12.882 15.955L18.0161 9.05491C19.328 7.29179 19.328 4.78651 18.0161 3.0234C16.0957 0.442437 11.6571 1.20898 10 3.99289C8.34289 1.20898 3.90428 0.442438 1.9839 3.0234C0.672036 4.78651 0.672033 7.29179 1.98389 9.05491Z" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.0161 9.05491L12.882 15.955C11.4045 17.9408 8.59549 17.9408 7.11798 15.955L1.98389 9.05491C0.672033 7.29179 0.672036 4.78651 1.9839 3.0234C3.90428 0.442438 8.34289 1.20898 10 3.99289" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</span>
 						<?php echo $wo['lang']['feelings']; ?>
 					</span>
 				</div>
@@ -299,7 +350,11 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items">
 				<div class="poster-left-buttons">
 					<span class="btn btn-file fil">
-						<span><img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-file.svg" alt="<?php echo $wo['lang']['upload_files'] ?>" /></span> <?php echo $wo['lang']['upload_files']; ?>
+						<span><svg width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 1.44434C14.5488 1.44434 17.4665 3.97146 17.8086 7.20675C19.6853 8.02189 21 9.91087 21 12.111C21 15.0565 18.6436 17.4443 15.7368 17.4443L5.73684 17.4443C3.12076 17.4443 1 15.2953 1 12.6443C1 10.5521 2.32099 8.77253 4.16392 8.11532C4.15992 8.02546 4.15789 7.93512 4.15789 7.84434C4.15789 4.30971 7.22121 1.44434 11 1.44434Z" class="icon_main" stroke-width="1.5"/>
+<path d="M11 1.44434C7.22121 1.44434 4.15789 4.30971 4.15789 7.84434C4.15789 7.93512 4.15992 8.02546 4.16392 8.11532C2.32099 8.77253 1 10.5521 1 12.6443C1 15.2953 3.12076 17.4443 5.73684 17.4443L15.7368 17.4443C18.6436 17.4443 21 15.0565 21 12.111" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+</span> <?php echo $wo['lang']['upload_files']; ?>
 						<input type="file" id="publisher-file" name="postFile">
 					</span>
 				</div>
@@ -311,7 +366,10 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items">
 				<div class="poster-left-buttons">
 					<a href="#" data-toggle="modal" data-target="#create-product-modal" class="btn btn-file sel">
-						<span><img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-product.svg" alt="<?php echo $wo['lang']['sell_product'] ?>" /></span> <?php echo $wo['lang']['sell_product']; ?>
+						<span><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.66667 4.83331L5.499 5.23252C5.22832 5.877 5.16028 6.58862 5.30394 7.27272C5.52315 8.31654 6.35414 9.12274 7.40412 9.31024L7.49657 9.32675C7.82956 9.38621 8.17044 9.38621 8.50343 9.32675L8.59588 9.31024C9.64586 9.12274 10.4769 8.31654 10.6961 7.27272C10.8397 6.58862 10.7717 5.877 10.501 5.23252L10.3333 4.83331" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+<path d="M14.8507 11.6191C14.3756 13.7086 12.7514 15.3503 10.6686 15.8543C8.91827 16.2778 7.08186 16.2778 5.3315 15.8543C3.24876 15.3503 1.62459 13.7086 1.14945 11.6191C0.724914 9.7522 0.828162 7.80397 1.44764 5.99237L1.53968 5.72322C2.2213 3.72988 3.92409 2.25844 5.9952 1.87305L6.56236 1.76751C7.51269 1.59068 8.48749 1.59068 9.43782 1.76752L10.005 1.87305C12.0761 2.25844 13.7789 3.72988 14.4605 5.72324L14.5525 5.99237C15.172 7.80397 15.2752 9.7522 14.8507 11.6191Z" class="icon_main" stroke-width="1.5"></path>
+</svg></span> <?php echo $wo['lang']['sell_product']; ?>
 					</a>
 				</div>
 			</div>
@@ -321,7 +379,11 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items" onclick="Wo_ShowColors()">
 				<div class="poster-left-buttons">
 					<span class="btn btn-file" style="padding: 0px;">
-						<span><img src="<?php echo $wo['config']['theme_url'];?>/img/icons/paint.svg" alt="<?php echo $wo['lang']['color'] ?>" /></span> <?php echo $wo['lang']['color']; ?>
+						<span><svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.42631 10.7125C5.06441 9.16972 5.06441 7.56407 5.42631 6.02125C5.92742 3.88493 7.59548 2.21687 9.7318 1.71576C11.2746 1.35386 12.8803 1.35386 14.4231 1.71576C16.5594 2.21687 18.2275 3.88493 18.7286 6.02125C19.0905 7.56407 19.0905 9.16971 18.7286 10.7125C18.2275 12.8489 16.5594 14.5169 14.4231 15.018C12.8803 15.3799 11.2746 15.3799 9.7318 15.018M5.42631 10.7125C5.92742 12.8489 7.59548 14.5169 9.7318 15.018M5.42631 10.7125C5.19844 9.74112 5.11405 8.74478 5.17313 7.75491C5.08958 7.77196 5.00622 7.79024 4.92307 7.80974C3.09194 8.23927 1.66217 9.66903 1.23265 11.5002C0.92245 12.8226 0.92245 14.1988 1.23265 15.5213C1.66217 17.3524 3.09194 18.7822 4.92307 19.2117C6.24549 19.5219 7.62175 19.5219 8.94417 19.2117C10.7753 18.7822 12.2051 17.3524 12.6346 15.5213C12.6541 15.4381 12.6724 15.3548 12.6894 15.2712C11.6996 15.3303 10.7032 15.2459 9.7318 15.018" class="icon_main" stroke-width="1.5"/>
+<path d="M5.42633 10.7125C5.06443 9.16972 5.06443 7.56407 5.42633 6.02125C5.92744 3.88493 7.5955 2.21687 9.73182 1.71576C11.2746 1.35386 12.8803 1.35386 14.4231 1.71576C16.5594 2.21687 18.2275 3.88493 18.7286 6.02125C19.0905 7.56407 19.0905 9.16971 18.7286 10.7125C18.2275 12.8489 16.5594 14.5169 14.4231 15.018C12.8803 15.3799 11.2746 15.3799 9.73182 15.018M5.42633 10.7125C5.92744 12.8489 7.5955 14.5169 9.73182 15.018M5.42633 10.7125C5.19846 9.74112 5.11407 8.74478 5.17315 7.75491M9.73182 15.018C10.7032 15.2459 11.6996 15.3303 12.6895 15.2712" stroke="currentColor" stroke-width="1.5"/>
+</svg>
+</span> <?php echo $wo['lang']['color']; ?>
 					</span>
 				</div>
 			</div>
@@ -331,7 +393,10 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items">
 				<div class="poster-left-buttons">
 					<span class="btn btn-file map-form loc">
-						<span><img src="<?php echo $wo['config']['theme_url'];?>/img/icons/pub-map.svg" alt="<?php echo $wo['lang']['location'] ?>" /></span> <?php echo $wo['lang']['location']; ?>
+						<span><svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 9.17548C17 13.6907 13.4183 19 9 19C4.58172 19 1 13.6907 1 9.17548C1 4.66029 4.58172 1 9 1C13.4183 1 17 4.66029 17 9.17548Z" stroke="currentColor" stroke-width="1.5"></path>
+<path d="M6.5 8.5C6.5 7.11929 7.61929 6 9 6C10.3807 6 11.5 7.11929 11.5 8.5C11.5 9.88071 10.3807 11 9 11C7.61929 11 6.5 9.88071 6.5 8.5Z" class="icon_main" stroke-width="1.5"></path>
+</svg></span> <?php echo $wo['lang']['location']; ?>
 					</span>
 				</div>
 			</div>
@@ -341,8 +406,80 @@ if (!empty($_GET['url'])) {
 			<div class="sun_pub_more_items">
 				<div class="poster-left-buttons">
 					<span class="btn btn-file aud">
-						<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#3f51b5" d="M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z"></svg></span> <?php echo $wo['lang']['audio_upload']; ?>
+						<span>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+  <path fill-rule="evenodd" d="M18.75 3.333c-.36.052-.826.161-1.511.322l-5.6 1.318c-.451.106-.75.177-.98.249-.22.069-.326.125-.399.178a1.25 1.25 0 00-.41.519c-.035.082-.065.198-.082.428-.018.24-.018.547-.018 1.01V19a.75.75 0 01-1.5 0V7.332c0-.43 0-.793.022-1.094.023-.316.073-.614.197-.906a2.75 2.75 0 01.904-1.142c.257-.188.535-.304.837-.4.288-.09.64-.173 1.06-.271l.025-.006 5.6-1.318.034-.008c.643-.15 1.173-.276 1.608-.338.448-.065.879-.078 1.3.057a2.75 2.75 0 011.52 1.204c.229.38.315.802.355 1.253.038.437.038.982.038 1.643V16a.75.75 0 01-1.5 0V6.04c0-.703 0-1.182-.033-1.545-.031-.358-.088-.518-.145-.613a1.25 1.25 0 00-.691-.547c-.107-.034-.275-.053-.63-.002z" class="icon_main_fill"/>
+  <path fill-rule="evenodd" d="M21.75 10a.75.75 0 00-1.5 0v3a3.75 3.75 0 101.436 2.305.747.747 0 00.064-.305v-5zm-12 3a.75.75 0 00-1.5 0v3a3.75 3.75 0 101.5 3v-6zm-1.5 6a2.25 2.25 0 10-4.5 0 2.25 2.25 0 004.5 0zM18 13.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z"/>
+</svg>
+</span> <?php echo $wo['lang']['audio_upload']; ?>
 						<input type="file" id="publisher-music" name="postMusic" accept="audio/*">
+					</span>
+				</div>
+			</div>
+			<?php } ?>
+			<?php if ($wo['config']['post_poll'] == 1 && time() < 1691331060) { ?>
+			<div class="sun_pub_more_items">
+				<div class="poster-left-buttons">
+					<span class="btn btn-file poll-form pol">
+						<span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.35288 6.95043C2.00437 4.17301 4.17301 2.00437 6.95043 1.35287C8.95625 0.882372 11.0437 0.882372 13.0496 1.35287C15.827 2.00437 17.9956 4.17301 18.6471 6.95043C19.1176 8.95625 19.1176 11.0437 18.6471 13.0496C17.9956 15.827 15.827 17.9956 13.0496 18.6471C11.0437 19.1176 8.95626 19.1176 6.95044 18.6471C4.17301 17.9956 2.00437 15.827 1.35288 13.0496C0.882374 11.0437 0.882374 8.95626 1.35288 6.95043Z" class="icon_main" stroke-width="1.5"/>
+<path d="M1.35288 6.95043C0.882374 8.95625 0.882374 11.0437 1.35288 13.0496C2.00437 15.827 4.17301 17.9956 6.95044 18.6471C8.95626 19.1176 11.0437 19.1176 13.0496 18.6471C15.827 17.9956 17.9956 15.827 18.6471 13.0496C19.1176 11.0437 19.1176 8.95625 18.6471 6.95043C17.9956 4.17301 15.827 2.00437 13.0496 1.35287" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M5.31836 7.39934L6.35863 8.43962L8.43918 6.35907M11.0399 7.91948H14.6808M5.31836 12.6007L6.35863 13.641L8.43918 11.5604M11.0399 13.1208H14.6808" class="icon_main" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span> <?php echo $wo['lang']['create_poll']; ?>
+					</span>
+				</div>
+			</div>
+			<?php } ?>
+			<?php if ($wo['config']['video_upload'] == 1 && time() < 1691331060) { ?>
+			<div class="sun_pub_more_items">
+				<div class="poster-left-buttons">
+					<span class="btn btn-file vid">
+						<span><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.1579 5.60503C15.614 7.1139 15.614 10.8861 13.1579 12.395L6.52631 16.4689C4.07017 17.9778 1 16.0917 1 13.074L1 4.92602C1 1.90827 4.07018 0.0221756 6.52632 1.53105L13.1579 5.60503Z" class="icon_main" stroke-width="1.5"/>
+<path d="M6.52631 16.4689C4.07017 17.9778 1 16.0917 1 13.074L1 4.92602C1 1.90827 4.07018 0.0221756 6.52632 1.53105L13.1579 5.60503" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg></span> <?php echo $wo['lang']['upload_video']; ?>
+						<input type="file" id="publisher-video" name="postVideo" accept="<?php echo($wo['config']['ffmpeg_system'] == 'on' ? '*/*' : 'video/*') ?>">
+					</span>
+				</div>
+			</div>
+			<?php } ?>
+
+			<?php if ($wo['config']['ai_image_system'] == 1 && time() > 1691331060) { ?>
+			<div class="sun_pub_more_items">
+				<div class="poster-left-buttons">
+					<span class="btn btn-file" onclick="openAIModel()">
+						<span><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16.871 16.871" xml:space="preserve"><g>
+							<g>
+								<path style="fill:#030104;" d="M6.847,5.772H6.822c-0.127,0.511-0.254,1.16-0.395,1.657L5.917,9.25h1.898L7.28,7.429
+									C7.128,6.919,6.975,6.283,6.847,5.772z"/>
+								<path style="fill:#030104;" d="M15.837,0H1.033C0.462,0,0,0.462,0,1.033v14.805c0,0.57,0.462,1.033,1.033,1.033h14.805
+									c0.57,0,1.033-0.463,1.033-1.033V1.033C16.871,0.463,16.408,0,15.837,0z M8.758,12.905l-0.663-2.203H5.638l-0.612,2.203H3.014
+									l2.624-8.583h2.546l2.663,8.583H8.758z M13.793,12.905h-1.937V6.678h1.937V12.905z M12.813,5.914
+									c-0.611,0-1.019-0.434-1.007-0.969c-0.012-0.561,0.396-0.979,1.021-0.979c0.623,0,1.018,0.419,1.03,0.979
+									C13.857,5.48,13.45,5.914,12.813,5.914z"/>
+							</g>
+						</g>
+						</svg></span> <?php echo $wo['lang']['generate_ai_image']; ?>
+					</span>
+				</div>
+			</div>
+			<?php } ?>
+			<?php if ($wo['config']['ai_post_system'] == 1 && time() > 1691331060) { ?>
+			<div class="sun_pub_more_items">
+				<div class="poster-left-buttons">
+					<span class="btn btn-file" onclick="openPostModel()">
+						<span><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16.871 16.871" xml:space="preserve"><g>
+							<g>
+								<path style="fill:#030104;" d="M6.847,5.772H6.822c-0.127,0.511-0.254,1.16-0.395,1.657L5.917,9.25h1.898L7.28,7.429
+									C7.128,6.919,6.975,6.283,6.847,5.772z"/>
+								<path style="fill:#030104;" d="M15.837,0H1.033C0.462,0,0,0.462,0,1.033v14.805c0,0.57,0.462,1.033,1.033,1.033h14.805
+									c0.57,0,1.033-0.463,1.033-1.033V1.033C16.871,0.463,16.408,0,15.837,0z M8.758,12.905l-0.663-2.203H5.638l-0.612,2.203H3.014
+									l2.624-8.583h2.546l2.663,8.583H8.758z M13.793,12.905h-1.937V6.678h1.937V12.905z M12.813,5.914
+									c-0.611,0-1.019-0.434-1.007-0.969c-0.012-0.561,0.396-0.979,1.021-0.979c0.623,0,1.018,0.419,1.03,0.979
+									C13.857,5.48,13.45,5.914,12.813,5.914z"/>
+							</g>
+						</g>
+						</svg></span> <?php echo $wo['lang']['generate_ai_post']; ?>
 					</span>
 				</div>
 			</div>
@@ -363,21 +500,15 @@ if (!empty($_GET['url'])) {
       <?php } ?>
 
 		 <div class="pub-footer-bottom">
-			<div class="<?php echo Wo_RightToLeft('pull-right');?>">
-				<?php if ($wo['config']['live_video'] == 1 && ($wo['config']['millicast_live_video'] == 1 || $wo['config']['agora_live_video'] == 1) && $wo['config']['can_use_live']) { ?>
-					<a class="btn btn-default" onclick="$('body').removeClass('pub-focus');" href="<?php echo($wo['config']['site_url']) ?>/live" data-ajax="?link1=live"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5L21,6.5V17.5L17,13.5V17A1,1 0 0,1 16,18H4A1,1 0 0,1 3,17V7A1,1 0 0,1 4,6H16A1,1 0 0,1 17,7V10.5M14,16V15C14,13.67 11.33,13 10,13C8.67,13 6,13.67 6,15V16H14M10,8A2,2 0 0,0 8,10A2,2 0 0,0 10,12A2,2 0 0,0 12,10A2,2 0 0,0 10,8Z" /></svg> <?php echo $wo['lang']['live']; ?></a>
-				<?php } ?>
-				<button type="button" onclick="Wo_GetPRecordLink($('#postRecord'))" id="publisher-button" class="btn btn-main">
-					<span><?php echo TextForMode('share'); ?></span>
-				</button>
-			</div>
+			<div class="pub_footer_bottom_btns">
+				<div class="pub_footer_middle">
+				<div class=""><div class="ball-pulse"><div></div><div></div><div></div></div></div>
+				
+			<div class="charsLeft-post"><span id="charsLeft"></span></div>
 			
-			<div class="<?php echo Wo_RightToLeft('pull-right');?>"><div class="ball-pulse"><div></div><div></div><div></div></div></div>
-			
-			<div id="status"></div>
 			<?php if ($wo['config']['website_mode'] != 'askfm') { ?>
 			<?php if (!isset($wo['input']['recipient']) && $wo['page'] != 'group') { ?>
-			<div class="<?php echo Wo_RightToLeft('pull-left');?>">
+			
 				<div class="poster-left-select">
 					<div class="publisher-hidden-option inputsm">
 						<?php $postprivacyCookie = (!empty($_COOKIE['post_privacy'])) ? $_COOKIE['post_privacy'] : 0;?>
@@ -427,6 +558,7 @@ if (!empty($_GET['url'])) {
 								<?php } ?>
 							</div>
 							<ul class="sun_pub_privacy_menu">
+								<p><?php echo $wo['lang']['show_to'];?></p>
 								<?php if (empty($wo['page_profile'])) {?>
 									<li>
 										<label>
@@ -503,11 +635,25 @@ if (!empty($_GET['url'])) {
 						</div>
 					</div>
 				</div>
-			</div>
 			<?php } ?>
 			<?php } ?>
 			
-			<div class="<?php echo Wo_RightToLeft('pull-left');?> charsLeft-post"><span id="charsLeft"></span></div>
+			</div>
+				<div>
+					<?php if ($wo['config']['live_video'] == 1 && ($wo['config']['millicast_live_video'] == 1 || $wo['config']['agora_live_video'] == 1) && $wo['config']['can_use_live']) { ?>
+						<a class="btn btn-default btn-mat btn-go-live" onclick="$('body').removeClass('pub-focus');" href="<?php echo($wo['config']['site_url']) ?>/live" data-ajax="?link1=live"><svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.35288 7.39477C2.00437 4.61734 4.17301 2.44871 6.95043 1.79721C8.95626 1.32671 11.0437 1.32671 13.0496 1.79721C15.827 2.44871 17.9956 4.61735 18.6471 7.39477C19.1176 9.40059 19.1176 11.4881 18.6471 13.4939C17.9956 16.2713 15.827 18.44 13.0496 19.0915C11.0437 19.562 8.95626 19.562 6.95044 19.0915C4.17301 18.44 2.00437 16.2713 1.35288 13.4939C0.882374 11.4881 0.882374 9.40059 1.35288 7.39477Z" stroke="currentColor" stroke-width="1.5"/>
+<path d="M12.1618 9.315C12.9461 9.81693 12.9461 11.0717 12.1618 11.5737L9.51471 13.2677C8.73039 13.7696 7.75 13.1422 7.75 12.1383L7.75 8.75033C7.75 7.74647 8.73039 7.11906 9.51471 7.62099L12.1618 9.315Z" class="icon_main" stroke-width="1.5"/>
+</svg>
+ <?php echo $wo['lang']['live']; ?></a>
+					<?php } ?>
+					<button type="button" onclick="Wo_GetPRecordLink($('#postRecord'))" id="publisher-button" class="btn btn-main btn-mat add_wow_loader">
+						<span><?php echo TextForMode('share'); ?></span>
+					</button>
+				</div>
+			</div>
+			
+			<div id="status"></div>
 			
 			<div class="clear"></div>
 			<div class="w_search_for" style="display: none;">
@@ -536,300 +682,19 @@ if (!empty($_GET['url'])) {
    <?php } ?>
    <input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
    <input type="hidden" name="postRecord" value="" id="postRecord">
+   <?php if ($wo['config']['ai_post_system'] == 1 || $wo['config']['ai_image_system'] == 1) { ?>
+   	<input type="hidden" name="ai_post" value="off" id="isAiPost">
+   <?php } ?>
    <input type="hidden" name="postSticker" value="" id="postSticker" onchange="alert(this.value)">
 </form>
 <div id="hidden_inputbox"></div>
 <?php echo Wo_LoadPage('products/create'); ?>
-<?php if ($wo['config']['website_mode'] == 'linkedin') { ?>
-<div class="modal fade sun_modal" id="create_hiring_modal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button>
-        <h4 class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> <?php echo $wo['lang']['create_job'] ?></h4>
-      </div>
-      <form class="create-hiring-form form-horizontal" method="post">
-        <div class="modal-body">
-          <div class="app-general-alert setting-update-alert"></div>
-          <div class="clear"></div>
-          <div class="setting-panel row hiring-setting-panel">
-              <!-- Text input-->
-              <div class="col-lg-6">
-                <div class="sun_input">
-                  <input id="hiring_title" name="job_title" type="text" class="form-control input-md" placeholder="<?php echo $wo['lang']['job_title'] ?>" value="">
-                  <label for="job_title"><?php echo $wo['lang']['job_title'] ?></label>  
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="sun_input">
-                  <input id="location" name="location" type="text" class="form-control input-md" placeholder="<?php echo $wo['lang']['location'] ?>" value="<?php echo $wo['user']['address'];?>">
-                  <label for="location"><?php echo $wo['lang']['location'] ?></label>  
-                </div>
-              </div>
-              <div class="col-lg-12 no-padding-right">
-                <div><?php echo $wo['lang']['salary_range'] ?></div>
-                <div class="col-md-3 no-padding-right">
-                  <div class="sun_input">
-                    <input id="minimum" name="minimum" type="text" class="form-control input-md" placeholder="<?php echo $wo['lang']['minimum'] ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                    <label for="minimum"><?php echo $wo['lang']['minimum'] ?></label>  
-                  </div>
-                </div>
-                <div class="col-md-1 no-padding-right">
-                  <br>
-                  <?php echo $wo['lang']['to'] ?>
-                </div>
-                <div class="col-md-3 no-padding-right">
-                  <div class="sun_input">
-                    <input id="maximum" name="maximum" type="text" class="form-control input-md" placeholder="<?php echo $wo['lang']['maximum'] ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                    <label for="maximum"><?php echo $wo['lang']['maximum'] ?></label>
-                  </div>
-                </div>
-                <div class="col-md-2 no-padding-right">
-                  <div class="sun_input">
-                    <select id="currency" name="currency" class="form-control input-md">
-                      <?php foreach ($wo['currencies'] as $key => $currency) { ?>
-                      <option value="<?php echo $key; ?>"><?php echo  $currency['text'] ?> (<?php echo  $currency['symbol'] ?>)</option>
-                      <?php } ?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-3 no-padding-right">
-                  <div class="sun_input">
-                    <select id="salary_date" name="salary_date" class="form-control input-md">
-                      <option value="per_hour"><?php echo $wo['lang']['per_hour'] ?></option>
-                      <option value="per_day"><?php echo $wo['lang']['per_day'] ?></option>
-                      <option value="per_week"><?php echo $wo['lang']['per_week'] ?></option>
-                      <option value="per_month"><?php echo $wo['lang']['per_month'] ?></option>
-                      <option value="per_year"><?php echo $wo['lang']['per_year'] ?></option>
-                    </select>
-                  </div>
-                </div>
-                
-              </div>
-
-              <div class="col-lg-6">
-                <div class="sun_input">
-                  <select id="job_type" name="job_type" class="form-control input-md">
-                    <option value="full_time"><?php echo $wo['lang']['full_time'] ?></option>
-                    <option value="part_time"><?php echo $wo['lang']['part_time'] ?></option>
-                    <option value="internship"><?php echo $wo['lang']['internship'] ?></option>
-                    <option value="volunteer"><?php echo $wo['lang']['volunteer'] ?></option>
-                    <option value="contract"><?php echo $wo['lang']['contract'] ?></option>
-                  </select>
-                  <label for="job_type"><?php echo $wo['lang']['job_type'] ?></label> 
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="sun_input">
-                  <select class="form-control" name="category" id="category">
-                    <?php foreach ($wo['job_categories'] as $category_id => $category_name) {?>
-                    <option value="<?php echo $category_id?>"><?php echo $category_name; ?></option>
-                    <?php } ?>
-                  </select>
-                  <label for="category"><?php echo $wo['lang']['category'] ?></label>  
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <label><?php echo $wo['lang']['questions'] ?></label>
-                <div class="sun_input">
-                  <a href="javascript:void(0)" id="add_new_question_"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg> <?php echo $wo['lang']['add_question']; ?></a>
-                  <div class="modal-header">
-                    <div id="question_one_parent_"></div>
-                    <div id="question_two_parent_"></div>
-                    <div id="question_three_parent_"></div>
-                  </div>
-                  
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="sun_input">
-                  <textarea class="form-control" name="description" rows="3" id="description" placeholder="<?php echo $wo['lang']['description'] ?>"></textarea>
-                  <label for="description"><?php echo $wo['lang']['description'] ?></label>  
-                  <span class="help-block"><?php echo $wo['lang']['job_des_text'] ?></span> 
-                </div>
-              </div>
-              <div class="form-group th-alert col-lg-12">
-                <div class="col-md-12">
-                  <label for="job_add_iamge"><?php echo $wo['lang']['job_add_iamge'] ?></label> 
-                  <div class="clear"></div> 
-                  <br>
-                  <div class="col-md-6">
-                    <button type="button" class="btn btn-main form-control" id="use_upload_photo_"><?php echo $wo['lang']['browse_to_upload'] ?></button>
-                  </div>
-                  <div class="col-md-6">
-                    <button type="button" class="btn btn-main form-control" id="use_cover_photo_"><?php echo $wo['lang']['use_cover_photo'] ?></button>
-                  </div>
-                  <div class="clear"></div>
-                  <br>
-                  <div class="main prv-img pointer" id="select-img-job" data-block="thumdrop-zone">
-                    <div class="thumbnail-rendderer">
-                      <img src="<?php echo(!empty($wo['user_profile']) ? $wo['user_profile']['cover'] : (!empty($wo['user']) ? $wo['user']['cover'] : '')) ?>">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="publisher-hidden-option">
-              <div id="progress" class="create-product-progress">
-                <span id="percent" class="create-product-percent_ <?php echo Wo_RightToLeft('pull-right');?>">0%</span>
-                <div class="progress">
-                  <div id="bar" class="progress-bar active create-product-bar_"></div> 
-                </div>
-                <div class="clear"></div>
-              </div>
-            </div>
-
-          <input type="file" class="hidden" id="thumbnail_job" name="thumbnail" accept="image/*">
-          <input type="text" class="hidden" id="image_type_" name="image_type" value="cover">
-          <input type="hidden" name="lat" id="lat-job" class="form-control input-md" value="">
-          <input type="hidden" name="lng" id="lng-job" class="form-control input-md" value="">
-          <input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
-        </div>
-        <div class="form-group last-sett-btn modal-footer">
-          <div class="ball-pulse"><div></div><div></div><div></div></div>
-          <button type="submit" class="btn btn-main setting-panel-mdbtn"><?php echo $wo['lang']['publish'] ?></button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<?php } ?>
+<?php if ($wo['config']['ai_post_system'] == 1) { echo Wo_LoadPage('modals/ai_post');} ?>
+<?php if ($wo['config']['ai_image_system'] == 1) { echo Wo_LoadPage('modals/ai_images');} ?>
 <script type="text/javascript">
-<?php if ($wo['config']['website_mode'] == 'linkedin' && empty($wo['page_profile']) && ($wo['page'] == 'timeline' || $wo['page'] == 'home')) { ?>
-function OpenLinkedinJobModal(){
-	$('#create_hiring_modal').modal('show');
-}
-var question_one = '<div id="question_one_block_"><span><?php echo $wo['lang']['question_one'] ?></span><button type="button" class="close" onclick="HideQuestion_(\'one\')"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button><select class="form-control" name="question_one_type" id="question_one_type_"><option value="free_text_question"><?php echo $wo['lang']['free_text_question'] ?></option><option value="yes_no_question"><?php echo $wo['lang']['yes_no_question'] ?></option><option value="multiple_choice_question"><?php echo $wo['lang']['multiple_choice_question'] ?></option></select><br><textarea class="form-control" name="question_one" rows="3" id="question_one_"></textarea><div id="question_one_answers_div_" style="display: none;"><br><input class="form-control" type="text" name="question_one_answers" id="question_one_answers_" placeholder="<?php echo $wo['lang']['add_an_answers'] ?>"></div></div>';
-var question_two = '<div id="question_two_block_"><hr><span><?php echo $wo['lang']['question_two'] ?></span><button type="button" class="close" onclick="HideQuestion_(\'two\')"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button><select class="form-control" name="question_two_type" id="question_two_type_"><option value="free_text_question"><?php echo $wo['lang']['free_text_question'] ?></option><option value="yes_no_question"><?php echo $wo['lang']['yes_no_question'] ?></option><option value="multiple_choice_question"><?php echo $wo['lang']['multiple_choice_question'] ?></option></select><br><textarea class="form-control" name="question_two" rows="3" id="question_two_"></textarea><div id="question_two_answers_div_" style="display: none;"><br><input class="form-control" type="text" name="question_two_answers" id="question_two_answers_" placeholder="<?php echo $wo['lang']['add_an_answers'] ?>"></div></div>';
+	var imgArray = [];
+	var aiImages = [];
 
-var question_three = '<div id="question_three_block_"><hr><span><?php echo $wo['lang']['question_three'] ?></span><button type="button" class="close" onclick="HideQuestion_(\'three\')"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button><select class="form-control" name="question_three_type" id="question_three_type_"><option value="free_text_question"><?php echo $wo['lang']['free_text_question'] ?></option><option value="yes_no_question"><?php echo $wo['lang']['yes_no_question'] ?></option><option value="multiple_choice_question"><?php echo $wo['lang']['multiple_choice_question'] ?></option></select><br><textarea class="form-control" name="question_three" rows="3" id="question_three_"></textarea><div id="question_three_answers_div_" style="display: none;"><br><input class="form-control" type="text" name="question_three_answers" id="question_three_answers_" placeholder="<?php echo $wo['lang']['add_an_answers'] ?>"></div></div>';
-
-
-function HideQuestion_(type) {
-	$('#question_'+type+'_block_').remove();
-	$('#add_new_question_').css('display', 'block');
-}
-$(document).ready(function() {
-	$('#add_new_question_').click(function(event) {
-			if ($('#question_one_block_').is(":visible")) {
-				if ($('#question_two_block_').is(":visible")) {
-					if ($('#question_three_block_').is(":visible")) {
-						$(this).css('display', 'none');
-					}
-					else{
-						$('#question_three_parent_').html(question_three);
-						setTimeout(function (argument) {
-							$("#question_three_answers_").tagsinput({
-						      maxTags: 10,
-						    });
-						},1000);
-					}
-				}
-				else{
-					$('#question_two_parent_').html(question_two);
-					setTimeout(function (argument) {
-						$("#question_two_answers_").tagsinput({
-					      maxTags: 10,
-					    });
-					},1000);
-				}
-			}
-			else{
-				$('#question_one_parent_').html(question_one);
-				setTimeout(function (argument) {
-					$("#question_one_answers_").tagsinput({
-				      maxTags: 10,
-				    });
-				},1000);
-			}
-		});
-		$(document).on('change', '#question_one_type_', function(event) {
-	    	if ($(this).val() == 'multiple_choice_question') {
-		      	$('#question_one_answers_div_').css('display', 'block');
-		      }
-		      else{
-		      	$('#question_one_answers_div_').css('display', 'none');
-		      }
-	   });
-
-	   $(document).on('change', '#question_two_type_', function(event) {
-	    	if ($(this).val() == 'multiple_choice_question') {
-		      	$('#question_two_answers_div_').css('display', 'block');
-		      }
-		      else{
-		      	$('#question_two_answers_div_').css('display', 'none');
-		      }
-	   });
-
-	   $(document).on('change', '#question_three_type_', function(event) {
-	    	if ($(this).val() == 'multiple_choice_question') {
-		      	$('#question_three_answers_div_').css('display', 'block');
-		      }
-		      else{
-		      	$('#question_three_answers_div_').css('display', 'none');
-		      }
-	   });
-	   $("#select-img-job").click(function(event) {
-	      $("#thumbnail_job").click()
-	   });
-
-	   $("#use_upload_photo_").click(function(event) {
-	      $("#thumbnail_job").click()
-	   });
-
-	   $("#thumbnail_job").change(function(event) {
-	      $('#create_hiring_modal').find(".prv-img").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
-	      $('#image_type_').val('upload');
-	   });
-
-	   $("#use_cover_photo_").click(function(event) {
-	      $('#create_hiring_modal').find(".prv-img").html("<img src='<?php echo(!empty($wo['user_profile']) ? $wo['user_profile']['cover'] : (!empty($wo['user']) ? $wo['user']['cover'] : '')) ?>' alt='Picture'>");
-	      $('#image_type_').val('cover');
-	   });
-
-	   var create_bar = $('.create-product-bar_');
-	   var create_percent = $('.create-product-percent_');
-
-	   $('form.create-hiring-form').ajaxForm({
-	        url: Wo_Ajax_Requests_File() + '?f=job&s=create_job',
-	        beforeSend: function() {
-	         var percentVal = '0%';
-	         create_bar.width(percentVal);
-	         create_percent.html(percentVal);
-	        },
-	        uploadProgress: function (event, position, total, percentComplete) {
-	           var percentVal = percentComplete + '%';
-	           create_bar.width(percentVal);
-	           $('.create-product-progress').slideDown(200);
-	           create_percent.html(percentVal);
-	        },
-	        success: function(data) {
-	         if (data.status == 200) {
-	           $('.app-general-alert').html("<div class='alert alert-success'><?php echo($wo['lang']['job_successfully_created']) ?></div>");
-		       $('.app-general-alert').find('.alert-success').fadeIn(300);
-		       setTimeout(function (argument) {
-		        $('.app-general-alert').find('.alert-success').fadeOut(300);
-		        window.location.reload(true);
-
-		       },3000);
-	         } else {
-	         	$('#create-job-modal').animate({
-			        scrollTop: $('html, body').offset().top //#DIV_ID is an example. Use the id of your destination on the page
-			    });
-	             $('.app-general-alert').html('<div class="alert alert-danger">' + data.error + '</div>');
-	             $('.app-general-alert').find('.alert-danger').fadeIn(300);
-	             setTimeout(function (argument) {
-	             	$('.app-general-alert').find('.alert-danger').fadeOut(300);
-	             },3000);
-	         }
-	        }
-	   });
-});
-<?php } ?>
 function Wo_ChangeColor(color_1,color_2,text_color,image,id) {
 	if (color_1 != '' && color_2 != '' && text_color != '' && id) {
 		$('.wo_pub_txtara_combo').css("cssText", "background-image: linear-gradient(45deg, "+color_1+" 0%, "+color_2+" 100%) !important;color: "+text_color+" !important");
@@ -875,7 +740,7 @@ jQuery(document).click(function(event){
         jQuery('.sun_pub_privacy').removeClass('showMenu');
     }
 });
-var imgArray = [];
+
 var deleted_images = [];
 function DeleteImageById(name,id) {
 	$('#image_to_'+id).remove();
@@ -901,11 +766,8 @@ function DeleteImageById(name,id) {
 		image_holder.prepend('<span class="wow_prod_imgs add_more_images"><div class="upload-product-image" onclick="document.getElementById(\'publisher-photos\').click(); return false"><div class="upload-image-content"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"></path></svg></div></div></span>')
 	}
 }
-function FileListItems (files) {
-  var b = new ClipboardEvent("").clipboardData || new DataTransfer()
-  for (var i = 0, len = files.length; i<len; i++) b.items.add(files[i])
-  return b.files
-}
+
+
 $(document).ready(function() {
 	$("textarea.postText").keyup(function(){
 		if($(this).val().length > 180){
@@ -984,7 +846,7 @@ $(function () {
      trigger: "@" 
   });
   <?php if ($wo['config']['maxCharacters'] != 10000) { ?>
-  $('.postText').limit("<?php echo $wo['config']['maxCharacters']?>", '#charsLeft');
+  $('.postText').limit("<?php echo $wo['config']['maxCharacters'] - 10; ?>", '#charsLeft');
   <?php } ?>
   $('.emo-form').click(function () {
     $('#emo-form').slideToggle(200);
@@ -1229,6 +1091,9 @@ $(function () {
     	
     },
     success: function (data) {
+    	$("#image-holder").empty();
+      imgArray = [];
+    	publisher_button.removeClass('btn-loading');
       $('#post_color_input').val("");
       $('.all_colors').hide();
 	  $('.wo_pub_txtara_combo').css("cssText", "");
@@ -1242,8 +1107,6 @@ $(function () {
       $("#postRecord").val('');
       $("#postSticker").val('');
       if(data.status == 200) {
-      	$("#image-holder").empty();
-      	imgArray = [];
       	$('#user_post_count').text(data.post_count);
 
         if(data.html.length > 0) {
@@ -1279,7 +1142,7 @@ $(function () {
         $('#postSticker').html('');
         $('select').prop('selectedIndex', 1);
         <?php if ($wo['config']['maxCharacters'] != 10000) { ?>
-        $('#charsLeft').text("<?php echo $wo['config']['maxCharacters']?>");
+        $('#charsLeft').text("<?php echo $wo['config']['maxCharacters'] - 10; ?>");
         <?php } ?>
         <?php if (!empty($url)) { ?>
         window.close();
@@ -1333,7 +1196,7 @@ $(function () {
         $('#postSticker').html('');
         $('select').prop('selectedIndex', 1);
         <?php if ($wo['config']['maxCharacters'] != 10000) { ?>
-        $('#charsLeft').text("<?php echo $wo['config']['maxCharacters']?>");
+        $('#charsLeft').text("<?php echo $wo['config']['maxCharacters'] - 10; ?>");
         <?php } ?>
       	$("#ffmpeg_file").modal('show');
         Wo_Delay(function(){

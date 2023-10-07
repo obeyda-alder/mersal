@@ -24,14 +24,14 @@ $message['orginal_text'] = Wo_Emo($message['orginal_text']);
             <img src="<?php echo $wo['group']['avatar'];?>" alt="<?php echo $wo['group']['group_name']; ?> Profile picture">
          </div>
          <div class="notification-text">
-			<div class="notification-time active <?php echo Wo_RightToLeft('pull-right');?>">
-               <div class="ajax-time" title="<?php echo (!empty($message['time'])) ? date('c',$message['time']) : '';?>">
-                <?php echo (!empty($message['time'])) ? Wo_Time_Elapsed_String($message['time']) : '';?>
-               </div>
+            <div class="color">
+				<b><?php echo $wo['group']['group_name']; ?></b>
+				<span class="notification-time active">
+					<span class="ajax-time" title="<?php echo (!empty($message['time'])) ? date('c',$message['time']) : '';?>">
+						<?php echo (!empty($message['time'])) ? Wo_Time_Elapsed_String($message['time']) : '';?>
+					</span>
+				</span>
             </div>
-            <span class="main-color">
-            <?php echo $wo['group']['group_name']; ?>
-            </span>
             <?php if (!empty($message['from_id'])): ?>
             <div class="header-message">
                   <?php echo ($wo['user']['id'] == $message['from_id']) ? $wo['lang']['me'] . ': ' : '';?>
@@ -42,4 +42,3 @@ $message['orginal_text'] = Wo_Emo($message['orginal_text']);
          <div class="clear"></div>
    </div>
 </li>
-<li class="divider"></li>

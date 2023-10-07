@@ -151,30 +151,30 @@ function connect() {
                 if (data.status == 200) {
                   $('#live_post_id').val(data.post_id);
                   setTimeout(function () {
-                    image = capture_video_frame("basic-stream", 'png');
-                    var thumb   = new File([base64_2_blob(image.dataUri)], "thumb.png", {type:"image/png"});
-                    var formData = new FormData();
-                    formData.append('thumb',thumb);
-                    formData.append('post_id',data.post_id);
+                      image = capture_video_frame("basic-stream", 'png');
+                      var thumb   = new File([base64_2_blob(image.dataUri)], "thumb.png", {type:"image/png"});
+                      var formData = new FormData();
+                      formData.append('thumb',thumb);
+                      formData.append('post_id',data.post_id);
 
-                    $.ajax({
-                      processData: false,
-                      url: Wo_Ajax_Requests_File() + "?f=live&s=create_thumb",
-                      type: 'POST',
-                      dataType: 'json',
-                      data: formData,
-                      contentType: false,
-                    })
-                    .done(function() {
-                      console.log("success");
-                    })
-                    .fail(function() {
-                      console.log("error");
-                    })
-                    .always(function() {
-                      console.log("complete");
-                    });
-                  },1000);
+                      $.ajax({
+                        processData: false,
+                        url: Wo_Ajax_Requests_File() + "?f=live&s=create_thumb",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        contentType: false,
+                      })
+                      .done(function() {
+                        console.log("success");
+                      })
+                      .fail(function() {
+                        console.log("error");
+                      })
+                      .always(function() {
+                        console.log("complete");
+                      });
+                    },500);
                 }
               });
             })

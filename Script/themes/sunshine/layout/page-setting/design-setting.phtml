@@ -1,7 +1,11 @@
-<div class="wo_settings_page sun_sett_page">
-   <h3><?php echo $wo['lang']['design'];?></h3>
+<div class="page-margin mt-0">
+	<div class="wow_content popular_posts_hdr">
+		<h2><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-brush"><path d="M20.71,4.63L19.37,3.29C19,2.9 18.35,2.9 17.96,3.29L9,12.25L11.75,15L20.71,6.04C21.1,5.65 21.1,5 20.71,4.63M7,14A3,3 0 0,0 4,17C4,18.31 2.84,19 2,19C2.92,20.22 4.5,21 6,21A4,4 0 0,0 10,17A3,3 0 0,0 7,14Z"></path></svg>&nbsp;<?php echo $wo['lang']['design'];?></h2>
+	</div>
+</div>
 
-   <form  method="post" class="form-horizontal setting-profile-form" enctype="multipart/form-data">
+<div class="wo_settings_page wow_content">
+	<form method="post" class="form-horizontal setting-profile-form" enctype="multipart/form-data">
          <div class="setting-profile-alert setting-update-alert"></div>
          <div class="setting-panel row">
           <!-- Text input-->
@@ -42,15 +46,12 @@
          </div>
          <?php }?>
         </div> 
-         <div class="form-group last-sett-btn modal-footer">
-      <div class="ball-pulse"><div></div><div></div><div></div></div>
-      <button type="submit" class="btn btn-main setting-panel-mdbtn"><?php echo $wo['lang']['save']; ?></button>
-         </div>
+		<div class="text-center">
+			<button class="btn btn-main btn-mat btn-mat-raised add_wow_loader" type="submit"><?php echo $wo['lang']['save']; ?></button>
+		</div>
          <input type="hidden" name="page_id" id="page-id" value="<?php echo $wo['setting']['id'];?>">
          <input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
-
    </form>
-
 </div>
 
 <script type="text/javascript">
@@ -68,7 +69,7 @@ $(function() {
   $('form.setting-profile-form').ajaxForm({
     url: Wo_Ajax_Requests_File() + '?f=update_page_design_setting',
     beforeSend: function() {
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeIn(100);
+      $('.setting-profile-form').find('.add_wow_loader').addClass('btn-loading');
     },
     success: function(data) {
       if (data.status == 200) {
@@ -80,7 +81,7 @@ $(function() {
           });
         });
       } 
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeOut(100);
+      $('.setting-profile-form').find('.add_wow_loader').removeClass('btn-loading');
     }
   });
   $("#background_image").on('change', function() {

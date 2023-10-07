@@ -1,74 +1,66 @@
-<?php 
-$images = array();
-for ($i=0; $i < 100 ; $i++) { 
-  $rand = rand(1,30);
-  if (!in_array($rand, $images) && count($images) < 4) {
-    $images[] = $rand;
-  }
-  if (count($images) == 4) {
-    break;
-  }
-}
- ?>
-<div class="add-photo sun_startup">
-	<div class="text-center">
-		<h2><?php echo $wo['lang']['add_photo'];?></h2>
-        <h4><?php echo $wo['lang']['add_photo_des'];?></h4>
-        <div class="upload-image" onclick="document.getElementById('avatar').click(); return false">
-			<div class="upload-image-content">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6 L19,4 L21,4 L21,6 L23,6 L23,8 L21,8 L21,10 L19,10 L19,8 L17,8 L17,6 L19,6 Z M6.93701956,5.8453758 C7.00786802,5.74688188 7.08655595,5.62630624 7.18689462,5.46372136 C7.24312129,5.37261385 7.44826978,5.03326386 7.48180256,4.97841198 C8.31078556,3.62238733 8.91339479,3 10,3 L15,3 L15,5 L10,5 C9.91327186,5 9.64050202,5.28172235 9.18819752,6.02158802 C9.15916322,6.06908141 8.95096113,6.41348258 8.88887147,6.51409025 C8.76591846,6.71331853 8.66374696,6.86987867 8.56061313,7.0132559 C8.1123689,7.63640757 7.66434207,8 7.0000003,8 L4,8 C3.44771525,8 3,8.44771525 3,9 L3,18 C3,18.5522847 3.44771525,19 4,19 L20,19 C20.5522847,19 21,18.5522847 21,18 L21,12 L23,12 L23,18 C23,19.6568542 21.6568542,21 20,21 L4,21 C2.34314575,21 1,19.6568542 1,18 L1,9 C1,7.34314575 2.34314575,6 4,6 L6.81619668,6 C6.84948949,5.96193949 6.89029794,5.91032846 6.93701956,5.8453758 Z M12,18 C9.23857625,18 7,15.7614237 7,13 C7,10.2385763 9.23857625,8 12,8 C14.7614237,8 17,10.2385763 17,13 C17,15.7614237 14.7614237,18 12,18 Z M12,16 C13.6568542,16 15,14.6568542 15,13 C15,11.3431458 13.6568542,10 12,10 C10.3431458,10 9,11.3431458 9,13 C9,14.6568542 10.3431458,16 12,16 Z"/></svg><br><?php echo $wo['lang']['upload_your_photo'];?>
-        	</div>
-        </div>
-		<!-- <div class="ui horizontal divider"><?php echo $wo['lang']['or'];?>&nbsp;</div> -->
-		
-		<!-- <div class="sun_choose_pics">
-			<p><?php echo $wo['lang']['choose_image'];?></p>
-			<ul class="mb0 list-unstyled">
-				<li>
-					<label>
-						<input type="radio" onchange="Wo_UpdateProfileAvatar();" name="pro-pic" value="<?php echo($images[0]) ?>">
-						<img src="<?php echo $wo['config']['site_url'].'/upload/photos/'.$images[0].'.jpg';?>" alt="">
-					</label>
-				</li>
-				<li>
-					<label>
-						<input type="radio" onchange="Wo_UpdateProfileAvatar();" name="pro-pic" value="<?php echo($images[1]) ?>">
-						<img src="<?php echo $wo['config']['site_url'].'/upload/photos/'.$images[1].'.jpg';?>" alt="">
-					</label>
-				</li>
-				<li>
-					<label>
-						<input type="radio" onchange="Wo_UpdateProfileAvatar();" name="pro-pic" value="<?php echo($images[2]) ?>">
-						<img src="<?php echo $wo['config']['site_url'].'/upload/photos/'.$images[2].'.jpg';?>" alt="">
-					</label>
-				</li>
-				<li>
-					<label>
-						<input type="radio" onchange="Wo_UpdateProfileAvatar();" name="pro-pic" value="<?php echo($images[3]) ?>">
-						<img src="<?php echo $wo['config']['site_url'].'/upload/photos/'.$images[3].'.jpg';?>" alt="">
-					</label>
-				</li>
-			</ul>
-		</div> -->
-		
-		<div id="progress">
-            <span id="percent">0%</span>
-            <div class="progress">
-             <div id="bar" class="progress-bar progress-bar-striped active"></div> 
-            </div>
-            <div class="clear"></div>
+<div class="page-margin">
+	<div class="wow_content popular_posts_hdr flex">
+		<h2 class="flex">&nbsp;<p><?php echo $wo['lang']['add_photo'];?><b><?php echo $wo['lang']['add_photo_des'];?></b></p></h2>
+		<div class="wow_creads_minstp wow__minstp start_up step-one-active">
+			<div class="line">
+				<div class="line_sec"></div>
+				<div class="dot one">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.03409 4.80137C7.34519 3.48302 8.55499 2.5 10 2.5C11.445 2.5 12.6548 3.48302 12.9659 4.80137L13.0959 4.82783C15.0836 5.2324 16.6665 6.69859 17.1846 8.61505C17.6051 10.1707 17.6051 11.8063 17.1846 13.362C16.6665 15.2785 15.0836 16.7447 13.0959 17.1492L12.7161 17.2265C10.9246 17.5912 9.07538 17.5912 7.28394 17.2265L6.90411 17.1492C4.9164 16.7447 3.3335 15.2785 2.81542 13.362C2.39486 11.8063 2.39486 10.1707 2.81542 8.61504C3.3335 6.69859 4.9164 5.2324 6.90411 4.82783L7.03409 4.80137Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 2.5C8.55499 2.5 7.34519 3.48302 7.03409 4.80137L6.90411 4.82783C4.9164 5.2324 3.3335 6.69859 2.81542 8.61504C2.39486 10.1707 2.39486 11.8063 2.81542 13.362C3.3335 15.2785 4.9164 16.7447 6.90411 17.1492L7.28394 17.2265C9.07538 17.5912 10.9246 17.5912 12.7161 17.2265L13.0959 17.1492C15.0836 16.7447 16.6665 15.2785 17.1846 13.362C17.6051 11.8063 17.6051 10.1707 17.1846 8.61505" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.91602 10.8333C7.91602 9.68274 8.84876 8.75 9.99935 8.75C11.1499 8.75 12.0827 9.68274 12.0827 10.8333C12.0827 11.9839 11.1499 12.9167 9.99935 12.9167C8.84876 12.9167 7.91602 11.9839 7.91602 10.8333Z" stroke="currentColor" stroke-width="1.5"/></svg>
+				</div>
+				<div class="dot two">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.79406 7.45869C3.33698 5.14417 5.14417 3.33698 7.45869 2.79406C9.13021 2.40198 10.8698 2.40198 12.5413 2.79406C14.8558 3.33698 16.663 5.14417 17.2059 7.4587C17.598 9.13021 17.598 10.8698 17.2059 12.5413C16.663 14.8558 14.8558 16.663 12.5413 17.2059C10.8698 17.598 9.13021 17.598 7.4587 17.2059C5.14418 16.663 3.33698 14.8558 2.79406 12.5413C2.40198 10.8698 2.40198 9.13021 2.79406 7.45869Z" stroke="currentColor" stroke-width="1.5"/><path d="M17.2059 7.4587C16.663 5.14417 14.8558 3.33698 12.5413 2.79406C10.8698 2.40198 9.13021 2.40198 7.45869 2.79406C5.14417 3.33698 3.33698 5.14417 2.79406 7.45869C2.40198 9.13021 2.40198 10.8698 2.79406 12.5413C3.33698 14.8558 5.14418 16.663 7.4587 17.2059C9.13021 17.598 10.8698 17.598 12.5413 17.2059" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8.48515 9.41363C8.65455 8.99012 8.99012 8.65455 9.41363 8.48515L11.1117 7.80591C11.792 7.53381 12.4671 8.20887 12.1949 8.88913L11.5157 10.5872C11.3463 11.0107 11.0107 11.3463 10.5872 11.5157L8.88913 12.1949C8.20887 12.4671 7.53381 11.792 7.80591 11.1117L8.48515 9.41363Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				</div>
+				<div class="dot three">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.4993 9.99967H14.166M15.8327 11.6663L15.8327 8.33301" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2.5 15.9265C2.5 13.9156 3.91444 12.2028 5.8367 11.8859L6.00985 11.8573C7.5491 11.6035 9.11757 11.6035 10.6568 11.8573L10.83 11.8859C12.7522 12.2028 14.1667 13.9156 14.1667 15.9265C14.1667 16.7957 13.4846 17.5003 12.6432 17.5003H4.02344C3.18207 17.5003 2.5 16.7957 2.5 15.9265Z" stroke="currentColor" stroke-width="1.5"/><path d="M11.7352 5.78125C11.7352 7.59343 10.2118 9.0625 8.33247 9.0625C6.45316 9.0625 4.92969 7.59343 4.92969 5.78125C4.92969 3.96907 6.45316 2.5 8.33247 2.5C10.2118 2.5 11.7352 3.96907 11.7352 5.78125Z" stroke="currentColor" stroke-width="1.5"/></svg>
+				</div>
+			</div>
+			<div class="steps">
+				<div class="step step-one"><?php echo $wo['lang']['ad_media']; ?></div>
+				<div class="step step-two"><?php echo $wo['lang']['info']; ?></div>
+				<div class="step step-three"><?php echo $wo['lang']['follow']; ?></div>
+			</div>
 		</div>
 	</div>
-	<div class="continue-button">
-		<small class="skip-step" onclick="Wo_SkipStep('startup_image');"><?php echo $wo['lang']['skip'];?></small>
-		<button class="btn con-button btn-main" disabled onclick="$('form.profile-avatar-changer').submit();"><?php echo $wo['lang']['start_up_continue'];?></button>
-	</div>
-	<div class="clear"></div>
 </div>
 
+<div class="page-margin wow_content wow_usr_steps_prnt">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<div class="add-photo wow_usr_steps">
+				<div class="wow_fcov_image">
+					<div class="upload-image-content">
+						
+					</div>
+					<div class="upload_ad_image" onclick="document.getElementById('avatar').click(); return false">
+						<div class="upload_ad_image_content">
+							<svg width="55" height="48" viewBox="0 0 55 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28.8002 11.8198L28.8925 11.8474L28.8973 11.8418C29.2564 11.8983 29.6089 11.681 29.7145 11.3247C30.6475 8.1896 33.5873 5.99924 36.8624 5.99924C37.2683 5.99924 37.5975 5.67003 37.5975 5.26413C37.5975 4.85821 37.2683 4.52902 36.8624 4.52902C32.8073 4.52902 29.3997 7.22893 28.3056 10.9057C28.1896 11.2949 28.4113 11.7038 28.8002 11.8198Z" class="icon_main_fill icon_main" stroke-width="0.3"></path><path d="M45.0534 33.9345H41.5429C41.2198 33.9345 40.9577 33.6725 40.9577 33.3494C40.9577 33.0263 41.2198 32.7643 41.5429 32.7643H45.0534C49.8926 32.7643 53.83 28.8269 53.83 23.9877C53.83 19.1485 49.8926 15.2112 45.0534 15.2112H44.969C44.7993 15.2112 44.638 15.1376 44.5268 15.0093C44.4157 14.881 44.3655 14.7109 44.3898 14.5429C44.442 14.1784 44.4683 13.8123 44.4683 13.4559C44.4683 9.26192 41.0559 5.84945 36.8619 5.84945C35.2303 5.84945 33.6744 6.35933 32.362 7.32432C32.0736 7.53621 31.6641 7.44218 31.4973 7.12496C27.7807 0.0477366 18.0732 -0.902663 13.0403 5.25391C10.9202 7.84758 10.0872 11.2215 10.7547 14.5099C10.8282 14.8731 10.5503 15.2116 10.1813 15.2116H9.94683C5.10763 15.2116 1.17027 19.149 1.17027 23.9882C1.17027 28.8274 5.10763 32.7647 9.94683 32.7647H13.4574C13.7805 32.7647 14.0425 33.0268 14.0425 33.3498C14.0425 33.6729 13.7805 33.9349 13.4574 33.9349H9.94683C4.46227 33.9349 0 29.4727 0 23.9881C0 18.6574 4.21522 14.2925 9.48751 14.0518C8.99226 10.6402 9.9393 7.19891 12.1343 4.51334C17.5226 -2.07868 27.8491 -1.33981 32.2143 6.01078C33.6069 5.13772 35.2004 4.67971 36.8617 4.67971C41.9429 4.67971 45.9693 9.00449 45.617 14.0572C50.8407 14.3502 55 18.6921 55 23.9877C55 29.4727 50.5377 33.9345 45.0532 33.9345L45.0534 33.9345Z" class="icon_main_fill"></path><path d="M12.6439 33.019C12.6439 41.1676 19.2732 47.7967 27.4217 47.7967C35.5704 47.7967 42.1995 41.1675 42.1995 33.019C42.1995 24.8703 35.5704 18.2412 27.4217 18.2412C19.2731 18.2412 12.6439 24.8704 12.6439 33.019ZM14.1144 33.019C14.1144 25.6816 20.0842 19.7117 27.4217 19.7117C34.7591 19.7117 40.729 25.6815 40.729 33.019C40.729 40.3564 34.7591 46.3263 27.4217 46.3263C20.0843 46.3263 14.1144 40.3565 14.1144 33.019Z" class="icon_main_fill icon_main" stroke-width="0.3"></path><path d="M27.1107 38.9073C27.1107 39.2267 27.3698 39.4857 27.6891 39.4857C28.0084 39.4857 28.2675 39.2271 28.2675 38.9073V27.7698C28.2675 27.4504 28.0085 27.1914 27.6891 27.1914C27.3697 27.1914 27.1107 27.4504 27.1107 27.7698V38.9073Z" class="icon_main_fill icon_main" stroke-width="0.3"></path><path d="M27.6893 28.5892L24.6715 31.607L27.6893 28.5892ZM27.6893 28.5892L30.7072 31.6071C30.82 31.7199 30.9685 31.7765 31.1162 31.7765L27.6893 28.5892ZM23.8534 31.6071C24.0793 31.833 24.4457 31.8332 24.6714 31.6071L31.1162 31.7765C31.2636 31.7765 31.4122 31.7204 31.5252 31.6071C31.7511 31.3811 31.7511 31.0151 31.5251 30.7892L28.0983 27.3623C27.8724 27.1364 27.506 27.1363 27.2803 27.3623C27.2803 27.3623 27.2803 27.3623 27.2803 27.3623C27.2803 27.3623 27.2802 27.3624 27.2802 27.3624L23.8534 30.7892C23.6275 31.0151 23.6275 31.3812 23.8534 31.6071Z" class="icon_main_fill icon_main" stroke-width="0.3"></path></svg> <?php echo $wo['lang']['upload_your_photo'];?>
+						</div>
+					</div>
+				</div>
+
+				<div id="progress">
+					<span id="percent">0%</span>
+					<div class="progress">
+						<div id="bar" class="progress-bar progress-bar-striped active"></div> 
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+		
+	<div class="continue-button wow_usr_steps_cont">
+		<small class="skip-step btn btn-default btn-mat" onclick="Wo_SkipStep('startup_image');"><?php echo $wo['lang']['skip'];?></small>
+		<button class="btn con-button btn-main btn-mat" disabled onclick="Wo_NextStep();"><?php echo $wo['lang']['start_up_continue'];?> <svg viewBox="0 0 24 24"><path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg></button>
+	</div>
+</div>
+
+
 <form action="#" method="post" class="profile-avatar-changer" style="display:none">
-    <input type="file" id="avatar" name="avatar" accept="image/x-png, image/jpeg" onchange="readURL(this);">
-    <input type="hidden" name="selected_image" id="selected_image" value="0">
+    <input type="file" id="avatar" name="avatar" accept="image/x-png, image/jpeg" onchange="Wo_UpdateProfileAvatar();">
     <input type="hidden" name="user_id" id="user-id" value="<?php echo $wo['user']['user_id'];?>">
 </form>
 <script type="text/javascript">
@@ -96,21 +88,17 @@ $(function () {
     },
     success: function (data) {
       if(data.status == 200) {
-        if (data.img != '') {
-          $('.upload-image').html('<img src="' + data.img + '">');
-          $('h2').text(data.big_text);
-          var Title = $('<textarea />').html(data.small_text).text();
-          $('h4').text(Title);
-          $('.upload-image').css({'border': '0'});
-          $('[id^=updateImage-' + user_id + ']').attr("src", data.img);
-        }
       	$('#progress').slideUp(200);
+        $('.upload-image-content').html('<img src="' + data.img + '">');
+        $('h2').text(data.big_text);
+        var Title = $('<textarea />').html(data.small_text).text();
+        $('h4').text(Title);
+        $('[id^=updateImage-' + user_id + ']').attr("src", data.img);
         $('button').attr('disabled', false);
-        $('.skip-step').hide();
-        window.location.href = '<?php echo Wo_SeoLink('index.php?link1=start-up');?>';
+        $('.skip-step').addClass('vis');
       }
       else{
-        if(data.invalid_file == 3){
+      	if(data.invalid_file == 3){
           $("#adult_image_file").modal('show');
           Wo_Delay(function(){
             $("#adult_image_file").modal('hide');
@@ -121,23 +109,7 @@ $(function () {
   });
 });
 function Wo_UpdateProfileAvatar() {
-  $('button').attr('disabled', false);
-  radio = document.querySelector('input[name="pro-pic"]:checked').value;
-  $('#selected_image').val(radio);
- 
-  //$("form.profile-avatar-changer").submit();
-}
-function readURL(input) {
-  $('button').attr('disabled', false);
-  if (input.files && input.files[0]) {
-      var reader = new FileReader();
-
-      reader.onload = function (e) {
-        $('.upload-image').html('<img src="' + e.target.result + '">');
-      };
-
-      reader.readAsDataURL(input.files[0]);
-  }
+  $("form.profile-avatar-changer").submit();
 }
 function Wo_NextStep() {
   $('button').attr('disabled', true);

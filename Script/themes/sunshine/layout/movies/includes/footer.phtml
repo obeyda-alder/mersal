@@ -1,18 +1,7 @@
 <script>
-	// Active Link
-	var btnContainer = document.getElementById("links_cont");
-	var btns = btnContainer.getElementsByClassName("links_cont_item");
-
-	for (var i = 0; i < btns.length; i++) {
-		btns[i].addEventListener("click", function() {
-			var current = document.getElementsByClassName("active");
-			current[0].className = current[0].className.replace(" active", "");
-			this.className += " active";
-		});
-	};
-	
 	jQuery(document).ready(function($) {
-		$('.movies-subheadnav').click(function(event) {
+		$('.movies-subheadnav a').click(function(event) {
+			Wo_StartBar();
 			var _self   = $(this);
 			var _movies = $(this).attr('data-movies');
 			$.ajax({
@@ -23,53 +12,25 @@
 			})
 			.done(function(data) {
 				if (data.status == 200) {
-					$(".sun_movies_list").html(data.html)
+					$(".movies .movies-inner").html(data.html)
+					Wo_FinishBar();
 				}
 
 				else{
-					$(".sun_movies_list").html('<h5 class="search-filter-center-text"> ' + data.html + ' </h5>');
+					$(".movies .movies-inner").html('<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18,9H16V7H18M18,13H16V11H18M18,17H16V15H18M8,9H6V7H8M8,13H6V11H8M8,17H6V15H8M18,3V5H16V3H8V5H6V3H4V21H6V19H8V21H16V19H18V21H20V3H18Z" /></svg> ' + data.html + ' </div>');
+					Wo_FinishBar();
 				}
+				$(".movies-subheadnav.active").removeClass('active');
+				_self.addClass('active');
 			})
 			.fail(function() {
 				console.log("Something went wrong. Try again later");
+				Wo_FinishBar();
 			})
-			
+
 		});
 
-		$('#search-movies').keyup(function(event) {
-			var _self = $(this);
-			_self.focus(function(event) {
-				$('ul#search-movies-result').addClass('visible');
-			});
-			_self.blur(function(event) {
-				//$('ul#search-movies-result').removeClass('visible');
-			});
 
-			if (_self.val().length >=2) {
-				Wo_Delay(function(){
-					$.ajax({
-						url:Wo_Ajax_Requests_File(),
-						type: 'GET',
-						dataType: 'json',
-						data: {f: 'movies',s:'search',key:_self.val()},
-					})
-					.done(function(data) {
-						if (data.status == 200) {
-							$('ul#search-movies-result').html(data.html);
-							$('ul#search-movies-result').addClass('visible');
-						}
-						else{
-							$('ul#search-movies-result').html('<span class="center-text w100">'+data.html+'</span>');
-
-						}
-					})
-					.fail(function() {
-						console.log("Something went wrong. Try again later");
-					})
-				},1)
-			}
-			
-		});
 
 		$('.load-more-movies').click(function(event) {
 			var _self   = $(this);
@@ -110,5 +71,38 @@
 					console.log("Something went wrong. Try again later");
 			})
 		});
-	});	
+	});
+	$(document).on('keyup', '#search-movies', function(event) {
+		var _self = $(this);
+		_self.focus(function(event) {
+			$('ul#search-movies-result').addClass('visible');
+		});
+		_self.blur(function(event) {
+			//$('ul#search-movies-result').removeClass('visible');
+		});
+
+		if (_self.val().length >=2) {
+			Wo_Delay(function(){
+				$.ajax({
+					url:Wo_Ajax_Requests_File(),
+					type: 'GET',
+					dataType: 'json',
+					data: {f: 'movies',s:'search',key:_self.val()},
+				})
+				.done(function(data) {
+					if (data.status == 200) {
+						$('ul#search-movies-result').html(data.html);
+						$('ul#search-movies-result').addClass('visible');
+					}
+					else{
+						$('ul#search-movies-result').html('<span class="center-text w100">'+data.html+'</span>');
+
+					}
+				})
+				.fail(function() {
+					console.log("Something went wrong. Try again later");
+				})
+			},1)
+		}
+	});
 </script>

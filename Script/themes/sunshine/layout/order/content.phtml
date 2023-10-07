@@ -37,11 +37,11 @@
 			<h4><?php echo $wo['lang']['tracking_details'] ?></h4>
 			<div class="panel wo_order_detail_widget">
 				<div class="tracking_alert"></div>
-				<div class="sun_input">
+				<div class="wow_form_fields">
 					<label><?php echo $wo['lang']['link']; ?></label>
 					<input type="url" name="url" id="tracking_url" autofocus placeholder="<?php echo $wo['lang']['link']; ?>" value="<?php echo(!empty($wo['order']->tracking_url) ? $wo['order']->tracking_url : '') ?>">
 				</div>
-				<div class="sun_input">
+				<div class="wow_form_fields">
 					<label><?php echo $wo['lang']['tracking_number']; ?></label>
 					<input type="text" name="id" id="tracking_id" autofocus placeholder="<?php echo $wo['lang']['tracking_number']; ?>" value="<?php echo(!empty($wo['order']->tracking_id) ? $wo['order']->tracking_id : '') ?>">
 				</div>

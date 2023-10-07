@@ -1,83 +1,80 @@
 <div class="page-margin">
 	<div class="row">
-		<div class="col-md-2 leftcol"><?php echo Wo_LoadPage("sidebar/left-sidebar"); ?></div>
-		<div class="col-md-7 middlecol wo-create-forms">
-            <div class="wo_settings_page">
-				<div class="sun_head_onboard shortpwidth">
-					<img class="sho_img" src="<?php echo $wo['config']['theme_url'];?>/img/cads/app.svg" alt="App" />
-					<span class="go_back_link">
-						<a data-ajax="?link1=apps" href="<?php echo Wo_SeoLink('index.php?link1=apps');?>">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>My Apps
-						</a>
-					</span>
-					<div class="sun_head_onboard_innr">
-						<h2>Create new App</h2>
+		<div class="col-md-2 "><?php echo Wo_LoadPage("sidebar/left-sidebar"); ?></div>
+		<div class="col-md-10 ">
+			<form class="app-general-form form-horizontal" method="post">
+				<div class="page-margin mt-0">
+					<div class="wow_content popular_posts_hdr flex">
+						<h2>&nbsp;Create new App</h2>
+						<div class="btnss">
+							<a class="btn btn-mat btn-default" data-ajax="?link1=apps" href="<?php echo Wo_SeoLink('index.php?link1=apps');?>">My Apps</a>
+							<button class="btn btn-main btn-mat add_wow_loader" type="submit"><?php echo $wo['lang']['create']; ?></button>
+						</div>
 					</div>
 				</div>
-				
-				<form class="app-general-form form-horizontal" method="post">
-					<div class="setting-panel row">
-						<!-- Text input-->
-						<div class="form-group col-lg-12">
-							<label class="col-md-12" for="app_name">Name *</label>  
-							<div class="col-md-12">
-								<input id="app_name" name="app_name" type="text" class="form-control input-md">
-								<span class="help-block">Your application name. This is used to attribute the source user-facing authorization screens. 32 characters max.</span>
-							</div>
-						</div>
-						<div class="form-group col-lg-12">
-							<label class="col-md-12" for="app_website_url">Domain *</label>  
-							<div class="col-md-12">
-								<input name="app_website_url" id="app_website_url" type="text" class="form-control input-md">
-								<span class="help-block">Your application's publicly accessible home page.</span>
-							</div>
-						</div>
-						<div class="form-group col-lg-12">
-							<label class="col-md-12" for="app_callback_url">Redirect URI</label>  
-							<div class="col-md-12">
-								<input name="app_callback_url" id="app_callback_url" type="text" class="form-control input-md">
-								<span class="help-block">Where should we return after successfully authenticating?</span>
-							</div>
-						</div>
-						<div class="form-group col-lg-12">
-							<label class="col-md-12" for="app_description">Description *</label>  
-							<div class="col-md-12">
-								<textarea name="app_description" id="" rows="3" class="form-control input-md"></textarea>
-								<span class="help-block">Your application description, which will be shown in user-facing authorization screens. Between 10 and 200 characters max.</span>
-							</div>
-						</div>
-						<div class="form-group col-lg-12">
-							<label class="col-md-12" for="app_avatar">Photo *</label>  
-							<div class="col-md-12">
-								<input name="app_avatar" id="app_avatar" type="file" class="form-control input-md">
-								<span class="help-block">Your application thumbnail</span>
-							</div>
-						</div>
-					</div>
-					
+
+				<div class="page-margin wow_content wow_sett_content">
 					<div class="app-general-alert setting-update-alert"></div>
-					 
-					<div class="form-group last-sett-btn modal-footer">
-                        <div class="ball-pulse"><div></div><div></div><div></div></div>
-						<button type="submit" class="btn btn-main setting-panel-mdbtn"><?php echo $wo['lang']['create'];?></button>
+					
+					<div class="wow_form_fields">
+						<label for="app_name"><?php echo $wo['lang']['name']; ?></label>
+						<input id="app_name" name="app_name" type="text" max="32">
+						<span class="help-block">Your application name. This is used to attribute the source user-facing authorization screens. 32 characters max.</span>
+					</div>
+					<div class="wow_form_fields">
+						<label for="app_website_url">Domain</label>
+						<input id="app_website_url" name="app_website_url" type="url">
+						<span class="help-block">Your application's publicly accessible home page.</span>
+					</div>
+					<div class="wow_form_fields">
+						<label for="app_callback_url">Redirect URI</label>
+						<input id="app_callback_url" name="app_callback_url" type="url">
+						<span class="help-block">Where should we return after successfully authenticating?</span>
+					</div>
+					<div class="wow_form_fields">
+						<label for="app_description">Description</label>
+						<textarea name="app_description" id="app_description" rows="4"></textarea>
+						<span class="help-block">Your application description, which will be shown in user-facing authorization screens. Between 10 and 200 characters max.</span>
+					</div>
+					<div class="wow_form_fields mb-0">
+						<label><?php echo $wo['lang']['image'];?></label>
+						<span class="help-block">Your application thumbnail</span>
+						<div class="wow_fcov_image">
+							<div id="wow_fcov_img_holder">
+								
+							</div>
+							<div class="upload_ad_image" onclick="document.getElementById('app_avatar').click(); return false">
+								<div class="upload_ad_image_content">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"></path></svg> <?php echo $wo['lang']['choose_image'] ?>
+								</div>
+							</div>
+						</div>
 					</div>
 
+					<div class="hidden">
+						<input name="app_avatar" id="app_avatar" type="file" accept="image/x-png, image/gif, image/jpeg">
+					</div>
+					
+
 					<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 		<!-- .col-md-8 -->
-		<?php echo Wo_LoadPage('sidebar/content');?>
 	</div>
 	<!-- .row -->
 </div>
 <!-- .page-margin -->
 <script>
+$("#app_avatar").change(function(event) {
+	$("#wow_fcov_img_holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>")
+});
+
 $(function() {
   $('form.app-general-form').ajaxForm({
     url: Wo_Ajax_Requests_File() + '?f=apps&s=create_app',
     beforeSend: function() {
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeIn(100);
+      $('.app-general-form').find('.add_wow_loader').addClass('btn-loading');
     },
     success: function(data) {
       scrollToTop();
@@ -88,7 +85,7 @@ $(function() {
           $('.app-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
           $('.alert-danger').fadeIn(300);
       }
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeOut(100);
+      $('.app-general-form').find('.add_wow_loader').removeClass('btn-loading');
     }
   });
 });

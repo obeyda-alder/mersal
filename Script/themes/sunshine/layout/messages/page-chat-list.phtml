@@ -1,7 +1,7 @@
 <?php $reactions = Wo_GetPostReactions($wo['message']['id'],'message'); ?>
 <div class="message-contnaier <?php echo ($wo['message']['onwer'] == 0) ? 'incoming pull-left' : 'outgoing pull-right';?> <?php echo(!empty($reactions) ? 'margin-active' : '') ?>" id="messageId_<?php echo $wo['message']['id']; ?>">
 <?php if ($wo['message']['onwer'] == 0): ?>
-  <?php 
+<?php 
 
 $page_info = Wo_PageData($wo['message']['page_id']);
 $avatar = $page_info['avatar'];
@@ -119,13 +119,19 @@ if ($page_info['user_id'] != $wo['message']['from_id']) {
       <?php echo $reactions;?>
       </span>
     </div>
-    <ul class="reactions-box reactions-box-container-<?php echo $wo['message']['id']; ?>" data-id="<?php echo $wo['message']['id']; ?>"  style="<?php if ($wo['message']['onwer'] == 0) {?> left: 10px; right: unset;<?php }else{ ?> right: 10px; left: unset;<?php }?>">
+  <ul class="reactions-box reactions-box-container-<?php echo $wo['message']['id']; ?>" data-id="<?php echo $wo['message']['id']; ?>" style="<?php if ($wo['message']['onwer'] == 0) {?> left: 10px; right: unset;<?php }else{ ?> right: 10px; left: unset;<?php }?>">
       <?php if (!empty($wo['reactions_types'])) {
           foreach ($wo['reactions_types'] as $key => $value) {
             if ($value['status'] == 1) {
+              
            ?>
-        <li  style="<?php if ($wo['message']['onwer'] == 0) {?> left: 10px; <?php }else{ ?> right: 10px; <?php }?>"class="reaction reaction-<?php echo $value['id'];?> animated_2" data-reaction="<?php echo $value['name'];?>" data-reaction-id="<?php echo $value['id'];?>" data-reaction-lang="<?php echo $value['name'];?>" data-post-id="<?php echo $wo['message']['id']; ?>" onclick="Wo_RegisterMessageReaction(this,'<?php echo($value['sunshine_small_icon']) ?>');">
-          <img class="" src="<?php echo $value['sunshine_icon'];?>" alt="<?php echo $value['name'];?>">
+        <li style="<?php if ($wo['message']['onwer'] == 0) {?> left: 10px; <?php }else{ ?> right: 10px; <?php }?>" class="reaction reaction-<?php echo $value['id'];?>" data-reaction="<?php echo $value['name'];?>" data-reaction-id="<?php echo $value['id'];?>" data-reaction-lang="<?php echo $value['name'];?>" data-post-id="<?php echo $wo['message']['id']; ?>" onclick="Wo_RegisterMessageReaction(this,'<?php echo($value['wowonder_small_icon']) ?>',<?php echo($value['is_html']) ?>);">
+          <?php if (preg_match("/<[^<]+>/",$value['wowonder_icon'],$m)) {
+                echo($value['wowonder_icon']);
+             }
+             else{ ?>
+              <img src="<?php echo($value['wowonder_icon']) ?>">
+            <?php } ?>
         </li>
       <?php } } } ?>
     </ul>

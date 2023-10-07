@@ -15,11 +15,9 @@
    </div>
    <div>
    <?php if ($wo['setting']['user_id'] == $wo['user']['user_id']): ?>
-      <span onclick="Wo_DeleteJoinedUser(<?php echo $wo['member']['user_id']?>, <?php echo $wo['setting']['id']?>);" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> 
-      <?php echo $wo['lang']['remove']; ?></span>
+      <span onclick="Wo_DeleteJoinedUser(<?php echo $wo['member']['user_id']?>, <?php echo $wo['setting']['id']?>);" class="btn btn-default btn-sm"><?php echo $wo['lang']['remove']; ?></span>
    <?php elseif($wo['setting']['user_id'] != $wo['member']['user_id']): ?>
-      <span onclick="Wo_DeleteJoinedUser(<?php echo $wo['member']['user_id']?>, <?php echo $wo['setting']['id']?>);" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> 
-      <?php echo $wo['lang']['remove']; ?></span>
+      <span onclick="Wo_DeleteJoinedUser(<?php echo $wo['member']['user_id']?>, <?php echo $wo['setting']['id']?>);" class="btn btn-default btn-sm"><?php echo $wo['lang']['remove']; ?></span>
    <?php endif; ?>
 
    <?php if ($wo['setting']['user_id'] != $wo['member']['user_id']): ?> 

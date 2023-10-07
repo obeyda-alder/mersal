@@ -11,7 +11,7 @@ a {
 	text-decoration: none;
 }
 body {
-	background: #4d91ea;margin: 0;
+	background: <?php echo $wo['config']['header_background'];?>;margin: 0;
 	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 header {
@@ -106,7 +106,7 @@ footer {
 	<body>
 		<header>
 			<a class="brand header-brand" href="<?php echo $wo['config']['site_url']; ?>">
-				<img width="130" src="<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>" alt="<?php echo $wo['config']['siteName'];?> Logo">
+				<img width="130" src="<?php echo $wo['config']['theme_url'];?>/img/<?php echo getSunshineLogo() ?>logo.<?php echo $wo['config']['logo_extension'];?>" alt="<?php echo $wo['config']['siteName'];?> Logo">
 			</a>
 		</header>
 		<div class="container">
@@ -326,8 +326,7 @@ footer {
 						</div>
 					<?php } ?>
 				</div>
-			<?php } ?> 
-                                      
+			<?php } ?>
 			<?php if (!empty($wo['user_info']['setting']['providing_service'])) { ?>
 				<style>
 					.active_sessions {padding: 0 15px;margin-bottom: 10px;}
@@ -397,8 +396,8 @@ footer {
 						</div>
 					</div>
 				</div>
-			<?php } ?>
-
+			<?php } ?> 
+                                      
 			<?php if (!empty($wo['user_info']['setting']['skills'])) { ?>
 				<style>
 					.active_sessions {padding: 0 15px;margin-bottom: 10px;}
@@ -419,7 +418,7 @@ footer {
 						</div>
 					</div>
 				</div>
-			<?php } ?>  
+			<?php } ?> 
                                       
 			<?php 
 			$experience = $db->where('user_id',$wo['user_info']['setting']['user_id'])->get(T_USER_EXPERIENCE);
@@ -555,7 +554,7 @@ footer {
 					</div>
 					<?php } ?>
 				</div>
-			<?php } ?>  
+			<?php } ?>    
 			
 			<?php if (!empty($wo['user_info']['setting']['block'])) { ?>
 				<h2><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C17.67,14 23,15.33 23,18V20H7V18C7,15.33 12.33,14 15,14M15,12A4,4 0 0,1 11,8A4,4 0 0,1 15,4A4,4 0 0,1 19,8A4,4 0 0,1 15,12M5,9.59L7.12,7.46L8.54,8.88L6.41,11L8.54,13.12L7.12,14.54L5,12.41L2.88,14.54L1.46,13.12L3.59,11L1.46,8.88L2.88,7.46L5,9.59Z" /></svg> <?php echo $wo['lang']['blocked_users']; ?></h2>
@@ -1179,7 +1178,8 @@ footer {
                ?>
          </div>
          <?php
-        }else{ ?>
+        }
+                    else{ ?>
    <?php echo html_entity_decode($wo['story']['postLinkContent']);?>
  <?php } ?>
                 <?php } ?>

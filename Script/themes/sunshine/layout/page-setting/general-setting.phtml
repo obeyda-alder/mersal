@@ -1,134 +1,142 @@
-<div class="wo_settings_page sun_sett_page">
-	<h3><?php echo $wo['lang']['general_setting'];?></h3>
+<div class="page-margin mt-0">
+	<div class="wow_content popular_posts_hdr">
+		<h2><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>&nbsp;<?php echo $wo['lang']['general_setting'];?></h2>
+	</div>
+</div>
 
+<div class="wo_settings_page wow_content">
 	<form class="setting-general-form form-horizontal" method="post">
 		<div class="setting-general-alert setting-update-alert"></div>
 		
-		<div class="setting-panel row">
-			<!-- Text input-->
-			<div class="sun_input col-lg-6">
-				<input name="page_title" id="page_title" type="text" class="form-control input-md" value="<?php echo $wo['setting']['page_title']?>" autocomplete="off" placeholder="<?php echo $wo['lang']['page_name'];?>">
-				<label class="plr15" for="page_title"><?php echo $wo['lang']['page_name'];?></label>  
+		<div class="row">
+			<div class="col-md-7">
+				<div class="wow_form_fields">
+					<label for="page_title"><?php echo $wo['lang']['page_name']; ?></label>
+					<input name="page_title" id="page_title" type="text" value="<?php echo $wo['setting']['page_title']?>" autocomplete="off">
+				</div>
 			</div>
-			<!-- Select Basic -->
-			<div class="sun_input col-lg-6">
-				<select id="page_category" name="page_category" class="form-control" onchange="GetPageSubCategory(this)">
-					<?php 
-						foreach ($wo['page_categories'] as $categories => $category) { 
-						$category_id = $wo['setting']['page_category'];
-						$selected_contry = ($categories == $category_id) ? ' selected' : '' ;
-					?>
+			<div class="col-md-5">
+				<div class="wow_form_fields">
+					<label for="page_category"><?php echo $wo['lang']['category'] ?></label>
+					<select id="page_category" name="page_category" onchange="GetPageSubCategory(this)">
+						<?php 
+							foreach ($wo['page_categories'] as $categories => $category) { 
+							$category_id = $wo['setting']['page_category'];
+							$selected_contry = ($categories == $category_id) ? ' selected' : '' ;
+						?>
 						<option value="<?php echo $categories;?>" <?php echo $selected_contry;?> ><?php echo $category;?></option>
-					<?php } ?>
-				</select>
-				<label class="plr15" for="page_category"><?php echo $wo['lang']['category'];?></label>
+						<?php } ?>
+					</select>
+				</div>
 			</div>
-			<!-- Select Basic -->
-			<!-- Select Basic -->
-			<div class="sun_input col-lg-6 page_sub_category_c" style="<?php echo (!empty($wo['page_sub_categories'][$wo['setting']['page_category']]) ? '' : 'display: none;'); ?>">
-				<select id="page_sub_category" name="page_sub_category" class="form-control">
-					<?php
+			<div class="col-md-5 page_sub_category_c" style="<?php echo (!empty($wo['page_sub_categories'][$wo['setting']['page_category']]) ? '' : 'display: none;'); ?>">
+				<div class="wow_form_fields">
+					<label for="page_sub_category"><?php echo $wo['lang']['sub_category']; ?></label>
+					<select name="page_sub_category" id="page_sub_category">
+						<?php
 						if (!empty($wo['page_sub_categories'][$wo['setting']['page_category']])) {
-						foreach ($wo['page_sub_categories'][$wo['setting']['page_category']] as $id => $sub_category) { 
-
+						foreach ($wo['page_sub_categories'][$wo['setting']['page_category']] as $id => $sub_category) {
 							$sub_selected = ($sub_category['id'] == $wo['setting']['sub_category']) ? ' selected' : '' ;
-							?>
+						 ?>
 							<option value="<?php echo $sub_category['id']?>" <?php echo $sub_selected; ?>><?php echo $sub_category['lang']; ?></option>
 						<?php } } ?>
-				</select>
-				<label class="plr15" for="page_sub_category"><?php echo $wo['lang']['sub_category'];?></label>
-			</div>
-			<!-- Select Basic -->
-			<div class="sun_input col-lg-6">
-				<select id="call_action_type" name="call_action_type" class="form-control">
-					<?php 
-						foreach ($wo['call_action'] as $categories => $category) { 
-						$category_id = $wo['setting']['call_action_type'];
-						$selected_action = ($categories == $category_id) ? ' selected' : '' ;
-					?>
-						<option value="<?php echo $categories;?>" <?php echo $selected_action;?> ><?php echo $category;?></option>
-					<?php } ?>
-				</select>
-				<label class="plr15" for="call_action_type"><?php echo $wo['lang']['call_to_action'];?></label>
-			</div>
-			<div class="sun_input col-lg-6">
-				<input name="call_action_type_url" id="call_action_type_url" type="text" class="form-control input-md" value="<?php echo $wo['setting']['call_action_type_url']?>" autocomplete="off" placeholder="<?php echo $wo['lang']['call_to_action_target'];?>">
-				<label class="plr15" for="call_action_type_url"><?php echo $wo['lang']['call_to_action_target'];?></label>  
-			</div>
-			
-			<div class="form-group col-lg-12">
-				<label class="col-md-12" for="page_name"><?php echo $wo['lang']['page'];?> URL</label>  
-				<div class="col-md-12 input-group">
-					<span class="input-group-addon"><?php echo $wo['config']['site_url'];?>/</span>
-					<input id="page_name" name="page_name" type="text" class="form-control input-md" value="<?php echo $wo['setting']['page_name']?>" onkeyup="Wo_CheckPagename(this.value, <?php echo $wo['setting']['page_id'];?>);" autocomplete="off">
-				</div>
-				<span class="help-block checking" style="padding: 0px 20px;"></span>
-			</div>
-			<?php $fields = Wo_GetCustomFields('page'); 
-			if (!empty($fields)) {
-				foreach ($fields as $key => $wo['field']) {
-					echo Wo_LoadPage('page-setting/fields');
-				}
-			}
-			?>
-
-			<div class="form-group col-lg-12">
-				<?php
-					$selected_post_yes = ($wo['setting']['users_post'] == 1)   ? ' checked' : '';
-					$selected_post_no  = ($wo['setting']['users_post'] == 0)   ? ' checked' : '';
-				?>
-				<label class="col-md-12" for="users_post"><?php echo $wo['lang']['users_can_post']; ?></label>
-				<div class="col-md-12"> 
-					<label class="radio-inline" for="users_post-0">
-						<input type="radio" name="users_post" id="users_post-0" value="1" <?php echo $selected_post_yes; ?> >
-						<?php echo $wo['lang']['enable']; ?>
-					</label> 
-					<label class="radio-inline" for="users_post-1">
-						<input type="radio" name="users_post" id="users_post-1" value="0" <?php echo $selected_post_no; ?>>
-						<?php echo $wo['lang']['disable']; ?>
-					</label>
+					</select>
 				</div>
 			</div>
-			
-			<?php if (Wo_IsAdmin() || Wo_IsModerator()) { ?>
-				<div class="form-group col-lg-12">
-					<?php
-						$selected_verified_yes = ($wo['setting']['verified'] == 1)   ? ' checked' : '';
-						$selected_verified_no  = ($wo['setting']['verified'] == 0)   ? ' checked' : '';
-					?>
-					<label class="col-md-12" for="verified"><?php echo $wo['lang']['verification']; ?></label>
-					<div class="col-md-12"> 
-						<label class="radio-inline" for="verified-0">
-							<input type="radio" name="verified" id="verified-0" value="verified" <?php echo $selected_verified_yes; ?> >
-							<?php echo $wo['lang']['verified']; ?>
-						</label> 
-						<label class="radio-inline" for="verified-1">
-							<input type="radio" name="verified" id="verified-1" value="notVerified" <?php echo $selected_verified_no; ?>>
-							<?php echo $wo['lang']['not_verified']; ?>
-						</label>
-					</div>
-				</div>
-			<?php } else { ?>
-				<div class="form-group col-lg-12">
-					<label class="col-md-12"><?php echo $wo['lang']['verification'];?></label>  
-					<div class="col-md-12" id="verification-request">
-						<?php 
-							echo Wo_GetVerificationButton($wo['setting']['page_id'],'Page');
-						?>               
-					</div>
-				</div>
-			<?php } ?>
 		</div>
-        <div class="form-group last-sett-btn modal-footer">
-			<div class="ball-pulse"><div></div><div></div><div></div></div>
-			<button type="submit" class="btn btn-main setting-panel-mdbtn"><?php echo $wo['lang']['save']; ?></button>
+		<div class="wow_form_fields">
+			<label for="page_name"><?php echo $wo['lang']['page'];?> URL</label>
+			<div class="input-group">
+				<span class="input-group-addon"><?php echo $wo['config']['site_url'];?>/</span>
+				<input id="page_name" name="page_name" type="text" value="<?php echo $wo['setting']['page_name']?>" onkeyup="Wo_CheckPagename(this.value, <?php echo $wo['setting']['page_id'];?>);" autocomplete="off">
+			</div>
+			<span class="help-block checking"></span>
+		</div>
+		<div class="row">
+			<div class="col-md-5">
+				<div class="wow_form_fields">
+					<label for="call_action_type"><?php echo $wo['lang']['call_to_action']; ?></label>
+					<select id="call_action_type" name="call_action_type">
+						<?php 
+						foreach ($wo['call_action'] as $categories => $category) { 
+							$category_id = $wo['setting']['call_action_type'];
+							$selected_action = ($categories == $category_id) ? ' selected' : '' ;
+						?>
+						<option value="<?php echo $categories;?>" <?php echo $selected_action;?> ><?php echo $category;?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-7">
+				<div class="wow_form_fields">
+					<label for="call_action_type_url"><?php echo $wo['lang']['call_to_action_target'] ?></label>
+					<input name="call_action_type_url" id="call_action_type_url" type="text" value="<?php echo $wo['setting']['call_action_type_url']?>" autocomplete="off">
+				</div>
+			</div>
+		</div>
+		<?php $fields = Wo_GetCustomFields('page'); 
+		if (!empty($fields)) {
+			foreach ($fields as $key => $wo['field']) {
+				echo Wo_LoadPage('page-setting/fields');
+			}
+		}
+		?>
+		<?php
+			$selected_post_yes = ($wo['setting']['users_post'] == 1)   ? ' checked' : '';
+			$selected_post_no  = ($wo['setting']['users_post'] == 0)   ? ' checked' : '';
+		?>
+		<div class="wow_form_fields mb-0">
+			<label for="users_post"><?php echo $wo['lang']['users_can_post'] ?></label>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-md-12 round-check">
+				<input type="radio" name="users_post" id="users_post-0" value="1" <?php echo $selected_post_yes; ?> >
+				<label for="users_post-0"><?php echo $wo['lang']['enable']; ?></label>
+			</div>
+			<div class="col-md-12 round-check">
+				<input type="radio" name="users_post" id="users_post-1" value="0" <?php echo $selected_post_no; ?>>
+				<label for="users_post-1"><?php echo $wo['lang']['disable']; ?></label>
+			</div>
+		</div>
+
+		<?php if (Wo_IsAdmin() || Wo_IsModerator()) { ?>
+			<?php
+				$selected_verified_yes = ($wo['setting']['verified'] == 1)   ? ' checked' : '';
+				$selected_verified_no  = ($wo['setting']['verified'] == 0)   ? ' checked' : '';
+			?>
+			<div class="wow_form_fields mb-0">
+				<label for="verified"><?php echo $wo['lang']['verification'] ?></label>
+			</div>
+			<div class="form-group">
+				<div class="col-md-12 round-check">
+					<input type="radio" name="verified" id="verified-0" value="verified" <?php echo $selected_verified_yes; ?> >
+					<label for="verified-0"><?php echo $wo['lang']['verified']; ?></label>
+				</div>
+				<div class="col-md-12 round-check">
+					<input type="radio" name="verified" id="verified-1" value="notVerified" <?php echo $selected_verified_no; ?>>
+					<label for="verified-1"><?php echo $wo['lang']['not_verified']; ?></label>
+				</div>
+			</div>
+		
+		<?php } else { ?>
+			<div class="wow_form_fields">
+				<label><?php echo $wo['lang']['verification'];?></label>  
+				<div id="verification-request">
+					<?php echo Wo_GetVerificationButton($wo['setting']['page_id'],'Page'); ?>               
+				</div>
+			</div>
+		<?php } ?>
+		
+        <div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised add_wow_loader"><?php echo $wo['lang']['save']; ?></button>
 		</div>
 		<input type="hidden" name="page_id" value="<?php echo $wo['setting']['page_id'];?>">
 		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
 	</form>
 </div>
 <script type="text/javascript">
-			<?php 
+		<?php 
 $js_array = json_encode($wo['page_sub_categories']);
 echo "var sub_categories_array = ". $js_array . ";\n";
 ?>
@@ -151,7 +159,7 @@ $(function() {
   $('form.setting-general-form').ajaxForm({
     url: Wo_Ajax_Requests_File() + '?f=pages&s=update_general_settings',
     beforeSend: function() {
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeIn(100);
+      $('.setting-general-form').find('.add_wow_loader').addClass('btn-loading');
     },
     success: function(data) {
       scrollToTop();
@@ -162,14 +170,12 @@ $(function() {
               $(this).remove();
             });
         });
-        $('#edited_page_link').attr('href', data.link);
-        $('#edited_page_link').attr('data-ajax', data.data_ajax);
       } else {
           var errors = data.errors.join("<br>");
           $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
           $('.alert-danger').fadeIn(300);
       }
-      $('.wo_settings_page').find('.last-sett-btn .ball-pulse').fadeOut(100);
+      $('.setting-general-form').find('.add_wow_loader').removeClass('btn-loading');
     }
   });
 });

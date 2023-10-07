@@ -10,6 +10,8 @@
 // +------------------------------------------------------------------------+
 /* Script Main Functions (File 3) */
 function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
+
+    //obeyda
     global $wo, $sqlConnect, $db;
     if ($wo['config']['point_level_system'] == 0) {
         return false;
@@ -42,7 +44,7 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
         ));
     }
     $points               = 0;
-    $dollar_to_point_cost = $wo['config']['dollar_to_point_cost'];
+    $dollar_to_point_cost = $wo['config']['dollar_to_point_cost'];    
     switch ($type) {
         case "comments":
             $query_comments     = "SELECT `id` FROM `" . T_COMMENTS . "` WHERE `post_id` = " . $post_id . " AND `user_id` = " . $user_id;
@@ -60,6 +62,9 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
             if (!Wo_IsLiked($post_id, $user_id)) {
                 $points = $wo['config']['dislikes_point'];
             }
+            break;
+        case "share":
+            $points = $wo['config']['share_point'];
             break;
         case "wonders":
             if (!Wo_IsLiked($post_id, $user_id)) {

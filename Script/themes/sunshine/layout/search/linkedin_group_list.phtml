@@ -1,23 +1,14 @@
-<div class="col-sm-6 col-md-4 linkedin_data" data-id="<?php echo $wo['result']['sort_time'];?>">
-	<div class="wo_sidebar_groups">
-		<div class="group-header">
-			<h3 class="user-name <?php echo Wo_RightToLeft('pull-left');?>" title="<?php echo $wo['result']['name']; ?>">
-				<a href="<?php echo $wo['result']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['result']['username']?>"><?php echo $wo['result']['name']; ?></a>
-			</h3>
-			<div class="<?php echo Wo_RightToLeft('pull-right');?> group user-follow-btn">
-				<div class="user-follow-button">
-					<?php echo Wo_GetJoinButton($wo['result']['id']);?>
-				</div>
-			</div>
-		</div>
-		<div class="group-middle">
-			<img src="<?php echo $wo['result']['cover']?>" id="cover-image" alt="<?php echo $wo['result']['name']?> Cover Image">
-		</div>
-		<div class="group-bottom">
-			<div class="user-lastseen"><?php echo Wo_CountGroupMembers($wo['result']['id']);?> <?php echo $wo['lang']['members'];?></div>
-			<div class="avatar <?php echo Wo_RightToLeft('pull-right');?>">
+<div class="col-md-3 col-sm-6 linkedin_data" data-id="<?php echo $wo['result']['sort_time'];?>">
+	<div class="wow_content wow_my_groups">
+		<div class="avatar">
+			<a href="<?php echo $wo['result']['url']. $wo['marker'];?>ref=se" data-ajax="?link1=timeline&u=<?php echo $wo['result']['username']?>&ref=se">
 				<img src="<?php echo $wo['result']['avatar'];?>" alt="<?php echo $wo['result']['name']; ?> Profile Picture" />
-			</div>
+			</a>
+		</div>
+		<div class="wow_my_groups_info">
+			<h3 class="page_title"><a href="<?php echo $wo['result']['url']. $wo['marker'];?>ref=se" data-ajax="?link1=timeline&u=<?php echo $wo['result']['username']?>&ref=se"><?php echo $wo['result']['name']; ?></a></h3>
+			<p><?php echo Wo_CountGroupMembers($wo['result']['id']);?> <?php echo $wo['lang']['members']; ?></p>
+			<?php echo Wo_GetJoinButton($wo['result']['id']);?>
 		</div>
 	</div>
 </div>

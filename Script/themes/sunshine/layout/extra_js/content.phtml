@@ -1,4 +1,5 @@
 <script>
+  
   function CheckIfCanUse() {
     <?php if(!$wo['config']['can_use_chat']){ ?>
     $("#error_post").modal('show');
@@ -8,7 +9,9 @@
     },3000);
     <?php } ?>
   }
-    var create_bar = $('.create-product-bar');
+  
+
+     var create_bar = $('.create-product-bar');
   var create_percent = $('.create-product-percent');
   $(document).ready(function() {
 
@@ -53,39 +56,70 @@
       });
 
   });
-  function Wo_GetNewActivities() {
-      var before_activity_id = $('#activities-wrapper > .activity').attr('data-activity-id');
-      if (typeof before_activity_id === 'undefined') {
-           return false;
-      }
-      $.post(Wo_Ajax_Requests_File() + '?f=activities&s=get_new_activities', {
-        before_activity_id: before_activity_id
-      }, function (data) {
-        if(data.status == 200) {
-          $('.activities-wrapper').prepend(data.html);
-        }
-      });
+function Wo_RegisterReactionLike(element,reaction_icon,is_html){
+
+    var reaction = parseInt($(element).attr('data-reaction-id'));
+    var post_id = $(element).attr('data-post-id');
+
+    if ($('#react_'+post_id).attr('data_react') == 1) {
+      return false;
     }
-    function Wo_GetMoreActivities() {
-      var activity_container = $('.activity-container');
-      var after_activity_id = $('#activities-wrapper .activity:last').attr('data-activity-id');
-      Wo_progressIconLoader(activity_container);
-      $.post(Wo_Ajax_Requests_File() + '?f=activities&s=get_more_activities', {
-        after_activity_id: after_activity_id
-      }, function (data) {
-        if(data.status == 200) {
-          if(data.html.length == 0) {
-            $('.no-activities').html(data.message);
-          } else {
-            $('#activities-wrapper').append(data.html);
-          }
-          $("#activities-wrapper").animate({
-            scrollTop: $('#activities-wrapper')[0].scrollHeight
-          }, 100);
-          Wo_progressIconLoader(activity_container);
-        }
-      });
-    };
+
+    var path = "<?php echo $wo['config']['theme_url']?>";
+    var lang = $(element).attr('data-reaction-lang');
+    if (!post_id || !reaction) {
+      return false;
+    }
+
+    $('.reactions-box-container-'+post_id).fadeOut(1);
+
+    var reaction_color = '';
+    switch (reaction) {
+          case 1:
+              reaction_color = '#1eb2c4';
+              break;
+          case 2:
+              
+              reaction_color = '#f25268';
+              break;
+          case 3:
+              reaction_color = '#f3b715';
+              break;
+          case 4:
+              reaction_color = '#f3b715';
+              break;
+          case 5:
+              reaction_color = '#f3b715';
+              break;
+          case 6:
+              reaction_color = '#f7806c';
+              break;
+      }
+
+      console.log(reaction_color);
+
+       reaction_html = '<div class="inline_post_emoji no_anim"><div class="reaction"><img src="'+reaction_icon+'"></div></div>';
+
+    $('.status-reaction-'+post_id).html(''+reaction_html+'' + lang).css({"color": reaction_color});
+    $('.status-reaction-'+post_id).addClass("active-like");
+    $.get(Wo_Ajax_Requests_File(), {f: 'posts', s: 'register_reaction', post_id: post_id, reaction: reaction}, function (data) {
+
+      if(data.status == 200) {
+         <?php if ($wo['config']['node_socket_flow'] == 1) { ?>
+      if ($('#react_'+post_id).attr('data_react') == 0) {
+        socket.emit("post_notification", { post_id: post_id, user_id: _getCookie("user_id"), type: "added" });
+      }
+      <?php } ?>
+        $('.post-reactions-icons-'+post_id).html(data.reactions);
+
+      }
+      if (data.can_send == 1) {
+        Wo_SendMessages();
+      }
+      $('#react_'+post_id).attr('data_react','1');
+    });
+}
+
 function Wo_RegisterStoryReaction(element,reaction_icon,is_html) {
   var reaction = parseInt($(element).attr('data-reaction-id'));
   var post_id = $(element).attr('data-post-id');
@@ -111,6 +145,7 @@ function Wo_RegisterStoryReaction(element,reaction_icon,is_html) {
     //$('#react_'+post_id).attr('data_react','1');
   });
 }
+
 function Wo_RegisterMessageReaction(element,reaction_icon,is_html) {
   var reaction = parseInt($(element).attr('data-reaction-id'));
   var post_id = $(element).attr('data-post-id');
@@ -119,7 +154,7 @@ function Wo_RegisterMessageReaction(element,reaction_icon,is_html) {
   if (!post_id || !reaction) {
     return false;
   }
-  <?php if ($wo['config']['node_socket_flow'] == 1) { ?>
+   <?php if ($wo['config']['node_socket_flow'] == 1) { ?>
     socket.emit("register_reaction", {
         type: 'messages',
         id: post_id,
@@ -128,86 +163,23 @@ function Wo_RegisterMessageReaction(element,reaction_icon,is_html) {
       })
 
   <?php }else{ ?>
-  $.get(Wo_Ajax_Requests_File(), {f: 'messages', s: 'register_reaction', message_id: post_id, reaction: reaction}, function (data) {
-    if(data.status == 200) {
-      $('.post-reactions-icons-m-'+post_id).html(data.reactions);
+    $.get(Wo_Ajax_Requests_File(), {f: 'messages', s: 'register_reaction', message_id: post_id, reaction: reaction}, function (data) {
+        if(data.status == 200) {
+          $('.post-reactions-icons-m-'+post_id).html(data.reactions);
+		  $('.mess_margin_b-'+post_id).addClass('margin-active');
+        }
+        if (data.can_send == 1) {
+          Wo_SendMessages();
+        }
+        //$('#react_'+post_id).attr('data_react','1');
+      });
 
-    }
-    if (data.can_send == 1) {
-      Wo_SendMessages();
-    }
-    //$('#react_'+post_id).attr('data_react','1');
-  });
   <?php } ?>
   $('.reactions-box-container-'+post_id).fadeOut(50);
+
 }
-function Wo_RegisterReactionLike(element,reaction_icon){
-    var reaction = $(element).attr('data-reaction-id');
-    var post_id = $(element).attr('data-post-id');
-    if ($('#react_'+post_id).attr('data_react') == 1) {
-      return false;
-    }
-    var path = "<?php echo $wo['config']['theme_url']?>";
-    var lang = $(element).attr('data-reaction-lang');
-    if (!post_id || !reaction) {
-      return false;
-    }
-
-    $('.reactions-box-container-'+post_id).fadeOut(1);
-
-    var reaction_color = '';
-
-  //   switch (reaction) {
-  //     case 'Like':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/like-sm.png" alt="<?php echo $wo['lang']['like'];?>"></div>';
-  //         reaction_color = '#1da1f2';
-  //         break;
-  //     case 'Love':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/love-sm.png" alt="<?php echo $wo['lang']['love'];?>"></div>';
-  //         reaction_color = '#f25268';
-  //         break;
-  //     case 'HaHa':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/haha-sm.png" alt="<?php echo $wo['lang']['haha'];?>"></div>';
-  //         reaction_color = '#f3b715';
-  //         break;
-  //     case 'Wow':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/wow-sm.png" alt="<?php echo $wo['lang']['wow'];?>"></div>';
-  //         reaction_color = '#f3b715';
-  //         break;
-  //     case 'Sad':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/sad-sm.png" alt="<?php echo $wo['lang']['sad'];?>"></div>';
-  //         reaction_color = '#f3b715';
-  //         break;
-  //     case 'Angry':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/angry-sm.png" alt="<?php echo $wo['lang']['angry'];?>"></div>';
-  //         reaction_color = '#f7806c';
-  //         break;
-  // }
-  reaction_icon = '<div class="inline_post_emoji"><img class="" src="'+reaction_icon+'"></div>';
-
-    $('.status-reaction-'+post_id).html(reaction_icon+lang).css({"color": reaction_color});
-    $('.status-reaction-'+post_id).addClass("active-like");
-    $.get(Wo_Ajax_Requests_File(), {f: 'posts', s: 'register_reaction', post_id: post_id, reaction: reaction}, function (data) {
-
-      if(data.status == 200) {
-         <?php if ($wo['config']['node_socket_flow'] == 1) { ?>
-      if ($('#react_'+post_id).attr('data_react') == 0) {
-        socket.emit("post_notification", { post_id: post_id, user_id: _getCookie("user_id"), type: "added" });
-      }
-      <?php } ?>
-        $('.post-reactions-icons-'+post_id).html(data.reactions);
-
-      }
-      if (data.can_send == 1) {
-        Wo_SendMessages();
-      }
-      $('#react_'+post_id).attr('data_react','1');
-    });
-}
-
-
-function Wo_RegisterReaction(element,reaction_icon){
-    var reaction = $(element).attr('data-reaction-id');
+function Wo_RegisterReaction(element,reaction_icon,is_html){
+    var reaction = parseInt($(element).attr('data-reaction-id'));
     var post_id = $(element).attr('data-post-id');
     var path = "<?php echo $wo['config']['theme_url']?>";
     var lang = $(element).attr('data-reaction-lang');
@@ -218,62 +190,39 @@ function Wo_RegisterReaction(element,reaction_icon){
     $('.reactions-box-container-'+post_id).fadeOut(1);
 
     var reaction_color = '';
-    reaction_icon = '<div class="inline_post_emoji"><img class="" src="'+reaction_icon+'"></div>';
-    reaction_class = 'active-like';
+
     switch (reaction) {
-        case '1':
-            reaction_class = 'active-like-1';
-            break;
-        case '2':
-            reaction_class = 'active-like-2';
-            break;
-        case '3':
-            reaction_class = 'active-like-3';
-            break;
-        case '4':
-            reaction_class = 'active-like-4';
-            break;
-        case '5':
-            reaction_class = 'active-like-5';
-            break;
-        case '6':
-            reaction_class = 'active-like-6';
-            break;
-    }
+          case 1:
+              reaction_color = '#1da1f2';
+              break;
+          case 2:
+              reaction_color = '#f25268';
+              break;
+          case 3:
+              reaction_color = '#f3b715';
+              break;
+          case 4:
+              reaction_color = '#f3b715';
+              break;
+          case 5:
+              reaction_color = '#f3b715';
+              break;
+          case 6:
+              reaction_color = '#f7806c';
+              break;
+      }
 
-  //   switch (reaction) {
-  //     case 'Like':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/like-sm.png" alt="<?php echo $wo['lang']['like'];?>"></div>';
-  //         reaction_color = '#1da1f2';
-  //         break;
-  //     case 'Love':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/love-sm.png" alt="<?php echo $wo['lang']['love'];?>"></div>';
-  //         reaction_color = '#f25268';
-  //         break;
-  //     case 'HaHa':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/haha-sm.png" alt="<?php echo $wo['lang']['haha'];?>"></div>';
-  //         reaction_color = '#f3b715';
-  //         break;
-  //     case 'Wow':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/wow-sm.png" alt="<?php echo $wo['lang']['wow'];?>"></div>';
-  //         reaction_color = '#f3b715';
-  //         break;
-  //     case 'Sad':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/sad-sm.png" alt="<?php echo $wo['lang']['sad'];?>"></div>';
-  //         reaction_color = '#f3b715';
-  //         break;
-  //     case 'Angry':
-  //         reaction_icon = '<div class="inline_post_emoji"><img class="" src="<?php echo $wo['config']['theme_url'];?>/reaction/angry-sm.png" alt="<?php echo $wo['lang']['angry'];?>"></div>';
-  //         reaction_color = '#f7806c';
-  //         break;
-  // }
+    reaction_html = '<div class="inline_post_count_emoji reaction"><img src="'+reaction_icon+'"></div>&nbsp;&nbsp;';
+    reaction_color = '';
+
     $('.status-reaction-'+post_id).removeClass (function (index, css) {
        return (css.match (/(^|\s)active-like\S+/g) || []).join(' ');
     });
     $('.status-reaction-'+post_id).removeClass('active-like');
-    $('.status-reaction-'+post_id).html(reaction_icon+lang).css({"color": reaction_color});
-    $('.status-reaction-'+post_id).addClass(reaction_class);
-     $.get(Wo_Ajax_Requests_File(), {f: 'posts', s: 'register_reaction', post_id: post_id, reaction: reaction}, function (data) {
+    $('.status-reaction-'+post_id).html(''+reaction_html+'' + lang).css({"color": reaction_color});
+    $('.status-reaction-'+post_id).addClass("active-like");
+    $('.status-reaction-'+post_id).addClass("active-like-" + reaction);
+    $.get(Wo_Ajax_Requests_File(), {f: 'posts', s: 'register_reaction', post_id: post_id, reaction: reaction}, function (data) {
       if(data.status == 200) {
         <?php if ($wo['config']['node_socket_flow'] == 1) { ?>
     //if ($('#react_'+post_id).attr('data_react') == 0) {
@@ -290,13 +239,14 @@ function Wo_RegisterReaction(element,reaction_icon){
     });
 }
 
+
 function Wo_RegisterFollowNotify(id, type) {
   var _follow_con = $('[id=Notify-' + id + ']');
   data_next = $('[id=Notify-' + id + ']').attr('title');
   title = $('[id=Notify-' + id + ']').attr('data_next');
-  html_ = '<span id="Notify-'+id+'" title="'+title+'" data_next="'+data_next+'"><button type="button" onclick="Wo_RegisterFollowNotify('+id+',0)" class="btn-active btn btn-default btn-sm wo_following_btn wo_user_folw_empty_btns"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell-off"><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><path d="M18.63 13A17.89 17.89 0 0 1 18 8"></path><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"></path><path d="M18 8a6 6 0 0 0-9.33-5"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></button></span>';
+  html_ = '<span id="Notify-' + id + '" title="'+title+'" data_next="'+data_next+'" class="btn-glossy"><button type="button" onclick="Wo_RegisterFollowNotify(' + id + ',0)" class="btn-active btn btn-default btn-sm wo_following_btn wo_user_folw_empty_btns" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell-off"><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><path d="M18.63 13A17.89 17.89 0 0 1 18 8"></path><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"></path><path d="M18 8a6 6 0 0 0-9.33-5"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg></button></span>';
   if (type == 0) {
-    html_ = '<span id="Notify-'+id+'" title="'+title+'" data_next="'+data_next+'"><button type="button" onclick="Wo_RegisterFollowNotify('+id+',1)" class="btn btn-default btn-sm wo_user_folw_empty_btns"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></button></span>';
+    html_ = '<span id="Notify-' + id + '" title="'+title+'" data_next="'+data_next+'" class="btn-glossy"><button type="button" onclick="Wo_RegisterFollowNotify(' + id + ',1)" class="btn btn-default btn-sm wo_user_folw_empty_btns"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></button></span>';
   }
 
   _follow_con.replaceWith(html_);
@@ -305,8 +255,11 @@ function Wo_RegisterFollowNotify(id, type) {
 
 }
 
-function Wo_RegisterFollow(id, is_confirm,show_modal= false) {
 
+
+
+
+function Wo_RegisterFollow(id, is_confirm,show_modal= false) {
   var _follow_con = $('[id=Follow-' + id + ']');
   is_confirm_f    = 0;
 
@@ -323,10 +276,11 @@ function Wo_RegisterFollow(id, is_confirm,show_modal= false) {
   <?php if ($wo['config']['connectivitySystem'] == 0): ?>
     html_ = '<button type="button" onclick="Wo_RegisterFollow(' + id + ', ' + is_confirm_f + ')" class="btn-active btn btn-default btn-sm wo_following_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg><span class="button-text"> <?php echo $wo["lang"]["following_btn"];?></span></button>';
     if (is_confirm_f == 1) {
-      html_ = '<button type="button" onclick="Wo_RegisterFollow(' + id + ', ' + is_confirm_f + ')" class="btn-requested btn btn-default btn-sm wo_request_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg><span class="button-text"> <?php echo $wo["lang"]["requested"];?></span></button>';
+      html_ = '<button type="button" onclick="Wo_RegisterFollow(' + id + ', ' + is_confirm_f + ')" class="btn-requested btn btn-default btn-sm wo_request_btn" id="wo_useract_btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.75 8.44434H11.75M13.25 9.94434L13.25 6.94434" class="icon_main" stroke-width="1.5" stroke-linecap="round"></path><path d="M1.25 13.7779C1.25 11.9681 2.52299 10.4266 4.25303 10.1413L4.40886 10.1156C5.79419 9.88724 7.20581 9.88724 8.59113 10.1156L8.74697 10.1413C10.477 10.4266 11.75 11.9681 11.75 13.7779C11.75 14.5602 11.1361 15.1943 10.3789 15.1943H2.6211C1.86386 15.1943 1.25 14.5602 1.25 13.7779Z" stroke="currentColor" stroke-width="1.5"></path><path d="M9.5625 4.64746C9.5625 6.27843 8.19137 7.60059 6.5 7.60059C4.80863 7.60059 3.4375 6.27843 3.4375 4.64746C3.4375 3.0165 4.80863 1.69434 6.5 1.69434C8.19137 1.69434 9.5625 3.0165 9.5625 4.64746Z" class="icon_main" stroke-width="1.5"></path></svg><span class="button-text"> <?php echo $wo["lang"]["requested"];?></span></button>';
     }
     if (_follow_con.find('button').hasClass('btn-active') || _follow_con.find('button').hasClass('btn-requested')) {
-      html_ = '<button type="button" onclick="Wo_RegisterFollow(' + id + ', ' + is_confirm_f + ')" class="btn btn-default btn-sm wo_follow_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg><span class="button-text"> <?php echo $wo["lang"]["follow"];?></span></button>';
+      html_ = '<button type="button" onclick="Wo_RegisterFollow(' + id + ', ' + is_confirm_f + ')" class="btn btn-default btn-sm wo_follow_btn" id="wo_useract_btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.75 8.44434H11.75M13.25 9.94434L13.25 6.94434" class="icon_main" stroke-width="1.5" stroke-linecap="round"></path><path d="M1.25 13.7779C1.25 11.9681 2.52299 10.4266 4.25303 10.1413L4.40886 10.1156C5.79419 9.88724 7.20581 9.88724 8.59113 10.1156L8.74697 10.1413C10.477 10.4266 11.75 11.9681 11.75 13.7779C11.75 14.5602 11.1361 15.1943 10.3789 15.1943H2.6211C1.86386 15.1943 1.25 14.5602 1.25 13.7779Z" stroke="currentColor" stroke-width="1.5"></path><path d="M9.5625 4.64746C9.5625 6.27843 8.19137 7.60059 6.5 7.60059C4.80863 7.60059 3.4375 6.27843 3.4375 4.64746C3.4375 3.0165 4.80863 1.69434 6.5 1.69434C8.19137 1.69434 9.5625 3.0165 9.5625 4.64746Z" class="icon_main" stroke-width="1.5"></path></svg><span class="button-text"> <?php echo $wo["lang"]["follow"];?></span></button>';
+
     }
   <?php else: ?>
     // if (_follow_con.find('button').hasClass('btn-active')) {
@@ -334,10 +288,10 @@ function Wo_RegisterFollow(id, is_confirm,show_modal= false) {
     //       return false;
     //   }
     // }
-
     html_ = '<button type="button" onclick="Wo_RegisterFollow(' + id + ')" class="btn-requested btn btn-default btn-sm wo_request_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg><span class="button-text"> <?php echo $wo["lang"]["requested"];?></span></button>';
     if (_follow_con.find('button').hasClass('btn-requested') || _follow_con.find('button').hasClass('btn-active')) {
       html_ = '<button type="button" onclick="Wo_RegisterFollow(' + id + ')" class="btn btn-default btn-sm wo_follow_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg><span class="button-text"> <?php echo $wo["lang"]["add_friend"];?></span></button>';
+
     }
 
   <?php endif; ?>
@@ -426,9 +380,9 @@ function Wo_RegisterGroupJoin(id, is_confirm) {
 
 function Wo_RegisterEventGoing(id) {
   var _join_con = $('[id=going-' + id + ']');
-  html_join = '<button type="button" onclick="Wo_RegisterEventGoing(' + id + ')" class="btn-active btn btn-default btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><span class="button-text"> <?php echo $wo["lang"]["going"];?></span></button>';
-  if (_join_con.find('button').hasClass('btn-active')) {
-    html_join = '<button type="button" onclick="Wo_RegisterEventGoing(' + id + ')" class="btn btn-default btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span class="button-text"> <?php echo $wo["lang"]["go"];?></span></button>';
+  html_join = '<button type="button" onclick="Wo_RegisterEventGoing(' + id + ')" class="btn btn-main btn-mat"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M0.41,13.41L6,19L7.41,17.58L1.83,12M22.24,5.58L11.66,16.17L7.5,12L6.07,13.41L11.66,19L23.66,7M18,7L16.59,5.58L10.24,11.93L11.66,13.34L18,7Z" /></svg> <span class="button-text"> <?php echo $wo["lang"]["joined"];?></span></button>';
+  if (_join_con.find('button').hasClass('btn-main')) {
+    html_join = '<button type="button" onclick="Wo_RegisterEventGoing(' + id + ')" class="btn btn-default btn-mat"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10.74,11.72C11.21,12.95 11.16,14.23 9.75,14.74C6.85,15.81 6.2,13 6.16,12.86L10.74,11.72M5.71,10.91L10.03,9.84C9.84,8.79 10.13,7.74 10.13,6.5C10.13,4.82 8.8,1.53 6.68,2.06C4.26,2.66 3.91,5.35 4,6.65C4.12,7.95 5.64,10.73 5.71,10.91M17.85,19.85C17.82,20 17.16,22.8 14.26,21.74C12.86,21.22 12.8,19.94 13.27,18.71L17.85,19.85M20,13.65C20.1,12.35 19.76,9.65 17.33,9.05C15.22,8.5 13.89,11.81 13.89,13.5C13.89,14.73 14.17,15.78 14,16.83L18.3,17.9C18.38,17.72 19.89,14.94 20,13.65Z" /></svg> <span class="button-text"> <?php echo $wo["lang"]["join"];?></span></button>';
   }
   _join_con.html(html_join);
   $.get(Wo_Ajax_Requests_File(), {f: 'go_event', event_id: id}, function (data) {
@@ -447,9 +401,9 @@ function Wo_RegisterEventGoing(id) {
 
 function Wo_RegisterEventInterested(id) {
   var _join_con = $('[id=interested-' + id + ']');
-  html_join = '<button type="button" onclick="Wo_RegisterEventInterested(' + id + ')" class="btn-active btn btn-default btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg><span class="button-text"> <?php echo $wo["lang"]["interested"];?></span></button>';
-  if (_join_con.find('button').hasClass('btn-active')) {
-    html_join = '<button type="button" onclick="Wo_RegisterEventInterested(' + id + ')" class="btn btn-default btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12.1,18.55L12,18.65L11.89,18.55C7.14,14.24 4,11.39 4,8.5C4,6.5 5.5,5 7.5,5C9.04,5 10.54,6 11.07,7.36H12.93C13.46,6 14.96,5 16.5,5C18.5,5 20,6.5 20,8.5C20,11.39 16.86,14.24 12.1,18.55M16.5,3C14.76,3 13.09,3.81 12,5.08C10.91,3.81 9.24,3 7.5,3C4.42,3 2,5.41 2,8.5C2,12.27 5.4,15.36 10.55,20.03L12,21.35L13.45,20.03C18.6,15.36 22,12.27 22,8.5C22,5.41 19.58,3 16.5,3Z" /></svg><span class="button-text"> <?php echo $wo["lang"]["interested"];?></span></button>';
+  html_join = '<button type="button" onclick="Wo_RegisterEventInterested(' + id + ')" class="btn btn-main btn-mat"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M0.41,13.41L6,19L7.41,17.58L1.83,12M22.24,5.58L11.66,16.17L7.5,12L6.07,13.41L11.66,19L23.66,7M18,7L16.59,5.58L10.24,11.93L11.66,13.34L18,7Z" /></svg> <span class="button-text"> <?php echo $wo["lang"]["interested"];?></span></button>';
+  if (_join_con.find('button').hasClass('btn-main')) {
+    html_join = '<button type="button" onclick="Wo_RegisterEventInterested(' + id + ')" class="btn btn-default btn-mat"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5,5C15,5 13.58,5.91 13,7.2V17.74C17.25,13.87 20,11.2 20,8.5C20,6.5 18.5,5 16.5,5M16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3Z" /></svg> <span class="button-text"> <?php echo $wo["lang"]["interested"];?></span></button>';
   }
   _join_con.html(html_join);
   $.get(Wo_Ajax_Requests_File(), {f: 'interested_event', event_id: id}, function (data) {
@@ -469,14 +423,14 @@ function Wo_RegisterEventInterested(id) {
 
 function Wo_RegisterPageLike(id) {
   element_like = $('[id=like-' + id + ']');
-  html_like = '<button type="button" onclick="Wo_RegisterPageLike(' + id + ')" class="btn-active btn btn-default btn-sm wo_following_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg><span class="button-text"> <?php echo $wo["lang"]["liked"];?></span></button>';
+  html_like = '<button type="button" onclick="Wo_RegisterPageLike(' + id + ')" class="btn-active btn btn-default btn-sm wo_following_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 58.553 58.266"> <path d="M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z" transform="translate(7126.251 -1222.75)" fill="none" stroke="currentColor" stroke-width="3.5"></path> </svg><span class="button-text"> <?php echo $wo["lang"]["liked"];?></span></button>';
   if (element_like.find('button').hasClass('btn-active')) {
-  	html_like = '<button type="button" onclick="Wo_RegisterPageLike(' + id + ')" class="btn btn-default btn-sm wo_follow_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg><span class="button-text"> ' + "<?php echo $wo["lang"]["like"];?></span></button>";
+  	html_like = '<button type="button" onclick="Wo_RegisterPageLike(' + id + ')" class="btn btn-default btn-sm wo_follow_btn" id="wo_useract_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 58.553 58.266"> <path d="M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z" transform="translate(7126.251 -1222.75)" fill="none" stroke="currentColor" stroke-width="3.5"></path> </svg><span class="button-text">' + "<?php echo $wo["lang"]["like"];?></span></button>" ;
   }
   element_like.html(html_like);
   $.get(Wo_Ajax_Requests_File(), {f: 'like_page', page_id: id}, function (data) {
     if(data.status == 200) {
-       if (node_socket_flow == "1") {
+      if (node_socket_flow == "1") {
         if (element_like.find('button').hasClass('btn-active')) {
            socket.emit("page_notification", { to_id: id, user_id: _getCookie("user_id"), type: "added"});
         } else {
@@ -502,11 +456,11 @@ function Wo_RegisterLike(post_id) {
       html_like = "<?php echo GetModeBtn('like_btn'); ?>";
     }
   <?php if ($wo['config']['second_post_button'] == 'dislike') { ?>
-   post.find("[id^=wonder-button]").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg> <span class="like-btn-mobile"> <?php echo $wo["lang"]["dislike"];?></span>');
+   post.find("[id^=wonder-button]").html("<svg xmlns='http://www.w3.org/2000/svg' width='58.553' height='58.266' viewBox='0 0 58.553 58.266' class='feather flip'> <path d='M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z' transform='translate(7126.251 -1222.75)' fill='none' stroke='currentColor' stroke-width='2.5'></path> </svg> <span class='like-btn-mobile'> <?php echo $wo["lang"]["dislike"];?></span>");
   <?php } ?>
   post.find("[id^=like-button]").html(html_like);
   $.get(Wo_Ajax_Requests_File(), {f: 'posts', s: 'register_like', post_id: post_id}, function (data) {
-     if (post.find("[id^=like-button]").parent().find('.active-like').length > 0) {
+    if (post.find("[id^=like-button]").parent().find('.active-like').length > 0) {
       if (node_socket_flow == "1") { socket.emit("post_notification", { post_id: post_id, user_id: _getCookie("user_id"), type: "added" }); }
     } else {
       if (node_socket_flow == "1") { socket.emit("post_notification", { post_id: post_id, user_id: _getCookie("user_id"), type: "removed" });}
@@ -539,10 +493,10 @@ function Wo_RegisterWonder(post_id) {
   }
   post.find("[id^=wonder-button]").html(html_wonder);
   <?php if ($wo['config']['second_post_button'] == 'dislike') { ?>
-   post.find("[id^=like-button]").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> <span class="like-btn-mobile"> <?php echo $wo["lang"]["like"];?></span>');
+   post.find("[id^=like-button]").html('<svg xmlns="http://www.w3.org/2000/svg" width="58.553" height="58.266" viewBox="0 0 58.553 58.266" class="feather"> <path d="M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z" transform="translate(7126.251 -1222.75)" fill="none" stroke="currentColor" stroke-width="2.5"></path> </svg> <span class="like-btn-mobile"> <?php echo $wo["lang"]["like"];?></span>');
   <?php } ?>
   $.get(Wo_Ajax_Requests_File(), {f: 'posts', s: 'register_wonder', post_id: post_id}, function (data) {
-     if (post.find("[id^=wonder-button]").parent().find('.active-wonder').length > 0) {
+    if (post.find("[id^=wonder-button]").parent().find('.active-wonder').length > 0) {
       if (node_socket_flow == "1") { socket.emit("post_notification", { post_id: post_id, user_id: _getCookie("user_id"), type: "added" }); }
     } else {
       if (node_socket_flow == "1") { socket.emit("post_notification", { post_id: post_id, user_id: _getCookie("user_id"), type: "removed" });}
@@ -589,7 +543,6 @@ function Wo_Translate(id,lang){
       // $("[data-trans-btn=" + id + "]").removeAttr('onclick')
       // return false;
     }
-    
     $("[data-trans-btn="+id+"]").text("<?php echo($wo['lang']['loading']); ?>");
     if ($("[data-translate-text="+id+"]").parents('.post-description').find('.data_translated').length > 0) {
       let tx = $("[data-translate-text="+id+"]").parents('.post-description').find('.data_translated').text();
@@ -599,7 +552,7 @@ function Wo_Translate(id,lang){
       return false;
     }
     $("[data-translate-text="+id+"]").parents('.post-description').append('<span class="hidden data_translated">'+translatable_text+'</span>');
-
+    
     <?php if ($wo['config']['google_translate'] == 1) { ?>
       let url = "https://translation.googleapis.com/language/translate/v2?key=<?php echo($wo['config']['google_translation_api']); ?>";
       let method = "POST";
@@ -616,7 +569,6 @@ function Wo_Translate(id,lang){
           lang:String(lang)
       };
     <?php } ?>
-
     $.ajax({
       url: url,
       type: method,
@@ -624,14 +576,14 @@ function Wo_Translate(id,lang){
       data: r_data
     }).done(function(data) {
       <?php if ($wo['config']['google_translate'] == 1) { ?>
-        let translation = data.data.translations[0].translatedText;
-        $("[data-translate-text="+id+"]").text(translation)
-        <?php }else if($wo['config']['yandex_translate'] == 1){ ?>
-        if (data.code == 200) {
-          $("[data-translate-text="+id+"]").text(data.text[0])
-        }
-      <?php } ?>
-      $("[data-trans-btn="+id+"]").text("<?php echo($wo['lang']['show_original']); ?>");
+      let translation = data.data.translations[0].translatedText;
+      $("[data-translate-text="+id+"]").text(translation)
+      <?php }else if($wo['config']['yandex_translate'] == 1){ ?>
+      if (data.code == 200) {
+        $("[data-translate-text="+id+"]").text(data.text[0])
+      }
+    <?php } ?>
+    $("[data-trans-btn="+id+"]").text("<?php echo($wo['lang']['show_original']); ?>");
     }).fail(function() {
       let tx = $("[data-translate-text="+id+"]").parents('.post-description').find('.data_translated').text();
       $("[data-translate-text="+id+"]").parents('.post-description').find('.data_translated').remove();
@@ -648,10 +600,16 @@ $(document).on('click', '#night_mode_toggle', function(event) {
       $('head').append('<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/dark.css<?php echo $wo['update_cache']; ?>" id="night-mode-css">');
       $('#night_mode_toggle').attr('data-mode', 'day');
       $('#night-mode-text').text('<?php echo $wo['lang']['day_mode']?>');
+	  $(this).find('.night_day_switch').addClass('night');
+	  $(this).find('.night_day_switch').removeClass('day');
+    replaceLogos('night');
   } else {
+      replaceLogos('day');
       $('#night-mode-css').remove();
       $('#night_mode_toggle').attr('data-mode', 'night');
       $('#night-mode-text').text('<?php echo $wo['lang']['night_mode']?>');
+	  $(this).find('.night_day_switch').removeClass('night');
+	  $(this).find('.night_day_switch').addClass('day');
   }
   $.post(Wo_Ajax_Requests_File() + '?mode=' + mode);
 });
@@ -671,7 +629,7 @@ $(document).on('click', '#share_post_on_btn', function(event) {
       data: {f: 'share_post_on',s:type,type_id:type_id,post_id:post_id,text:text},
     })
     .done(function(data) {
-       if (node_socket_flow == "1") {
+      if (node_socket_flow == "1") {
           socket.emit("post_notification", { post_id: post_id, user_id: _getCookie("user_id")});
         }
       $(self).text('<?php echo($wo['lang']['share']) ?>');
@@ -696,7 +654,7 @@ $(document).on('click', '#share_post_on_btn', function(event) {
     });
 });
 
-$(document).on('change', '#share_type_select', function(event) {
+$(document).on('change', '.share_type_select', function(event) {
   var type = $(this).val();
   if (type == 'user') {
     $('.search_for_form').hide(400);
@@ -718,6 +676,42 @@ $(document).on('change', '#share_type_select', function(event) {
     $('#SearchForInputType').val('timeline');
   }
 });
+
+// $(document).on('click', '#share_post_on_page_form_btn', function(event) {
+//   page_id = $('#SearchForInputPage').val();
+//   post_id = $('#SearchForInputPostIdPage').val();
+//   $.ajax({
+//     url: Wo_Ajax_Requests_File(),
+//     type: 'GET',
+//     dataType: 'json',
+//     data: {f: 'share_post_on',s:'page',page_id:page_id,post_id:post_id},
+//   })
+//   .done(function() {
+//   })
+//   .fail(function() {
+//   })
+//   .always(function() {
+//   });
+
+// });
+// $(document).on('click', '#share_post_on_user_form_btn', function(event) {
+//   user_id = $('#SearchForInputUser').val();
+//   post_id = $('#SearchForInputUserPostId').val();
+//   $.ajax({
+//     url: Wo_Ajax_Requests_File(),
+//     type: 'GET',
+//     dataType: 'json',
+//     data: {f: 'share_post_on',s:'user',user_id:user_id,post_id:post_id},
+//   })
+//   .done(function() {
+//   })
+//   .fail(function() {
+//   })
+//   .always(function() {
+//   });
+
+// });
+
 
 function Wo_LoadViewsInfo(self) {
   $('#load_more_info_btn').html('<?php echo $wo['lang']['please_wait'] ?>');
@@ -861,7 +855,6 @@ $(document).on('change', '#i_currently_work', function(event) {
 
 
 
-
 function Wo_GetPaymentMethods(self) {
   var amount = $('#fund_donate_amount').val();
   var fund_id = $('#fund_donate_id').val();
@@ -889,6 +882,7 @@ function Wo_GetPaymentMethods(self) {
   });
 }
 
+
 function Wo_StripeDonate(fund_id,amount,type = 'credit_card') {
   if (!amount || !fund_id) {
     return false;
@@ -900,9 +894,6 @@ function Wo_StripeDonate(fund_id,amount,type = 'credit_card') {
   else{
     $('.btn-alipay').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
   }
-
-
-
   var stripe = Stripe('<?php echo $wo['config']['stripe_id'];?>');
   $.post(Wo_Ajax_Requests_File() + '?f=stripe&s=session', {amount: amount,type:'fund',fund_id:fund_id,payment_type:type}, function(data, textStatus, xhr) {
     if (data.status == 200) {
@@ -943,6 +934,8 @@ function Wo_BitcoinDonate(fund_id,amount) {
   });
 }
 
+
+
 function openInNewTab(url, id) {
    var myWindow = window.open(url, "", "width=600,height=700");
    return false;
@@ -981,7 +974,7 @@ function Wo_ReplyMessage(id) {
     $('.message_reply_text span').prepend('<p class="reply_content">'+$("#message_text_reply_"+id).html()+'</p>')
   }
   else if($('#message_media_reply_'+id).length > 0 && $('#message_media_reply_'+id).find('img').length > 0){
-    $('.message_reply_text span').prepend('<div class="message-user-image pull-left reply_content"><img src="'+$('#message_media_reply_'+id).find('img').attr('src')+'" alt="User image"></div>')
+    $('.message_reply_text span').prepend('<div class="message-user-image reply_content"><img src="'+$('#message_media_reply_'+id).find('img').attr('src')+'" alt="User image"></div>')
   }
   $('.message_reply_text').fadeIn(50);
 }
@@ -1051,7 +1044,7 @@ $(window).on('load', function() {
         $('.reactions-box-container-'+post_id).toggle();
         $('.post-reactions-icons-'+post_id).html(data.reactions);
         $('.status-reaction-'+post_id).removeClass("active-like");
-        $('.status-reaction-'+post_id).html('<svg xmlns="http://www.w3.org/2000/svg" width="58.553" height="58.266" viewBox="0 0 58.553 58.266" class="feather"> <path d="M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z" transform="translate(7126.251 -1222.75)" fill="none" stroke="currentColor" stroke-width="2.5"></path> </svg> ' + data.like_lang).css({"color": "inherit"});
+        $('.status-reaction-'+post_id).html('<svg xmlns="http://www.w3.org/2000/svg" width="58.553" height="58.266" viewBox="0 0 58.553 58.266" class="feather"> <path d="M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z" transform="translate(7126.251 -1222.75)" fill="none" stroke="currentColor" stroke-width="3.5"></path> </svg> ' + data.like_lang).css({"color": "inherit"});
       }
       $(self).attr('data_react','0');
     });
@@ -1096,7 +1089,7 @@ $(window).on('load', function() {
         $('.reactions-lightbox-container-'+post_id).toggle();
         $('.post-reactions-icons-'+post_id).html("");
         $('.status-reaction-'+post_id).removeClass("active-like");
-        $('.status-reaction-'+post_id).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>' + data.like_lang).css({"color": "inherit"});
+        $('.status-reaction-'+post_id).html('<svg xmlns="http://www.w3.org/2000/svg" width="58.553" height="58.266" viewBox="0 0 58.553 58.266" class="feather"> <path d="M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z" transform="translate(7126.251 -1222.75)" fill="none" stroke="currentColor" stroke-width="2.5"></path> </svg>' + data.like_lang).css({"color": "inherit"});
       }
     });
   });
@@ -1392,16 +1385,16 @@ function ChangeStatus(self,hash_id) {
 }
 function RefundOrder(hash_id,type = 'show') {
   if (type == 'hide') {
-        $('#refund_order').find('.btn-mat').attr('onclick', "RefundOrder('"+hash_id+"')");
+        $('#refund_order').find('.get_refnd').attr('onclick', "RefundOrder('"+hash_id+"')");
         $('#refund_order').modal('show');
         return false;
     }
-    $('#refund_order').find('.btn-mat').html("<?php echo($wo['lang']['please_wait']) ?>");
-    $('#refund_order').find('.btn-mat').attr('disabled', "true");
+    $('#refund_order').find('.get_refnd').html("<?php echo($wo['lang']['please_wait']) ?>");
+    $('#refund_order').find('.get_refnd').attr('disabled', "true");
     message = $('#refund_order_message').val();
     $.post(Wo_Ajax_Requests_File() + '?f=products&s=refund&hash=' + $('.main_session').val(), {hash_order: hash_id,message: message}, function(data, textStatus, xhr) {
-      $('#refund_order').find('.btn-mat').removeAttr('disabled');
-    $('#refund_order').find('.btn-mat').text("<?php echo($wo['lang']['request']) ?>");
+      $('#refund_order').find('.get_refnd').removeAttr('disabled');
+    $('#refund_order').find('.get_refnd').text("<?php echo($wo['lang']['request']) ?>");
     if (data.status == 200) {
       $('#refund_order').find('.modal_refund_order_modal_alert').html("<div class='alert alert-success bg-success'><i class='fa fa-check'></i> "+data.message+"</div>");
       setTimeout(function () {
@@ -1466,7 +1459,7 @@ function Wo_GetPaymentLink(type,price,type2 = 'pro',type3 = 'show') {
     }
     $('#pay_modal_wallet_btn').attr('onclick', "Wo_GetPaymentLink('"+type+"','"+price+"','"+type2+"')");
     if (parseInt(<?php echo $wo['user']['wallet'] ?>) < parseInt(price) ) {
-      $('.pay_modal_wallet_alert').html("<div class='alert alert-danger'><a href='javascript:void(0)' onclick='SetPageCookie(\""+type2+"\",\""+type+"\")'><?php echo $wo["lang"]["please_top_up_wallet"]?></a></div>");
+      $('.pay_modal_wallet_alert').html("<div class='alert alert-danger'><a href='<?php echo $wo['config']['site_url'];?>/wallet'><?php echo $wo["lang"]["please_top_up_wallet"]?></a></div>");
       $('#pay_modal_wallet_btn').html("<?php echo $wo['lang']['pay']; ?> <?php echo Wo_GetCurrency($wo['config']['currency']);?>"+price).attr('disabled',true);
       $('.pay_modal_wallet_text').html("");
       $('#pay-go-pro').modal({
@@ -1492,7 +1485,6 @@ function Wo_GetPaymentLink(type,price,type2 = 'pro',type3 = 'show') {
     }
     $.get(Wo_Ajax_Requests_File() + '?f=wallet&s=pay'+link, function (data) {
       $('#pay_modal_wallet_btn').html("<?php echo $wo['lang']['pay']; ?> <?php echo Wo_GetCurrency($wo['config']['currency']);?>"+price);
-      $('#pay_modal_wallet_btn').removeAttr('disabled');
           if (data.status == 200) {
             $('.pay_modal_wallet_alert').html("<div class='alert alert-success bg-success'><i class='fa fa-check'></i> <?php echo $wo['lang']['payment_successfully_done']; ?></div>");
             setTimeout( function (){
@@ -1500,15 +1492,11 @@ function Wo_GetPaymentLink(type,price,type2 = 'pro',type3 = 'show') {
             } ,3000);
           }
           else{
+            $('#pay_modal_wallet_btn').removeAttr('disabled');
             $('.pay_modal_wallet_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
           }
       });
   }
-}
-function SetPageCookie(type,id){
-  $.get(Wo_Ajax_Requests_File() + '?f=wallet&s=set&type='+type+'&id='+id, function (data) {
-    location.href = "<?php echo $wo['config']['site_url'];?>/wallet";
-  });
 }
 // register comment like
 function Wo_RegisterCommentLike(comment_id) {
@@ -1520,13 +1508,13 @@ function Wo_RegisterCommentLike(comment_id) {
     comment_text: comment_text
   }, function (data) {
     if(data.status == 200) {
-       if (node_socket_flow == "1") {
+      if (node_socket_flow == "1") {
         socket.emit("comment_notification", { comment_id: comment_id, user_id: _getCookie("user_id"), type: "added" });
       }
       <?php if ($wo['config']['website_mode'] != 'twitter' && $wo['config']['website_mode'] != 'instagram' && $wo['config']['website_mode'] != 'askfm') { ?>
       if (data.dislike == 1) {
           comment.find("#comment-wonders").text(data.wonders_c);
-          comment.find("#WonderComment").html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>');
+          comment.find("#WonderComment").html('<svg xmlns="http://www.w3.org/2000/svg" width="58.553" height="58.266" viewBox="0 0 58.553 58.266" class="feather flip"> <path d="M-7080.317,1279.764l-26.729-1.173a1.657,1.657,0,0,1-1.55-1.717l1.11-33.374a4.112,4.112,0,0,1,2.361-3.6l.014-.005a13.62,13.62,0,0,1,1.978-.363h.007a9.007,9.007,0,0,0,3.249-.771c2.645-1.845,3.973-4.658,5.259-7.378l.005-.013.031-.061.059-.13.012-.023c.272-.576.61-1.289.944-1.929l0-.007c.576-1.105,2.327-4.46,4.406-5.107a2.3,2.3,0,0,1,.59-.105c.036,0,.072,0,.109,0a2.55,2.55,0,0,1,1.212.324c2.941,1.554,1.212,7.451.561,9.672a38.306,38.306,0,0,1-3.7,8.454l-.71,1.218,18.363.808a3.916,3.916,0,0,1,3.784,3.735,3.783,3.783,0,0,1-1.123,2.834,3.629,3.629,0,0,1-2.559,1.055c-.046,0-.1,0-.145,0h-.027l-2.141-.093-9.331-.41-.075,1.7,9.333.408a3.721,3.721,0,0,1,2.666,1.3,3.855,3.855,0,0,1,.936,2.934,3.779,3.779,0,0,1-3.821,3.38c-.061,0-.122,0-.181-.005l-1.974-.082-8.9-.392-.075,1.7,8.9.39a3.723,3.723,0,0,1,2.666,1.3,3.86,3.86,0,0,1,.937,2.933,3.784,3.784,0,0,1-3.827,3.381c-.057,0-.118,0-.177,0l-1.976-.088-8.472-.372-.075,1.7,8.474.372a3.726,3.726,0,0,1,2.666,1.3,3.857,3.857,0,0,1,.935,2.933,3.782,3.782,0,0,1-3.827,3.381C-7080.2,1279.765-7080.26,1279.765-7080.317,1279.764Zm-38.4,0-.089,0a6.558,6.558,0,0,1-6.193-6.8l.907-27.293a6.446,6.446,0,0,1,2.074-4.553,6.214,6.214,0,0,1,3.954-1.672c.081,0,.17-.005.29-.005s.212,0,.292.005a6.561,6.561,0,0,1,6.192,6.8l-.907,27.293a6.441,6.441,0,0,1-2.072,4.547,6.249,6.249,0,0,1-4.261,1.681Z" transform="translate(7126.251 -1222.75)" fill="none" stroke="currentColor" stroke-width="2.5"></path> </svg>');
       }
       <?php } ?>
       comment.find("#LikeComment").html("<?php echo GetModeBtn('liked_comment'); ?>").fadeIn(150);
@@ -1540,22 +1528,22 @@ function Wo_RegisterCommentLike(comment_id) {
     }
   });
 }
+
 <?php if ($wo['config']['website_mode'] == 'linkedin') { ?>
 function OpenToModal(self){
-  if ($(self).val() == 'finding_a_job') {
+  $('#finding_a_job_modal').modal('hide');
+  $('#providing_services_modal').modal('hide');
+  $('#create_hiring_modal').modal('hide');
+
+  if (self == '#finding_a_job_modal') {
     $('#finding_a_job_modal').modal('show');
   }
-  else if($(self).val() == 'providing_services'){
+  else if(self == '#providing_services_modal'){
     $('#providing_services_modal').modal('show');
     $('#providing_services_input').tagsinput({});
   }
-  else if($(self).val() == 'hiring'){
+  else if(self == '#create_hiring_modal'){
     $('#create_hiring_modal').modal('show');
-  }
-  else{
-    $('#finding_a_job_modal').modal('hide');
-    $('#providing_services_modal').modal('hide');
-    $('#create_hiring_modal').modal('hide');
   }
 }
 <?php } ?>
@@ -1642,6 +1630,7 @@ function Wo_UpdatePostPrivacy(post_id, privacy_type, event) {
   event.preventDefault();
   var post_privacy_container = post.find('.post-privacy');
   Wo_progressIconLoader(post_privacy_container);
+  post.find('.wo_post_privacy_menu .dropdown-toggle').dropdown('toggle');
   $.get(Wo_Ajax_Requests_File(), {
     f: 'posts',
     s: 'update_post_privacy',
@@ -1649,19 +1638,20 @@ function Wo_UpdatePostPrivacy(post_id, privacy_type, event) {
     privacy_type: privacy_type
   }, function (data) {
     if(data.status == 200) {
+
       if(data.privacy_type == 0) {
-        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg>');
+        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>');
       } else if(data.privacy_type == 1) {
-        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg>');
+        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>');
       } else if(data.privacy_type == 2) {
-        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg>');
+        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>');
       } else if(data.privacy_type == 3) {
-        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"></path></svg>');
+        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>');
       } else if(data.privacy_type == 4) {
-        post_privacy_container.html('<svg class="feather" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><g><path d="M433.581,203.525v-30.702V55.304c0-16.492-7.274-31.994-19.958-42.532c-12.684-10.539-29.257-14.844-45.47-11.827c-0.198,0.037-0.396,0.08-0.592,0.13c-0.838,0.209-84.121,20.944-111.562,20.944c-27.429,0-110.723-20.735-111.56-20.944c-0.196-0.05-0.394-0.093-0.593-0.13c-16.211-3.022-32.784,1.288-45.469,11.826c-12.684,10.539-19.959,26.04-19.959,42.534v120.705v27.516C27.35,219.502,0.406,241.244,0.406,266.628c0,25.463,27.307,47.393,78.971,63.417c47.319,14.677,110.045,22.76,176.623,22.76s129.305-8.083,176.624-22.76c51.663-16.024,78.971-37.953,78.971-63.417C511.594,241.244,484.649,219.502,433.581,203.525z M98.419,152.815c43.544,10.403,96.943,16.082,152.086,16.082c33.432,0,65.89-2.024,96.472-6.016c5.476-0.715,9.336-5.734,8.621-11.21c-0.715-5.477-5.734-9.346-11.21-8.622c-29.727,3.88-61.314,5.848-93.883,5.848c-55.636,0-109.261-5.903-152.086-16.676V55.304c-0.001-10.528,4.643-20.423,12.739-27.15c8.023-6.665,18.483-9.43,28.745-7.598C146.48,22.193,226.734,42.019,256,42.019c29.265,0,109.519-19.825,116.096-21.463c10.26-1.83,20.722,0.932,28.745,7.598c8.097,6.726,12.739,16.622,12.739,27.149V165.35c-44.493,12.667-102.017,19.613-163.076,19.613c-55.639,0-109.264-5.903-152.086-16.675V152.815z M98.418,210.948v-22.063c43.539,10.402,96.941,16.079,152.086,16.079c60.387,0,117.649-6.658,163.076-18.857v15.519c-43.5,11.473-98.862,17.781-156.375,17.781c-32.576,0-64.164-1.968-93.883-5.848c-5.478-0.725-10.495,3.145-11.21,8.621c-0.715,5.477,3.145,10.496,8.621,11.211c30.574,3.991,63.032,6.016,96.472,6.016c56.97,0,112.077-6.06,156.375-17.129v12.669c-44.49,12.665-102.019,19.605-163.076,19.605c-55.638,0-109.265-5.898-152.086-16.671V210.948z M426.699,310.942C381.245,325.041,320.623,332.804,256,332.804s-125.245-7.764-170.698-21.862c-40.028-12.416-64.896-29.396-64.896-44.313c0-14.169,21.897-29.858,58.013-42.072v21.041c0,1.973,0.578,3.838,1.592,5.413c1.304,2.024,3.329,3.567,5.775,4.235c28.51,7.781,62.053,13.378,97.996,16.481c3.594,0.31,7.212,0.595,10.852,0.856c7.279,0.52,14.644,0.939,22.074,1.255c11.144,0.474,22.433,0.715,33.796,0.715c66.279,0,128.792-8.02,176.022-22.583c4.193-1.292,7.054-5.168,7.054-9.556v-17.856c36.116,12.214,58.014,27.903,58.014,42.072C491.593,281.546,466.727,298.526,426.699,310.942z"/></g></g><g><g><path d="M395.089,144.457c-0.13-0.641-0.319-1.271-0.569-1.88c-0.25-0.601-0.561-1.181-0.921-1.721c-0.359-0.55-0.779-1.06-1.239-1.52c-0.46-0.46-0.971-0.88-1.521-1.24c-0.54-0.359-1.12-0.67-1.729-0.92c-0.601-0.25-1.23-0.45-1.87-0.57c-3.25-0.659-6.7,0.41-9.02,2.73c-0.46,0.46-0.88,0.97-1.239,1.52c-0.36,0.54-0.67,1.12-0.92,1.721c-0.25,0.609-0.45,1.239-0.58,1.88c-0.131,0.64-0.19,1.3-0.19,1.95c0,0.649,0.06,1.309,0.19,1.949c0.13,0.64,0.33,1.27,0.58,1.87c0.25,0.61,0.56,1.19,0.92,1.73c0.359,0.55,0.779,1.059,1.239,1.52c0.46,0.46,0.971,0.88,1.52,1.25c0.54,0.351,1.12,0.66,1.72,0.91c0.61,0.25,1.24,0.441,1.88,0.57c0.641,0.13,1.3,0.2,1.95,0.2s1.31-0.07,1.95-0.2c0.64-0.13,1.27-0.32,1.87-0.57c0.609-0.25,1.189-0.559,1.729-0.91c0.55-0.37,1.06-0.79,1.521-1.25c0.46-0.46,0.88-0.97,1.239-1.52c0.36-0.54,0.671-1.12,0.921-1.73c0.25-0.6,0.439-1.23,0.569-1.87s0.2-1.3,0.2-1.949C395.289,145.757,395.219,145.096,395.089,144.457z"/></g></g><g><g><path d="M132.23,214.967c-0.133-0.64-0.322-1.27-0.572-1.87c-0.25-0.609-0.561-1.189-0.92-1.73c-0.37-0.551-0.79-1.061-1.25-1.52c-0.46-0.46-0.97-0.88-1.521-1.24c-0.54-0.369-1.12-0.67-1.72-0.92c-0.61-0.25-1.24-0.449-1.87-0.569c-1.29-0.261-2.62-0.261-3.91,0c-0.64,0.12-1.27,0.319-1.87,0.569c-0.609,0.25-1.189,0.551-1.729,0.92c-0.55,0.36-1.06,0.78-1.521,1.24c-0.46,0.46-0.88,0.97-1.239,1.52c-0.36,0.54-0.67,1.12-0.92,1.73c-0.25,0.601-0.44,1.23-0.57,1.87c-0.13,0.64-0.2,1.3-0.2,1.95c0,2.63,1.07,5.21,2.93,7.07c0.461,0.46,0.971,0.88,1.521,1.239c0.54,0.36,1.12,0.67,1.729,0.92c0.601,0.25,1.231,0.45,1.87,0.57c0.641,0.13,1.301,0.2,1.95,0.2c0.65,0,1.311-0.07,1.95-0.2c0.64-0.12,1.269-0.32,1.88-0.57c0.6-0.25,1.18-0.56,1.72-0.92c0.551-0.359,1.061-0.779,1.521-1.239c1.859-1.86,2.93-4.44,2.93-7.07C132.419,216.267,132.359,215.606,132.23,214.967z"/></g></g><g><g><path d="M403.835,379.999h-295.67c-23.986,0-43.5,19.514-43.5,43.5V466.5c0,25.089,20.411,45.5,45.5,45.5h64.81c40.193,0,72.893-32.699,72.893-72.893v-39.108h16.267v39.108c0,40.193,32.698,72.893,72.892,72.893h64.811c25.089,0,45.501-20.411,45.501-45.5v-43.001C447.336,399.513,427.821,379.999,403.835,379.999z M174.974,492h-64.81c-14.061,0-25.5-11.439-25.5-25.5v-43.001c0-12.958,10.542-23.5,23.5-23.5h119.701v39.108h0.001C227.866,468.272,204.139,492,174.974,492z M401.835,492h-64.811c-29.164,0-52.892-23.728-52.892-52.893v-39.108h119.701c12.958,0,23.5,10.542,23.5,23.5V466.5h0.001C427.336,480.561,415.896,492,401.835,492z"/></g></g><g><g><path d="M145.684,410.211c-3.904-3.904-10.235-3.904-14.141,0l-32.334,32.334c-3.905,3.905-3.904,10.237,0.001,14.143c1.952,1.952,4.512,2.929,7.07,2.929c2.56,0,5.119-0.977,7.071-2.929l32.334-32.334C149.59,420.449,149.589,414.117,145.684,410.211z"/></g></g><g><g><path d="M348.071,410.211c-3.904-3.904-10.236-3.904-14.142,0l-32.333,32.334c-3.905,3.905-3.905,10.237,0,14.143c1.953,1.952,4.512,2.929,7.071,2.929s5.118-0.977,7.071-2.929l32.333-32.334C351.976,420.449,351.976,414.117,348.071,410.211z"/></g></g></svg>');
+        post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather" data-toggle="tooltip" title="" data-original-title="Anonymous"><path fill="currentColor" d="M12,3C9.31,3 7.41,4.22 7.41,4.22L6,9H18L16.59,4.22C16.59,4.22 14.69,3 12,3M12,11C9.27,11 5.39,11.54 5.13,11.59C4.09,11.87 3.25,12.15 2.59,12.41C1.58,12.75 1,13 1,13H23C23,13 22.42,12.75 21.41,12.41C20.75,12.15 19.89,11.87 18.84,11.59C18.84,11.59 14.82,11 12,11M7.5,14A3.5,3.5 0 0,0 4,17.5A3.5,3.5 0 0,0 7.5,21A3.5,3.5 0 0,0 11,17.5C11,17.34 11,17.18 10.97,17.03C11.29,16.96 11.63,16.9 12,16.91C12.37,16.91 12.71,16.96 13.03,17.03C13,17.18 13,17.34 13,17.5A3.5,3.5 0 0,0 16.5,21A3.5,3.5 0 0,0 20,17.5A3.5,3.5 0 0,0 16.5,14C15.03,14 13.77,14.9 13.25,16.19C12.93,16.09 12.55,16 12,16C11.45,16 11.07,16.09 10.75,16.19C10.23,14.9 8.97,14 7.5,14M7.5,15A2.5,2.5 0 0,1 10,17.5A2.5,2.5 0 0,1 7.5,20A2.5,2.5 0 0,1 5,17.5A2.5,2.5 0 0,1 7.5,15M16.5,15A2.5,2.5 0 0,1 19,17.5A2.5,2.5 0 0,1 16.5,20A2.5,2.5 0 0,1 14,17.5A2.5,2.5 0 0,1 16.5,15Z"></path></svg>');
       } else if(data.privacy_type == 5) {
         <?php if ($wo['config']['website_mode'] == 'linkedin') { ?>
-          post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>');
+          post_privacy_container.html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="feather"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>');
         <?php } ?>
       } else {
         return false;
@@ -1717,7 +1707,7 @@ function ShowProductReviews(id){
       $('#show_product_reviews_modal_info').html(data.html);
     }
     else{
-      $('#show_product_reviews_modal_info').html('<h5 class="search-filter-center-text empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather"><path fill="currentColor" d="M17,9H7V7H17M17,13H7V11H17M14,17H7V15H14M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"></path></svg> <?php echo $wo['lang']['no_available_data']; ?></h5>');
+      $('#show_product_reviews_modal_info').html('<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,9H7V7H17M17,13H7V11H17M14,17H7V15H14M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"></path></svg> <?php echo $wo['lang']['no_available_data']; ?></div>');
     }
   });
 }
@@ -1742,17 +1732,56 @@ function Wo_LoadMoreUserProducts(user_id){
 function Wo_OpenBannedMenu(type = 'notification'){
   if (type == 'notification') {
     $('.turn-off-sound').remove();
-    $('#notification-list').html("<span class='center-text padding-10'><svg style='color: #03A9F4;background-color: rgba(3, 169, 244, 0.25);' xmlns='http://www.w3.org/2000/svg' width='35' height='35' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M8.56 2.9A7 7 0 0 1 19 9v4m-2 4H2a3 3 0 0 0 3-3V9a7 7 0 0 1 .78-3.22M13.73 21a2 2 0 0 1-3.46 0'></path><line x1='1' y1='1' x2='23' y2='23'></line></svg><?php echo($wo['lang']['your_notifications_because_you_were_banned']); ?></span>");
+    $('#notification-list').html("<div class='empty_state'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'><path d='M18.586 20H4a.5.5 0 0 1-.4-.8l.4-.533V10c0-1.33.324-2.584.899-3.687L1.393 2.808l1.415-1.415 19.799 19.8-1.415 1.414L18.586 20zM6.408 7.822A5.985 5.985 0 0 0 6 10v8h10.586L6.408 7.822zM20 15.786l-2-2V10a6 6 0 0 0-8.99-5.203L7.56 3.345A8 8 0 0 1 20 10v5.786zM9.5 21h5a2.5 2.5 0 1 1-5 0z' fill='currentColor'/></svg><?php echo($wo['lang']['your_notifications_because_you_were_banned']); ?></div>");
   }
   else if(type == 'message'){
-    $('#messages-list').html("<span class='center-text padding-10'><svg style='color: #4caf50;background-color: rgba(76, 175, 80, 0.25);' xmlns='http://www.w3.org/2000/svg' width='35' height='35' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'></path></svg><?php echo($wo['lang']['your_messages_because_you_were_banned']); ?></span>");
+    $('#messages-list').html("<div class='empty_state'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'><path d='M6.455 19L2 22.5V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6.455zM4 18.385L5.763 17H20V5H4v13.385zM13.414 11l2.475 2.475-1.414 1.414L12 12.414 9.525 14.89l-1.414-1.414L10.586 11 8.11 8.525l1.414-1.414L12 9.586l2.475-2.475 1.414 1.414L13.414 11z' fill='currentColor'/></svg><?php echo($wo['lang']['your_messages_because_you_were_banned']); ?></div>");
   }
   else if(type == 'requests'){
-    $('#requests-list').html("<span class='center-text padding-10'><svg style='color: #3f51b5;background-color: rgba(63, 81, 181, 0.25);' xmlns='http://www.w3.org/2000/svg' width='35' height='35' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'></path><circle cx='8.5' cy='7' r='4'></circle><line x1='18' y1='8' x2='23' y2='13'></line><line x1='23' y1='8' x2='18' y2='13'></line></svg><?php echo($wo['lang']['your_requests_because_you_were_banned']); ?></span>");
+    $('#requests-list').html("<div class='empty_state'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'><path d='M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm7 6.586l2.121-2.122 1.415 1.415L20.414 19l2.122 2.121-1.415 1.415L19 20.414l-2.121 2.122-1.415-1.415L17.586 19l-2.122-2.121 1.415-1.415L19 17.586z' fill='currentColor'/></svg><?php echo($wo['lang']['your_requests_because_you_were_banned']); ?></div>");
   }
 }
 function AddYandexResult(target,self,result_co) {
   $(target).val($(self).text());
   $(result_co).html('');
 }
+
+const loadImageFromUrl = url => fetch(url)
+                            .then(response => response.blob())
+                            .then(blob => new Promise((resolve, reject) => {
+                            const reader = new FileReader()
+                            reader.onloadend = () => resolve(reader.result)
+                            reader.onerror = reject
+                            reader.readAsDataURL(blob)
+                           }));
+function imageDataToFile(dataurl, filename) {
+   var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+   bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+   while(n--){
+   u8arr[n] = bstr.charCodeAt(n);
+   }
+  return new File([u8arr], filename, {type:mime});
+}
+// Add an event listener to the window object to detect scroll events
+window.addEventListener('scroll', function() {
+  const videoElements = document.getElementsByTagName('video');
+  // Iterate over each video element and check if it's currently playing
+  for (let i = 0; i < videoElements.length; i++) {
+    const videoElement = videoElements[i];
+
+    // Get the position and dimensions of the video element relative to the viewport
+    const videoRect = videoElement.getBoundingClientRect();
+
+    // Get the viewport height
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    // Check if the video element is fully or partially visible in the viewport
+    const isVisible = videoRect.top <= viewportHeight && videoRect.bottom >= 0;
+
+    if (isVisible && !videoElement.paused) {
+    } else {
+      videoElement.pause();
+    }
+  }
+});
 </script>

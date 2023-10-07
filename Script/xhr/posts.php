@@ -1035,11 +1035,12 @@ if ($f == 'posts') {
                 $is_api = true;
             }
             if (!empty($_GET['posts_count']) && !empty($get_posts) && $is_api == false) {
-                if ($_GET['posts_count'] > 9 && $_GET['posts_count'] < 15) {
-                    echo Wo_GetAd('post_first', false);
-                } else if ($_GET['posts_count'] > 20 && $_GET['posts_count'] < 28) {
+                // if ($_GET['posts_count'] > 9 && $_GET['posts_count'] < 15) {
+                    // echo Wo_GetAd('post_first', false);
+                // } else 
+                if ($_GET['posts_count'] > 7 && $_GET['posts_count'] < 14) {
                     echo Wo_GetAd('post_second', false);
-                } else if ($_GET['posts_count'] > 29) {
+                } else if ($_GET['posts_count'] > 14) {
                     echo Wo_GetAd('post_third', false);
                 }
             }
