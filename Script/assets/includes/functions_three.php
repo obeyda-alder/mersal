@@ -9,9 +9,7 @@
 // | Copyright (c) 2022 WoWonder. All rights reserved.
 // +------------------------------------------------------------------------+
 /* Script Main Functions (File 3) */
-function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
-
-    //obeyda
+function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0, $need_details = false) {
     global $wo, $sqlConnect, $db;
     if ($wo['config']['point_level_system'] == 0) {
         return false;
@@ -44,7 +42,8 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
         ));
     }
     $points               = 0;
-    $dollar_to_point_cost = $wo['config']['dollar_to_point_cost'];    
+    $dollar_to_point_cost = $wo['config']['dollar_to_point_cost'];
+
     switch ($type) {
         case "comments":
             $query_comments     = "SELECT `id` FROM `" . T_COMMENTS . "` WHERE `post_id` = " . $post_id . " AND `user_id` = " . $user_id;
@@ -64,7 +63,12 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
             }
             break;
         case "share":
-            $points = $wo['config']['share_point'];
+            $post = Wo_PostData($post_id);
+            if($post['specialPost'] == 1) {
+                $points = $wo['config']['special_post_point'];
+            } else {
+                $points = $wo['config']['share_point'];
+            }
             break;
         case "wonders":
             if (!Wo_IsLiked($post_id, $user_id)) {
@@ -94,19 +98,29 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
     if ($points == 0) {
         return false;
     }
-    $wallet         = $points / $dollar_to_point_cost;
-    $user_data      = Wo_UserData($user_id);
+
+    $more_details = [];
+    $more_details['point_count'] = $points;
+    $more_details['dollar_to_point_cost'] = $dollar_to_point_cost;
+
+    $wallet            = $points / $dollar_to_point_cost;
+    $user_data         = Wo_UserData($user_id);
     $converted_points  = 0;
-    $points_amount  = 0;
-    $wallet_amount  = 0;
-    $balance_amount = 0;
-    $daily_points   = 0;
+    $points_amount     = 0;
+    $wallet_amount     = 0;
+    $balance_amount    = 0;
+    $daily_points      = 0;
+
     if ($action == '+') {
         $converted_points  = ($user_data['converted_points'] + $points);
         $points_amount  = ($user_data['points'] + $points);
         $daily_points   = ($user_data['daily_points'] + $points);
         $wallet_amount  = max(($user_data['wallet'] + $wallet), 0);
         $balance_amount = max(($user_data['balance'] + $wallet), 0);
+
+        $more_details['wallet_amount_after_calculated'] = $wallet_amount;
+        $more_details['balance_amount_after_calculated'] = $balance_amount;
+
         if ($wo["user"]["is_pro"] && $daily_points > $wo['config']['pro_day_limit']) {
             return false;
         } elseif ($wo["user"]["is_pro"] == 0 && $daily_points > $wo['config']['free_day_limit']) {
@@ -118,6 +132,9 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
         $daily_points   = ($user_data['daily_points'] - $points);
         $wallet_amount  = max(($user_data['wallet'] - $wallet), 0);
         $balance_amount = max(($user_data['balance'] - $wallet), 0);
+
+        $more_details['wallet_amount_after_calculated'] = $wallet_amount;
+        $more_details['balance_amount_after_calculated'] = $balance_amount;
     }
     $query_one = "";
     if ($wo['config']['point_allow_withdrawal'] == 1) {
@@ -127,7 +144,14 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0) {
     }
     $query = mysqli_query($sqlConnect, $query_one);
     if ($query) {
-        return true;
+        if ($need_details) {
+            return [
+                'status' => true,
+                'data'   => $more_details
+            ];
+        } else {
+            return true;
+        }
     }
 }
 function logData($data) {

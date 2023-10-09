@@ -14,12 +14,12 @@
    <td><?php echo $wo['userlist']['user']['paypal_email']; ?></td>
 
    <td><?php
-      if($wo['userlist']['type'] == "custom") {
-         echo $wo['config']['custom_name'];
-         } else if($wo['userlist']['type'] == "manual_method") {
-         echo $wo['config']['manual_method_name'];
-      }
-   ?></td>
+         if ($wo['userlist']['type'] == "custom") {
+            echo $wo['config']['custom_name'];
+         } else if ($wo['userlist']['type'] == "manual_method") {
+            echo $wo['config']['manual_method_name'];
+         }
+         ?></td>
 
    <td><?php echo $wo['userlist']['network']; ?></td>
    <td>$<?php echo $wo['userlist']['amount']; ?></td>
@@ -83,16 +83,13 @@
                               <p><?php echo ($wo['config']['custom_name']) ?></p>
                            <?php } else { ?>
                               <p><?php
-                              if ($wo['userlist']['type'] == "custom") {
-                                 echo $wo['config']['custom_name'];
-                              } else if ($wo['userlist']['type'] == "manual_method") {
-                                 echo $wo['config']['manual_method_name'];
-                              }
-                              
-                              
-                              
-                              // echo (ucfirst($wo['userlist']['type'])) 
-                              ?></p>
+                                 if ($wo['userlist']['type'] == "custom") {
+                                    echo $wo['config']['custom_name'];
+                                 } else if ($wo['userlist']['type'] == "manual_method") {
+                                    echo $wo['config']['manual_method_name'];
+                                 }
+                                 // echo (ucfirst($wo['userlist']['type']))
+                                 ?></p>
                            <?php } ?>
                            <p>
                               <span class="badge bg-success-bright text-success">Information</span>
@@ -106,4 +103,116 @@
          </div>
       </div>
    </td>
+   <td colspan="6" class="p-4">
+      <div class="row">
+         <div class="col-md-8 insert_shared_images"></div>
+      </div>
+   </td>
 </tr>
+
+<style>
+   .insert_shared_images {
+      background: #2c2d32;
+      border-color: #383a3f;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
+      border-radius: 10px;
+      padding: 0px 5px 20px;
+   }
+
+   .font-size {
+      font-size: 20px;
+      margin: 20px auto;
+   }
+
+   .insert_shared_images .screenshots {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+   }
+
+   .insert_shared_images img {
+      width: 150px;
+      height: 150px;
+      margin: 0 5px;
+      z-index: 9999999;
+   }
+
+   .image-popup.active {
+      opacity: 1;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 999999;
+   }
+
+   .image-popup.hidden {
+      opacity: 0;
+      max-height: 0;
+      pointer-events: none;
+   }
+
+   .image-popup img {
+      width: 25%;
+      position: absolute;
+      left: 25%;
+      top: 15%;
+   }
+</style>
+
+<script>
+   function get_shared_posts() {
+      var objData = new FormData();
+      objData.append('user_id', <?php echo json_encode($wo['userlist']['user_id']); ?>);
+      objData.append('has_proved', 1);
+      $.ajax({
+         url: Wo_Ajax_Requests_File() + '?f=posts&s=get_shared_posts',
+         type: 'POST',
+         data: objData,
+         contentType: false,
+         processData: false,
+         success: function(response) {
+            if (JSON.parse(response).status == 200) {
+               var data = JSON.parse(response).data;
+               if (data.length > 0) {
+                  var images = '';
+                  images += `<span class="badge bg-success-bright font-size">screenshots</span>
+                              <div class="screenshots">`;
+                  data.forEach(element => {
+                     images += `<img src="<?php echo Wo_GetMedia('${element.screenshot}') ?>" id="hover-image-${element.id}" onmouseleave="OnMouseLeave(${element.id})" onmouseover="OnMouseOver(${element.id})" alt="${element.social_type}" />`;
+                  });
+                  images += `</div>`;
+                  $('.insert_shared_images').html(images);
+               }
+            } else {
+               console.error(JSON.parse(response).error);
+            }
+         },
+      });
+   }
+
+   function OnMouseOver(id) {
+      const imagePreview = document.getElementById("hover-image-" + id);
+      const imageUrl = imagePreview.src;
+      selector = document.querySelector('.popup-image');
+      selectorPopup = document.querySelector('.image-popup');
+      selector.src = imageUrl;
+      selectorPopup.classList.add('active');
+      selectorPopup.classList.remove('hidden');
+   }
+
+   function OnMouseLeave(id) {
+      selectorPopup = document.querySelector('.image-popup');
+      selectorPopup.classList.add('hidden');
+      selectorPopup.classList.remove('active');
+   }
+
+   get_shared_posts();
+</script>

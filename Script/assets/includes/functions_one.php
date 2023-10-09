@@ -1472,6 +1472,7 @@ function Wo_UploadImage($file, $name, $type, $type_file, $user_id = 0, $placemen
     } else {
         $image_data['user_id'] = Wo_Secure($user_id);
     }
+
     if ($type == 'cover') {
         if ($placement == 'page') {
             $query_one_delete_cover = mysqli_query($sqlConnect, " SELECT `cover` FROM " . T_PAGES . " WHERE `page_id` = " . $image_data['page_id'] . " AND `active` = '1' ");
@@ -1665,6 +1666,10 @@ function Wo_UploadImage($file, $name, $type, $type_file, $user_id = 0, $placemen
                 }
             }
         }
+    } else if($type == 'document_shared_images') {
+        $filename = $dir . '/' . Wo_GenerateKey() . '_' . date('d') . '_' . md5(time()) . '_background_image.' . $ext;
+        move_uploaded_file($file, $filename);
+        return $filename;
     }
 }
 function Wo_UserBirthday($birthday) {
@@ -5187,7 +5192,7 @@ function Wo_CheckIfUserCanRegister($num = 10) {
     }
     return true;
 }
-function Wo_RegisterPost($re_data = array('recipient_id' => 0)) {
+function Wo_RegisterPost($re_data = array('recipient_id' => 0)) {    
     global $wo, $sqlConnect;
     if ($wo['config']['website_mode'] == 'instagram' && empty($re_data['postFile']) && empty($re_data['multi_image']) && empty($re_data['postSticker']) && empty($re_data['product_id']) && empty($re_data['album_name'])) {
         if (!preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $re_data["postText"])) {

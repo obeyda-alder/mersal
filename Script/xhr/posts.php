@@ -225,6 +225,12 @@ if ($f == 'posts') {
         $blur                 = 0;
         $post_privacy         = 0;
         $wo['add_watermark']  = true;
+
+        $specialPost = false;
+        if (Wo_IsAdmin() && isset($_POST['postSpecial']) && $_POST['postSpecial'] == "on") {
+            $specialPost = true;
+        }
+        
         if (Wo_CheckSession($hash_id) === false) {
             return false;
             die();
@@ -597,11 +603,13 @@ if ($f == 'posts') {
                 'postWatching' => Wo_Secure($watching),
                 'postTraveling' => Wo_Secure($traveling),
                 'postFileThumb' => Wo_Secure($video_thumb),
+                'specialPost' => $specialPost,
                 'time' => time(),
                 'blur' => $blur,
                 'multi_image_post' => 0,
                 'active' => $post_active
             );
+
             $post_data['send_notify'] = '';
             if ($wo['config']['notify_new_post'] == 1) {
                 if (!empty($wo['story']) && empty($wo['story']['page_id']) && empty($wo['story']['group_id']) && empty($wo['story']['event_id']) && $wo['story']['postPrivacy'] < 3) {
@@ -2323,5 +2331,70 @@ if ($f == 'posts') {
         header("Content-type: application/json");
         echo json_encode($data);
         exit();
+    }
+    if ($s == 'set_point_when_share' && isset($_POST['post_id'])) {
+      $res = Wo_RegisterPoint($_POST['post_id'], $_POST['name'], $_POST['action'], $_POST['user_id_'], true);
+
+      if($res['status'] && $res['data']['point_count'] > 0) {
+        $fields = [
+          'post_id'                          => $_POST['post_id'],
+          'social_type'                      => $_POST['type'],
+          'user_id'                          => $_POST['user_id_'],
+          'screenshot'                       => null,
+          'point_count'                      => $res['data']['point_count'],
+          'wallet_amount_after_calculated'   => $res['data']['wallet_amount_after_calculated'],
+          'balance_amount_after_calculated'  => $res['data']['balance_amount_after_calculated'],
+          'dollar_to_point_cost_when_shared' => $res['data']['dollar_to_point_cost'],
+          'has_proved'                       => 0,
+        ];
+        
+        $escapedValues = [];
+        foreach ($fields as $key => $value) {
+          $escapedKey = mysqli_real_escape_string($sqlConnect, $key);
+          $escapedValue = mysqli_real_escape_string($sqlConnect, $value);
+          $escapedValues[] = "`$escapedKey` = '$escapedValue'";
+        }
+  
+        $dynamicFields = implode(", ", $escapedValues);
+        $insert_shared_type = mysqli_query($sqlConnect, "INSERT INTO " . T_SHARE_POSTS . " SET $dynamicFields");
+      }
+
+
+      $data = array();
+      if ($insert_shared_type) {
+        $data['status'] = 200;
+        $data['message'] = "Record inserted successfully.";
+      } else {
+        $data['status'] = 500;
+        $data['error'] = mysqli_error($sqlConnect);
+      }
+
+      echo json_encode($data);
+    }
+    if($s == 'get_shared_posts') {
+        $user_id = mysqli_real_escape_string($sqlConnect, $_POST['user_id']);
+        $has_proved = mysqli_real_escape_string($sqlConnect, $_POST['has_proved']);
+
+        $query = mysqli_query($sqlConnect, "SELECT * FROM " . T_SHARE_POSTS . " WHERE `user_id` = '{$user_id}' AND `has_proved` = '{$has_proved}'");
+
+        $fetched_data = array();
+        if ($query) {
+            while ($row = mysqli_fetch_assoc($query)) {
+                $fetched_data[] = $row;
+            }
+        } else {
+            echo "Error: " . mysqli_error($sqlConnect);
+        }
+
+      $data = array();
+      if ($fetched_data) {
+        $data['status'] = 200;
+        $data['data'] = $fetched_data;
+      } else {
+        $data['status'] = 500;
+        $data['error'] = mysqli_error($sqlConnect);
+      }
+
+      echo json_encode($data);
     }
 }

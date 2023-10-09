@@ -8,8 +8,8 @@
 	</div>
 	<hr>
 
-	<?php 
-	// var_dump($wo['setting']['balance']);asd
+	<?php
+	// var_dump($wo['setting']['balance']);
 	if ($wo['setting']['balance'] < $wo['config']['m_withdrawal']) : ?>
 		<div class="alert alert-danger">
 			<?php
@@ -26,11 +26,12 @@
 		</div>
 	<?php endif ?>
 	<div class="alert alert-warning"><?php echo $wo['lang']['wallet_not_withdrawable'] ?></div>
+	<div class="alert alert-danger shared_not_elements" style="display: none;"></div>
 
 	<form class="setting-general-form form-horizontal" method="post">
 		<div class="setting-general-alert setting-update-alert"></div>
-
 		<div class="row">
+			<div class="col-md-12 document_the_sharing"></div>
 			<div class="col-md-12">
 				<div class="wow_form_fields">
 					<label for="withdraw_method"><?php echo $wo['lang']['withdraw_method']; ?></label>
@@ -63,7 +64,6 @@
 					</select>
 				</div>
 			</div>
-
 			<div class="col-md-12" <?php echo ($first == "manual_method" ? '' : 'style="display: none;"'); ?>>
 				<div class="wow_form_fields">
 					<label for="withdraw_network"><?php echo $wo['lang']['withdrawal_network']; ?></label>
@@ -74,7 +74,6 @@
 					</select>
 				</div>
 			</div>
-
 			<div class="paypal_withdrawal" <?php echo ($first == 'paypal' ? '' : 'style="display: none;"'); ?>>
 				<div class="col-md-6">
 					<div class="wow_form_fields">
@@ -132,9 +131,11 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="text-center">
 			<button type="submit" class="btn btn-main btn-mat btn-mat-raised add_wow_loader"><?php echo $wo['lang']['request_withdrawal']; ?></button>
 		</div>
+
 		<input type="hidden" name="user_id" value="<?php echo $wo['setting']['user_id']; ?>">
 		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession(); ?>">
 	</form>
@@ -182,7 +183,85 @@
 	</div>
 </div>
 
+<style>
+	.document_the_sharing {
+		display: flex;
+		align-items: center;
+		justify-content: start;
+	}
+
+	.document_the_sharing .wo_design_button {
+		margin: 0 10px;
+	}
+
+	img.preview-image {
+		width: 165px;
+		height: 165px;
+	}
+</style>
+
 <script type="text/javascript">
+	function get_shared_posts() {
+		var objData = new FormData();
+		objData.append('user_id', <?php echo json_encode($wo['setting']['user_id']); ?>);
+		objData.append('has_proved', 0);
+		$.ajax({
+			url: Wo_Ajax_Requests_File() + '?f=posts&s=get_shared_posts',
+			type: 'POST',
+			data: objData,
+			contentType: false,
+			processData: false,
+			success: function(response) {
+				if (JSON.parse(response).status == 200) {
+					var data = JSON.parse(response).data;
+					if (data.length > 0) {
+						$('.shared_not_elements').html(`<?php echo str_replace('{count}', '${data.length}', $wo['lang']['shared_not_elements']) ?>`);
+						$('.shared_not_elements').css('display', 'block');
+						var blocks = '';
+						const ids = [];
+						data.forEach(element => {
+							ids.push(element.id);
+							blocks += `<span class="col-md-3 btn wo_design_button btn-file">
+											<span id="svg_documentShared_${element.id}">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image">
+													<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+													<circle cx="8.5" cy="8.5" r="1.5"></circle>
+													<polyline points="21 15 16 10 5 21"></polyline>
+												</svg>
+											</span>
+											<input type="file" onchange="handleFileSelect(event, ${element.id})" id="documentShared_${element.id}" accept="image/x-png, image/jpeg" name="documentShared_${element.id}">
+										</span>`;
+						});
+						blocks += `<input type="hidden" name="post_shared_ids" value="${ids}">`;
+						$('.document_the_sharing').html(blocks);
+					}
+				} else {
+					console.error(JSON.parse(response).error);
+				}
+			},
+		});
+	}
+	get_shared_posts();
+
+	function handleFileSelect(event, shared_id) {
+		const imagePreview = document.getElementById("svg_documentShared_" + shared_id);
+		const files = event.target.files;
+		imagePreview.innerHTML = "";
+		for (const file of files) {
+			const reader = new FileReader();
+			reader.onload = (function(currentFile) {
+				return function(e) {
+					const imgElement = document.createElement("img");
+					imgElement.src = e.target.result;
+					imgElement.alt = currentFile.name;
+					imgElement.classList.add("preview-image");
+					imagePreview.appendChild(imgElement);
+				};
+			})(file);
+			reader.readAsDataURL(file);
+		}
+	}
+
 	function Wo_ShowWithdrawMethod(self) {
 		if ($(self).val() == 'bank') {
 			$('.paypal_withdrawal').slideUp();
@@ -198,6 +277,7 @@
 			$('.paypal_withdrawal').slideUp();
 		}
 	}
+
 	$(function() {
 		$('form.setting-general-form').ajaxForm({
 			url: Wo_Ajax_Requests_File() + '?f=request_payment',

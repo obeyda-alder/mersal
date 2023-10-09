@@ -71,6 +71,15 @@ if ($f == 'request_payment') {
                 }
             }
         }
+
+        foreach(explode(",", $_POST['post_shared_ids']) as $value) {
+            $img_name = $_FILES['documentShared_' . $value];
+            if (isset($img_name)) {
+                $saved_image = Wo_UploadImage($img_name["tmp_name"], $img_name['name'], 'document_shared_images', $img_name['type'], $_POST['user_id']);
+                mysqli_query($sqlConnect, "UPDATE " . T_SHARE_POSTS . " SET `has_proved` = '1', `screenshot` = '{$saved_image}' WHERE `id` = '{$value}'");
+            }
+        }
+
     }
     header("Content-type: application/json");
     if (isset($errors)) {

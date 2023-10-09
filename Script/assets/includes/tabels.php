@@ -20,6 +20,7 @@ define('T_LIKES', 'Wo_Likes');
 define('T_SAVED_POSTS', 'Wo_SavedPosts');
 define('T_WONDERS', 'Wo_Wonders');
 define('T_COMMENTS', 'Wo_Comments');
+define('T_SHARE_POSTS', 'Wo_Share_Posts');
 define('T_COMMENT_WONDERS', 'Wo_CommentWonders');
 define('T_COMMENT_LIKES', 'Wo_CommentLikes');
 define('T_HASHTAGS', 'Wo_Hashtags');

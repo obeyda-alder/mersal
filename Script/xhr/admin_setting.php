@@ -5826,12 +5826,4 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
         echo json_encode($data);
         exit();
     }
-    if($s == 'set_point_when_share' && isset($_POST['post_id'])) {
-         //obeyda
-        $data['status'] = array('status' => 500);
-        if(Wo_RegisterPoint($_POST['post_id'], $_POST['name'], $_POST['action'])) {
-            $data['status'] = 200;
-        }
-        echo json_encode($data);
-    }
 }
