@@ -1053,7 +1053,7 @@
 <script type="text/javascript">
   function setPoint(type) {
     var post_id = <?php echo json_encode($_GET['post_id']); ?>;
-    var user_id = <?php echo json_encode($wo['story']['publisher']['user_id']); ?>;
+    var user_id = <?php echo json_encode($wo['user']['user_id']); ?>;
     var objData = new FormData();
     objData.append('post_id', post_id);
     objData.append('name', 'share');

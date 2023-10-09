@@ -2359,7 +2359,6 @@ if ($f == 'posts') {
         $insert_shared_type = mysqli_query($sqlConnect, "INSERT INTO " . T_SHARE_POSTS . " SET $dynamicFields");
       }
 
-
       $data = array();
       if ($insert_shared_type) {
         $data['status'] = 200;

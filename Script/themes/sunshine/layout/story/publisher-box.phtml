@@ -282,7 +282,18 @@ if (!empty($_GET['url'])) {
 		<!--Publisher Box Footer-->
 		<div class="publisher-box-footer">
 			<div class="sun_pub_more">
-			
+			<?php if (Wo_IsAdmin()) { ?>
+				<div class="sun_pub_more_items special_post">
+					<div class="poster-left-buttons">
+						<label class="toggle">
+							<input class="toggle-checkbox" name="postSpecial" type="checkbox">
+							<div class="toggle-switch"></div>
+							<span class="toggle-label"> <?php echo $wo['lang']['special_post'] ?> </span>
+						</label>
+					</div>
+				</div>
+			<hr style="width: 100%;">
+			<?php } ?>
 			<?php if ($wo['config']['website_mode'] == 'linkedin' && empty($wo['page_profile']) && ($wo['page'] == 'timeline' || $wo['page'] == 'home')) { ?>
 
 				<?php if ($wo['config']['post_poll'] == 1) { ?>
