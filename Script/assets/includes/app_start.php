@@ -1,10 +1,10 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);
-@ini_set("max_execution_time", 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+@ini_set("max_execution_time", 1);
 @ini_set("memory_limit", "-1");
-@set_time_limit(0);
+@set_time_limit(1);
 require_once "config.php";
 require_once "assets/libraries/DB/vendor/autoload.php";
 
@@ -74,14 +74,14 @@ if (isset($_SESSION["theme"]) && !empty($_SESSION["theme"])) {
         header("Location: " . $_SERVER["HTTP_REFERER"]);
     }
 }
-$config["withdrawal_payment_method"] = json_decode($config['withdrawal_payment_method'],true);
+$config["withdrawal_payment_method"] = json_decode($config['withdrawal_payment_method'], true);
 // Config Url
 $config["theme_url"] = $site_url . "/themes/" . $config["theme"];
 $config["site_url"]  = $site_url;
 $wo["site_url"]      = $site_url;
-$config["wasabi_site_url"]         = "https://s3.".$config["wasabi_bucket_region"].".wasabisys.com";
+$config["wasabi_site_url"]         = "https://s3." . $config["wasabi_bucket_region"] . ".wasabisys.com";
 if (!empty($config["wasabi_bucket_name"])) {
-    $config["wasabi_site_url"] = "https://s3.".$config["wasabi_bucket_region"].".wasabisys.com/".$config["wasabi_bucket_name"];
+    $config["wasabi_site_url"] = "https://s3." . $config["wasabi_bucket_region"] . ".wasabisys.com/" . $config["wasabi_bucket_name"];
 }
 $s3_site_url         = "https://test.s3.amazonaws.com";
 if (!empty($config["bucket_name"])) {
@@ -370,8 +370,7 @@ try {
     $wo["products_categories"] = Wo_GetCategories(T_PRODUCTS_CATEGORY);
     $wo["job_categories"]      = Wo_GetCategories(T_JOB_CATEGORY);
     $wo["reactions_types"]     = Wo_GetReactionsTypes();
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $wo["genders"]             = array();
     $wo["page_categories"]     = array();
     $wo["group_categories"]    = array();
@@ -403,33 +402,35 @@ if ($wo["config"]["colored_posts_system"] == 1) {
 }
 
 
-$wo['manage_pro_features'] = array('funding_request' => 'can_use_funding',
-                                   'job_request' => 'can_use_jobs',
-                                   'game_request' => 'can_use_games',
-                                   'market_request' => 'can_use_market',
-                                   'event_request' => 'can_use_events',
-                                   'forum_request' => 'can_use_forum',
-                                   'groups_request' => 'can_use_groups',
-                                   'pages_request' => 'can_use_pages',
-                                   'audio_call_request' => 'can_use_audio_call',
-                                   'video_call_request' => 'can_use_video_call',
-                                   'offer_request' => 'can_use_offer',
-                                   'blog_request' => 'can_use_blog',
-                                   'movies_request' => 'can_use_movies',
-                                   'story_request' => 'can_use_story',
-                                   'stickers_request' => 'can_use_stickers',
-                                   'gif_request' => 'can_use_gif',
-                                   'gift_request' => 'can_use_gift',
-                                   'nearby_request' => 'can_use_nearby',
-                                   'video_upload_request' => 'can_use_video_upload',
-                                   'audio_upload_request' => 'can_use_audio_upload',
-                                   'shout_box_request' => 'can_use_shout_box',
-                                   'colored_posts_request' => 'can_use_colored_posts',
-                                   'poll_request' => 'can_use_poll',
-                                   'live_request' => 'can_use_live',
-                                   'profile_background_request' => 'can_use_background',
-                                   'affiliate_request' => 'can_use_affiliate',
-                                   'chat_request' => 'can_use_chat');
+$wo['manage_pro_features'] = array(
+    'funding_request' => 'can_use_funding',
+    'job_request' => 'can_use_jobs',
+    'game_request' => 'can_use_games',
+    'market_request' => 'can_use_market',
+    'event_request' => 'can_use_events',
+    'forum_request' => 'can_use_forum',
+    'groups_request' => 'can_use_groups',
+    'pages_request' => 'can_use_pages',
+    'audio_call_request' => 'can_use_audio_call',
+    'video_call_request' => 'can_use_video_call',
+    'offer_request' => 'can_use_offer',
+    'blog_request' => 'can_use_blog',
+    'movies_request' => 'can_use_movies',
+    'story_request' => 'can_use_story',
+    'stickers_request' => 'can_use_stickers',
+    'gif_request' => 'can_use_gif',
+    'gift_request' => 'can_use_gift',
+    'nearby_request' => 'can_use_nearby',
+    'video_upload_request' => 'can_use_video_upload',
+    'audio_upload_request' => 'can_use_audio_upload',
+    'shout_box_request' => 'can_use_shout_box',
+    'colored_posts_request' => 'can_use_colored_posts',
+    'poll_request' => 'can_use_poll',
+    'live_request' => 'can_use_live',
+    'profile_background_request' => 'can_use_background',
+    'affiliate_request' => 'can_use_affiliate',
+    'chat_request' => 'can_use_chat'
+);
 $wo['available_pro_features'] = array();
 $wo['available_verified_features'] = array();
 
@@ -486,13 +487,13 @@ if (!$wo['config']['can_use_background']) {
 if (!$wo['config']['can_use_chat']) {
     $wo['config']['chatSystem'] = 0;
 }
-$wo['config']['report_reasons'] = json_decode($wo['config']['report_reasons'],true);
+$wo['config']['report_reasons'] = json_decode($wo['config']['report_reasons'], true);
 
 
 $wo['config']['filesVersion'] = "4.1.4";
 
 if ($wo['config']['filesVersion'] != $wo['config']['version']) {
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
-    error_reporting(0);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 }

@@ -376,4 +376,3 @@ if ($application == 'windows_app') {
 }
 mysqli_close($sqlConnect);
 unset($wo);
-?>

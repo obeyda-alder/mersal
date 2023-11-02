@@ -9,7 +9,8 @@
 // | Copyright (c) 2022 WoWonder. All rights reserved.
 // +------------------------------------------------------------------------+
 /* Script Main Functions (File 1) */
-function Wo_GetTerms() {
+function Wo_GetTerms()
+{
     global $sqlConnect;
     $data  = array();
     $query = mysqli_query($sqlConnect, "SELECT * FROM " . T_TERMS);
@@ -20,7 +21,8 @@ function Wo_GetTerms() {
     }
     return $data;
 }
-function Wo_GetHtmlEmails() {
+function Wo_GetHtmlEmails()
+{
     global $sqlConnect;
     $data  = array();
     $query = mysqli_query($sqlConnect, "SELECT * FROM " . T_HTML_EMAILS);
@@ -31,7 +33,8 @@ function Wo_GetHtmlEmails() {
     }
     return $data;
 }
-function Wo_GetUserFromSessionID($session_id, $platform = 'web') {
+function Wo_GetUserFromSessionID($session_id, $platform = 'web')
+{
     global $sqlConnect, $db;
     if (empty($session_id)) {
         return false;
@@ -52,7 +55,8 @@ function Wo_GetUserFromSessionID($session_id, $platform = 'web') {
     }
     return false;
 }
-function Wo_GetDataFromSessionID($session_id, $platform = 'web') {
+function Wo_GetDataFromSessionID($session_id, $platform = 'web')
+{
     global $sqlConnect;
     if (empty($session_id)) {
         return false;
@@ -66,7 +70,8 @@ function Wo_GetDataFromSessionID($session_id, $platform = 'web') {
     }
     return false;
 }
-function Wo_GetSessionDataFromUserID($user_id = 0) {
+function Wo_GetSessionDataFromUserID($user_id = 0)
+{
     global $sqlConnect;
     if (empty($user_id)) {
         return false;
@@ -79,7 +84,8 @@ function Wo_GetSessionDataFromUserID($user_id = 0) {
     }
     return false;
 }
-function Wo_GetAllSessionsFromUserID($user_id = 0,$limit = 10,$offset = array()) {
+function Wo_GetAllSessionsFromUserID($user_id = 0, $limit = 10, $offset = array())
+{
     global $sqlConnect;
     if (empty($user_id)) {
         return false;
@@ -87,10 +93,10 @@ function Wo_GetAllSessionsFromUserID($user_id = 0,$limit = 10,$offset = array())
     $offset_text = "";
     if (!empty($offset)) {
         $offset_text = implode(',', $offset);
-        $offset_text = " AND `id` NOT IN (".$offset_text.") ";
+        $offset_text = " AND `id` NOT IN (" . $offset_text . ") ";
     }
     $user_id = Wo_Secure($user_id);
-    $query   = mysqli_query($sqlConnect, "SELECT * FROM " . T_APP_SESSIONS . " WHERE `user_id` = '{$user_id}' ".$offset_text." ORDER by time DESC LIMIT " . $limit);
+    $query   = mysqli_query($sqlConnect, "SELECT * FROM " . T_APP_SESSIONS . " WHERE `user_id` = '{$user_id}' " . $offset_text . " ORDER by time DESC LIMIT " . $limit);
     $data    = array();
     if (mysqli_num_rows($query)) {
         while ($row = mysqli_fetch_assoc($query)) {
@@ -108,7 +114,7 @@ function Wo_GetAllSessionsFromUserID($user_id = 0,$limit = 10,$offset = array())
                 $row['browser'] = 'Desktop Application';
             }
             if (!empty($row['platform_details'])) {
-                $uns               = (Array) json_decode($row['platform_details']);
+                $uns               = (array) json_decode($row['platform_details']);
                 $row['browser']    = $uns['name'];
                 $row['platform']   = ucfirst($uns['platform']);
                 $row['ip_address'] = $uns['ip_address'];
@@ -118,7 +124,8 @@ function Wo_GetAllSessionsFromUserID($user_id = 0,$limit = 10,$offset = array())
     }
     return $data;
 }
-function Wo_GetPlatformFromUser_ID($user_id = 0) {
+function Wo_GetPlatformFromUser_ID($user_id = 0)
+{
     global $sqlConnect;
     if (empty($user_id)) {
         return false;
@@ -131,7 +138,8 @@ function Wo_GetPlatformFromUser_ID($user_id = 0) {
     }
     return false;
 }
-function Wo_SaveTerm($update_name, $value) {
+function Wo_SaveTerm($update_name, $value)
+{
     global $wo, $config, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -146,7 +154,8 @@ function Wo_SaveTerm($update_name, $value) {
         return false;
     }
 }
-function Wo_SaveHTMLEmails($update_name, $value) {
+function Wo_SaveHTMLEmails($update_name, $value)
+{
     global $wo, $config, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -161,7 +170,8 @@ function Wo_SaveHTMLEmails($update_name, $value) {
         return false;
     }
 }
-function Wo_GetConfig() {
+function Wo_GetConfig()
+{
     global $sqlConnect;
     $data  = array();
     $query = mysqli_query($sqlConnect, "SELECT * FROM " . T_CONFIG);
@@ -172,7 +182,8 @@ function Wo_GetConfig() {
     }
     return $data;
 }
-function Wo_GetLangDetails($lang_key = '') {
+function Wo_GetLangDetails($lang_key = '')
+{
     global $sqlConnect, $wo;
     if (empty($lang_key)) {
         return false;
@@ -190,7 +201,8 @@ function Wo_GetLangDetails($lang_key = '') {
     }
     return $data;
 }
-function Wo_LangsFromDB($lang = 'english') {
+function Wo_LangsFromDB($lang = 'english')
+{
     global $sqlConnect, $wo;
     $data = array();
     if (empty($lang)) {
@@ -206,10 +218,12 @@ function Wo_LangsFromDB($lang = 'english') {
     }
     return $data;
 }
-function sort_alphabetically($a,$b) {
+function sort_alphabetically($a, $b)
+{
     return $a['name'] > $b['name'];
 }
-function Wo_LangsNamesFromDB($lang = 'english') {
+function Wo_LangsNamesFromDB($lang = 'english')
+{
     global $sqlConnect, $wo;
     $data  = array();
     $query = mysqli_query($sqlConnect, "SHOW COLUMNS FROM " . T_LANGS);
@@ -224,7 +238,8 @@ function Wo_LangsNamesFromDB($lang = 'english') {
     asort($data);
     return $data;
 }
-function Wo_SaveConfig($update_name, $value) {
+function Wo_SaveConfig($update_name, $value)
+{
     global $wo, $config, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -242,7 +257,8 @@ function Wo_SaveConfig($update_name, $value) {
         return false;
     }
 }
-function Wo_Login($username, $password) {
+function Wo_Login($username, $password)
+{
     global $sqlConnect;
     if (empty($username) || empty($password)) {
         return false;
@@ -278,7 +294,8 @@ function Wo_Login($username, $password) {
     }
     return false;
 }
-function Wo_CreateLoginSession($user_id = 0) {
+function Wo_CreateLoginSession($user_id = 0)
+{
     global $sqlConnect, $db;
     if (empty($user_id)) {
         return false;
@@ -295,7 +312,8 @@ function Wo_CreateLoginSession($user_id = 0) {
         }
     }
 }
-function Wo_IsUserCookie($user_id, $password) {
+function Wo_IsUserCookie($user_id, $password)
+{
     global $sqlConnect;
     if (empty($user_id) || empty($password)) {
         return false;
@@ -305,7 +323,8 @@ function Wo_IsUserCookie($user_id, $password) {
     $query    = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) FROM " . T_USERS . " WHERE `user_id` = '{$user_id}' AND `password` = '{$password}'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_SetLoginWithSession($user_email) {
+function Wo_SetLoginWithSession($user_email)
+{
     if (empty($user_email)) {
         return false;
     }
@@ -317,7 +336,8 @@ function Wo_SetLoginWithSession($user_email) {
         'ads' => array()
     ))), time() + (10 * 365 * 24 * 60 * 60));
 }
-function Wo_UserActive($username) {
+function Wo_UserActive($username)
+{
     global $sqlConnect;
     if (empty($username)) {
         return false;
@@ -326,7 +346,8 @@ function Wo_UserActive($username) {
     $query    = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) FROM " . T_USERS . "  WHERE (`username` = '{$username}' OR `email` = '{$username}' OR `phone_number` = '{$username}') AND `active` = '1'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_UserInactive($username) {
+function Wo_UserInactive($username)
+{
     global $sqlConnect;
     if (empty($username)) {
         return false;
@@ -335,7 +356,8 @@ function Wo_UserInactive($username) {
     $query    = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) FROM " . T_USERS . "  WHERE (`username` = '{$username}' OR `email` = '{$username}' OR `phone_number` = '{$username}') AND `active` = '2'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_UserExists($username) {
+function Wo_UserExists($username)
+{
     global $sqlConnect;
     if (empty($username)) {
         return false;
@@ -344,7 +366,8 @@ function Wo_UserExists($username) {
     $query    = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) FROM " . T_USERS . " WHERE `username` = '{$username}'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_IsUserComplete($user_id) {
+function Wo_IsUserComplete($user_id)
+{
     global $sqlConnect;
     if (empty($user_id)) {
         return false;
@@ -353,7 +376,8 @@ function Wo_IsUserComplete($user_id) {
     $query   = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) FROM " . T_USERS . " WHERE `user_id` = '{$user_id}' AND `start_up` = '0'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_UserIdFromUsername($username) {
+function Wo_UserIdFromUsername($username)
+{
     global $sqlConnect;
     if (empty($username)) {
         return false;
@@ -362,7 +386,8 @@ function Wo_UserIdFromUsername($username) {
     $query    = mysqli_query($sqlConnect, "SELECT `user_id` FROM " . T_USERS . " WHERE `username` = '{$username}'");
     return Wo_Sql_Result($query, 0, 'user_id');
 }
-function Wo_UserIdFromPhoneNumber($phone_number) {
+function Wo_UserIdFromPhoneNumber($phone_number)
+{
     global $sqlConnect;
     if (empty($phone_number)) {
         return false;
@@ -371,7 +396,8 @@ function Wo_UserIdFromPhoneNumber($phone_number) {
     $query        = mysqli_query($sqlConnect, "SELECT `user_id` FROM " . T_USERS . " WHERE `phone_number` = '{$phone_number}'");
     return Wo_Sql_Result($query, 0, 'user_id');
 }
-function Wo_UserNameFromPhoneNumber($phone_number) {
+function Wo_UserNameFromPhoneNumber($phone_number)
+{
     global $sqlConnect;
     if (empty($phone_number)) {
         return false;
@@ -380,7 +406,8 @@ function Wo_UserNameFromPhoneNumber($phone_number) {
     $query        = mysqli_query($sqlConnect, "SELECT `username` FROM " . T_USERS . " WHERE `phone_number` = '{$phone_number}'");
     return Wo_Sql_Result($query, 0, 'username');
 }
-function Wo_UserIdForLogin($username) {
+function Wo_UserIdForLogin($username)
+{
     global $sqlConnect;
     if (empty($username)) {
         return false;
@@ -389,7 +416,8 @@ function Wo_UserIdForLogin($username) {
     $query    = mysqli_query($sqlConnect, "SELECT `user_id` FROM " . T_USERS . " WHERE `username` = '{$username}' OR `email` = '{$username}' OR `phone_number` = '{$username}'");
     return Wo_Sql_Result($query, 0, 'user_id');
 }
-function Wo_UserIdFromEmail($email) {
+function Wo_UserIdFromEmail($email)
+{
     global $sqlConnect;
     if (empty($email)) {
         return false;
@@ -398,7 +426,8 @@ function Wo_UserIdFromEmail($email) {
     $query = mysqli_query($sqlConnect, "SELECT `user_id` FROM " . T_USERS . " WHERE `email` = '{$email}'");
     return Wo_Sql_Result($query, 0, 'user_id');
 }
-function Wo_UserIDFromEmailCode($email_code) {
+function Wo_UserIDFromEmailCode($email_code)
+{
     global $sqlConnect;
     if (empty($email_code)) {
         return false;
@@ -407,7 +436,8 @@ function Wo_UserIDFromEmailCode($email_code) {
     $query      = mysqli_query($sqlConnect, "SELECT `user_id` FROM " . T_USERS . " WHERE `email_code` = '{$email_code}' AND (`time_code_sent` > '" . time() . "' OR `time_code_sent` = '0')");
     return Wo_Sql_Result($query, 0, 'user_id');
 }
-function Wo_UserIDFromSMSCode($email_code) {
+function Wo_UserIDFromSMSCode($email_code)
+{
     global $sqlConnect;
     if (empty($email_code)) {
         return false;
@@ -416,7 +446,8 @@ function Wo_UserIDFromSMSCode($email_code) {
     $query      = mysqli_query($sqlConnect, "SELECT `user_id` FROM " . T_USERS . " WHERE `sms_code` = '{$email_code}'");
     return Wo_Sql_Result($query, 0, 'user_id');
 }
-function Wo_IsBlocked($user_id) {
+function Wo_IsBlocked($user_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -429,7 +460,8 @@ function Wo_IsBlocked($user_id) {
     $query          = mysqli_query($sqlConnect, "SELECT COUNT(`id`) FROM " . T_BLOCKS . " WHERE (`blocker` = {$logged_user_id} AND `blocked` = {$user_id}) OR (`blocker` = {$user_id} AND `blocked` = {$logged_user_id})");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_RegisterBlock($user_id) {
+function Wo_RegisterBlock($user_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -442,7 +474,8 @@ function Wo_RegisterBlock($user_id) {
     $query          = mysqli_query($sqlConnect, "INSERT INTO " . T_BLOCKS . " (`blocker`, `blocked`) VALUES ('{$logged_user_id}', '{$user_id}')");
     return ($query) ? true : false;
 }
-function Wo_RemoveBlock($user_id) {
+function Wo_RemoveBlock($user_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -455,7 +488,8 @@ function Wo_RemoveBlock($user_id) {
     $query          = mysqli_query($sqlConnect, "DELETE FROM " . T_BLOCKS . " WHERE `blocker` = '{$logged_user_id}' AND `blocked` = '{$user_id}'");
     return ($query) ? true : false;
 }
-function Wo_GetBlockedMembers($user_id = 0) {
+function Wo_GetBlockedMembers($user_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -474,7 +508,8 @@ function Wo_GetBlockedMembers($user_id = 0) {
     }
     return $data;
 }
-function Wo_EmailExists($email) {
+function Wo_EmailExists($email)
+{
     global $sqlConnect;
     if (empty($email)) {
         return false;
@@ -483,7 +518,8 @@ function Wo_EmailExists($email) {
     $query = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) FROM " . T_USERS . " WHERE `email` = '{$email}'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_PhoneExists($phone) {
+function Wo_PhoneExists($phone)
+{
     global $sqlConnect;
     if (empty($phone)) {
         return false;
@@ -492,7 +528,8 @@ function Wo_PhoneExists($phone) {
     $query = mysqli_query($sqlConnect, "SELECT COUNT(`user_id`) FROM " . T_USERS . " WHERE `phone_number` = '{$phone}'");
     return (Wo_Sql_Result($query, 0) > 1) ? true : false;
 }
-function Wo_IsOnwerUser($user_id) {
+function Wo_IsOnwerUser($user_id)
+{
     global $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -508,7 +545,8 @@ function Wo_IsOnwerUser($user_id) {
         return false;
     }
 }
-function Wo_IsOnwer($user_id) {
+function Wo_IsOnwer($user_id)
+{
     global $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -528,7 +566,8 @@ function Wo_IsOnwer($user_id) {
         return true;
     }
 }
-function Wo_IsReportExists($id = false, $type = 'user') {
+function Wo_IsReportExists($id = false, $type = 'user')
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false || !$id || !$type) {
         return false;
@@ -552,7 +591,8 @@ function Wo_IsReportExists($id = false, $type = 'user') {
     }
     return $match;
 }
-function Wo_UserData($user_id, $password = true) {
+function Wo_UserData($user_id, $password = true)
+{
 
     // var_dump($user_id);
 
@@ -614,8 +654,7 @@ function Wo_UserData($user_id, $password = true) {
     $explode3 = @explode('.', $fetched_data['avatar']);
     if ($fetched_data['avatar'] != $wo['userDefaultAvatar'] && $fetched_data['avatar'] != $wo['userDefaultFAvatar']) {
         @$fetched_data['avatar_full'] = $explode3[0] . '_full.' . $explode2;
-    }
-    else{
+    } else {
         @$fetched_data['avatar_full'] = $fetched_data['avatar'];
     }
     $fetched_data['avatar']        = Wo_GetMedia($fetched_data['avatar']) . '?cache=' . $fetched_data['last_avatar_mod'];
@@ -635,9 +674,9 @@ function Wo_UserData($user_id, $password = true) {
         $fetched_data['name'] = $fetched_data['username'];
     }
     if (!empty($fetched_data['details'])) {
-        $fetched_data['details'] = (Array) json_decode($fetched_data['details']);
+        $fetched_data['details'] = (array) json_decode($fetched_data['details']);
     }
-    $fetched_data['API_notification_settings'] = (Array) json_decode(html_entity_decode($fetched_data['notification_settings']));
+    $fetched_data['API_notification_settings'] = (array) json_decode(html_entity_decode($fetched_data['notification_settings']));
     if ($wo['loggedin']) {
         $fetched_data['is_notify_stopped'] = $db->where('following_id', $user_id)->where('follower_id', $wo['user']['user_id'])->where('notify', 1)->getValue(T_FOLLOWERS, 'COUNT(*)');
     }
@@ -648,7 +687,7 @@ function Wo_UserData($user_id, $password = true) {
     $fetched_data['groups_data']         = '';
     $fetched_data['album_data']          = '';
     if (!empty($fetched_data['sidebar_data'])) {
-        $sidebar_data = (Array) json_decode($fetched_data['sidebar_data']);
+        $sidebar_data = (array) json_decode($fetched_data['sidebar_data']);
         if (!empty($sidebar_data['following_data'])) {
             $fetched_data['following_data'] = $sidebar_data['following_data'];
         }
@@ -738,7 +777,8 @@ function Wo_UserData($user_id, $password = true) {
     }
     return $fetched_data;
 }
-function Wo_UserStatus($user_id, $lastseen, $type = '') {
+function Wo_UserStatus($user_id, $lastseen, $type = '')
+{
     global $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -771,7 +811,8 @@ function Wo_UserStatus($user_id, $lastseen, $type = '') {
     }
     return $status;
 }
-function Wo_LastSeen($user_id, $type = '') {
+function Wo_LastSeen($user_id, $type = '')
+{
     global $wo, $sqlConnect, $cache;
     if ($wo['loggedin'] == false) {
         return false;
@@ -797,7 +838,8 @@ function Wo_LastSeen($user_id, $type = '') {
         return false;
     }
 }
-function Wo_RegisterUser($registration_data, $invited = false) {
+function Wo_RegisterUser($registration_data, $invited = false)
+{
     global $wo, $sqlConnect;
     if (empty($registration_data)) {
         return false;
@@ -845,7 +887,24 @@ function Wo_RegisterUser($registration_data, $invited = false) {
         return false;
     }
 }
-function Wo_ActivateUser($email, $code) {
+function Wo_ActivateVerifyCode($email, $code)
+{
+    global $sqlConnect;
+    $email  = Wo_Secure($email);
+    $code   = Wo_Secure($code);
+    $query  = mysqli_query($sqlConnect, " SELECT COUNT(`user_id`)  FROM " . T_USERS . "  WHERE `email` = '{$email}' AND `verify_code` = '{$code}' AND `active` = '0'");
+    $result = Wo_Sql_Result($query, 0);
+    if ($result == 1) {
+        $query_two = mysqli_query($sqlConnect, " UPDATE " . T_USERS . "  SET `active` = '1' WHERE `email` = '{$email}' ");
+        if ($query_two) {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+function Wo_ActivateUser($email, $code)
+{
     global $sqlConnect;
     $email  = Wo_Secure($email);
     $code   = Wo_Secure($code);
@@ -860,7 +919,8 @@ function Wo_ActivateUser($email, $code) {
         return false;
     }
 }
-function Wo_ResetPassword($user_id, $password) {
+function Wo_ResetPassword($user_id, $password)
+{
     global $sqlConnect;
     if (empty($user_id) || !is_numeric($user_id) || $user_id < 0) {
         return false;
@@ -877,7 +937,8 @@ function Wo_ResetPassword($user_id, $password) {
         return false;
     }
 }
-function Wo_GetLanguages() {
+function Wo_GetLanguages()
+{
     $data           = array();
     $dir            = scandir('assets/languages');
     $languages_name = array_diff($dir, array(
@@ -891,7 +952,8 @@ function Wo_GetLanguages() {
     ));
     return $languages_name;
 }
-function Wo_SlugPost($string) {
+function Wo_SlugPost($string)
+{
     $slug = url_slug($string, array(
         'delimiter' => '-',
         'limit' => 80,
@@ -903,7 +965,8 @@ function Wo_SlugPost($string) {
     ));
     return $slug . '.html';
 }
-function Wo_GetPostIdFromUrl($string) {
+function Wo_GetPostIdFromUrl($string)
+{
     $slug_string = '';
     $string      = Wo_Secure($string);
     if (preg_match('/[^a-z\s-]/i', $string)) {
@@ -914,7 +977,8 @@ function Wo_GetPostIdFromUrl($string) {
     }
     return Wo_Secure($slug_string);
 }
-function Wo_GetBlogIdFromUrl($string) {
+function Wo_GetBlogIdFromUrl($string)
+{
     $slug_string = '';
     $string      = Wo_Secure($string);
     if (preg_match('/[^a-z\s-]/i', $string)) {
@@ -925,7 +989,8 @@ function Wo_GetBlogIdFromUrl($string) {
     }
     return Wo_Secure($slug_string);
 }
-function Wo_isValidPasswordResetToken($string) {
+function Wo_isValidPasswordResetToken($string)
+{
     global $sqlConnect;
     $string_exp = explode('_', $string);
     $user_id    = Wo_Secure($string_exp[0]);
@@ -939,7 +1004,8 @@ function Wo_isValidPasswordResetToken($string) {
     $query = mysqli_query($sqlConnect, " SELECT COUNT(`user_id`) FROM " . T_USERS . " WHERE `user_id` = '{$user_id}' AND `email_code` = '{$password}' AND `active` = '1' AND `time_code_sent` > '" . time() . "'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_isValidPasswordResetToken2($string) {
+function Wo_isValidPasswordResetToken2($string)
+{
     global $sqlConnect;
     $string_exp = explode('_', $string);
     $user_id    = Wo_Secure($string_exp[0]);
@@ -953,7 +1019,8 @@ function Wo_isValidPasswordResetToken2($string) {
     $query = mysqli_query($sqlConnect, " SELECT COUNT(`user_id`) FROM " . T_USERS . " WHERE `user_id` = '{$user_id}' AND `password` = '{$password}' AND `active` = '1'  AND `time_code_sent` > '" . time() . "'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_DeleteUser($user_id) {
+function Wo_DeleteUser($user_id)
+{
     global $wo, $sqlConnect, $cache, $db;
     if ($wo['loggedin'] == false) {
         return false;
@@ -979,8 +1046,7 @@ function Wo_DeleteUser($user_id) {
             if (file_exists($fund->image)) {
                 try {
                     unlink($fund->image);
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                 }
             }
             $posts = $db->where('fund_id', $fund->id)->get(T_POSTS);
@@ -1115,12 +1181,11 @@ function Wo_DeleteUser($user_id) {
                 if (file_exists($fetched_data['image'])) {
                     try {
                         unlink($fetched_data['image']);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                     }
                 }
                 mysqli_query($sqlConnect, "DELETE FROM " . T_FUNDING . " WHERE `user_id` = {$user_id}");
-                mysqli_query($sqlConnect, "DELETE FROM " . T_FUNDING_RAISE . " WHERE `funding_id` = '".$fetched_data['id']."'");
+                mysqli_query($sqlConnect, "DELETE FROM " . T_FUNDING_RAISE . " WHERE `funding_id` = '" . $fetched_data['id'] . "'");
             }
         }
     }
@@ -1132,8 +1197,7 @@ function Wo_DeleteUser($user_id) {
                 if (file_exists($fetched_data['image'])) {
                     try {
                         unlink($fetched_data['image']);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                     }
                 }
                 mysqli_query($sqlConnect, "DELETE FROM " . T_OFFER . " WHERE `user_id` = {$user_id}");
@@ -1148,8 +1212,7 @@ function Wo_DeleteUser($user_id) {
                 if (file_exists($fetched_data['image'])) {
                     try {
                         unlink($fetched_data['image']);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                     }
                 }
                 mysqli_query($sqlConnect, "DELETE FROM " . T_USER_EXPERIENCE . " WHERE `user_id` = {$user_id}");
@@ -1164,19 +1227,18 @@ function Wo_DeleteUser($user_id) {
                 if (file_exists($fetched_data['pdf'])) {
                     try {
                         unlink($fetched_data['pdf']);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                     }
                 }
                 mysqli_query($sqlConnect, "DELETE FROM " . T_USER_CERTIFICATION . " WHERE `user_id` = {$user_id}");
             }
         }
     }
-    $query_group_chat= mysqli_query($sqlConnect, "SELECT `group_id` FROM " . T_GROUP_CHAT . " WHERE `user_id` = {$user_id}");
+    $query_group_chat = mysqli_query($sqlConnect, "SELECT `group_id` FROM " . T_GROUP_CHAT . " WHERE `user_id` = {$user_id}");
     if ($query_group_chat) {
         if (mysqli_num_rows($query_group_chat) > 0) {
             while ($fetched_data = mysqli_fetch_assoc($query_group_chat)) {
-                mysqli_query($sqlConnect, "DELETE FROM " . T_GROUP_CHAT_USERS . " WHERE `group_id` = '".$fetched_data['group_id']."'");
+                mysqli_query($sqlConnect, "DELETE FROM " . T_GROUP_CHAT_USERS . " WHERE `group_id` = '" . $fetched_data['group_id'] . "'");
             }
         }
     }
@@ -1282,7 +1344,8 @@ function Wo_DeleteUser($user_id) {
         return true;
     }
 }
-function Wo_UpdateUserData($user_id, $update_data, $unverify = false) {
+function Wo_UpdateUserData($user_id, $update_data, $unverify = false)
+{
     global $wo, $sqlConnect, $cache;
     if ($wo['loggedin'] == false) {
         return false;
@@ -1364,7 +1427,8 @@ function Wo_UpdateUserData($user_id, $update_data, $unverify = false) {
         return false;
     }
 }
-function Wo_UpdateUsernameInNotifications($user_id = 0, $username = '') {
+function Wo_UpdateUsernameInNotifications($user_id = 0, $username = '')
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -1381,13 +1445,15 @@ function Wo_UpdateUsernameInNotifications($user_id = 0, $username = '') {
         return true;
     }
 }
-function addhttp($url) {
+function addhttp($url)
+{
     if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
         $url = "http://" . $url;
     }
     return $url;
 }
-function Wo_GetMedia($media) {
+function Wo_GetMedia($media)
+{
     global $wo;
     if (empty($media)) {
         return '';
@@ -1427,11 +1493,12 @@ function Wo_GetMedia($media) {
         if (!empty($wo['config']['backblaze_endpoint']) && filter_var($wo['config']['backblaze_endpoint'], FILTER_VALIDATE_URL)) {
             return $wo['config']['backblaze_endpoint'] . "/" . $media;
         }
-        return 'https://'.$wo['config']['backblaze_bucket_name'].'.s3.'.$wo['config']['backblaze_bucket_region'].'.backblazeb2.com/' . $media;
+        return 'https://' . $wo['config']['backblaze_bucket_name'] . '.s3.' . $wo['config']['backblaze_bucket_region'] . '.backblazeb2.com/' . $media;
     }
     return $wo['config']['site_url'] . '/' . $media;
 }
-function Wo_UploadImage($file, $name, $type, $type_file, $user_id = 0, $placement = '') {
+function Wo_UploadImage($file, $name, $type, $type_file, $user_id = 0, $placement = '')
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -1666,13 +1733,14 @@ function Wo_UploadImage($file, $name, $type, $type_file, $user_id = 0, $placemen
                 }
             }
         }
-    } else if($type == 'document_shared_images') {
+    } else if ($type == 'document_shared_images') {
         $filename = $dir . '/' . Wo_GenerateKey() . '_' . date('d') . '_' . md5(time()) . '_background_image.' . $ext;
         move_uploaded_file($file, $filename);
         return $filename;
     }
 }
-function Wo_UserBirthday($birthday) {
+function Wo_UserBirthday($birthday)
+{
     global $wo;
     if (empty($birthday)) {
         return false;
@@ -1686,7 +1754,8 @@ function Wo_UserBirthday($birthday) {
     }
     return $age;
 }
-function Wo_GetAllUsers($limit = '', $type = '', $filter = array(), $after = '') {
+function Wo_GetAllUsers($limit = '', $type = '', $filter = array(), $after = '')
+{
     global $wo, $sqlConnect;
     $data      = array();
     $query_one = " SELECT `user_id` FROM " . T_USERS . " WHERE `type` = 'user'";
@@ -1716,14 +1785,14 @@ function Wo_GetAllUsers($limit = '', $type = '', $filter = array(), $after = '')
     if (mysqli_num_rows($sql)) {
         while ($fetched_data = mysqli_fetch_assoc($sql)) {
             $user_data        = Wo_UserData($fetched_data['user_id']);
-            $user_data['src'] = ($user_data['src'] == 'site') ? $wo['config']['siteName'] : $user_data['src'];
-            ;
+            $user_data['src'] = ($user_data['src'] == 'site') ? $wo['config']['siteName'] : $user_data['src'];;
             $data[] = $user_data;
         }
     }
     return $data;
 }
-function Wo_GetAllUsersByType($type = 'all') {
+function Wo_GetAllUsersByType($type = 'all')
+{
     global $sqlConnect;
     $data      = array();
     $query_one = " SELECT `user_id` FROM " . T_USERS;
@@ -1742,7 +1811,8 @@ function Wo_GetAllUsersByType($type = 'all') {
     }
     return $data;
 }
-function Wo_GetUsersByTime($type = 'week') {
+function Wo_GetUsersByTime($type = 'week')
+{
     global $sqlConnect;
     $types = array(
         'week',
@@ -1791,7 +1861,8 @@ function Wo_GetUsersByTime($type = 'week') {
     }
     return $data;
 }
-function Wo_GetFollowingSug($limit, $query) {
+function Wo_GetFollowingSug($limit, $query)
+{
     global $wo, $sqlConnect;
     $data = array();
     if ($wo['loggedin'] == false) {
@@ -1832,7 +1903,8 @@ function Wo_GetFollowingSug($limit, $query) {
     }
     return $data;
 }
-function Wo_GetHashtagSug($limit, $query) {
+function Wo_GetHashtagSug($limit, $query)
+{
     global $wo, $sqlConnect;
     $data      = array();
     $html_fi   = array();
@@ -1848,7 +1920,8 @@ function Wo_GetHashtagSug($limit, $query) {
     }
     return $data;
 }
-function Wo_WelcomeUsers($limit = '', $type = '') {
+function Wo_WelcomeUsers($limit = '', $type = '')
+{
     global $wo, $sqlConnect;
     if (empty($limit)) {
         $limit = 12;
@@ -1863,7 +1936,8 @@ function Wo_WelcomeUsers($limit = '', $type = '') {
     }
     return $data;
 }
-function Wo_FeaturedUsersAPI($limit = '', $offset = '') {
+function Wo_FeaturedUsersAPI($limit = '', $offset = '')
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -1893,7 +1967,8 @@ function Wo_FeaturedUsersAPI($limit = '', $offset = '') {
     }
     return $data;
 }
-function Wo_FeaturedUsers($limit = '', $type = '') {
+function Wo_FeaturedUsers($limit = '', $type = '')
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -1935,7 +2010,8 @@ function Wo_FeaturedUsers($limit = '', $type = '') {
     }
     return $data;
 }
-function Wo_UserSug($limit = 20) {
+function Wo_UserSug($limit = 20)
+{
     global $wo, $sqlConnect;
     if (!is_numeric($limit)) {
         return false;
@@ -1954,7 +2030,8 @@ function Wo_UserSug($limit = 20) {
     }
     return $data;
 }
-function Wo_ImportImageFromLogin($media, $amazon = 0) {
+function Wo_ImportImageFromLogin($media, $amazon = 0)
+{
     global $wo;
     if (!file_exists('upload/photos/' . date('Y'))) {
         mkdir('upload/photos/' . date('Y'), 0777, true);
@@ -2012,7 +2089,8 @@ function Wo_ImportImageFromLogin($media, $amazon = 0) {
 //         return false;
 //     }
 // }
-function Wo_ImportImageFromFile($media, $custom_name = '_url_image', $type = '') {
+function Wo_ImportImageFromFile($media, $custom_name = '_url_image', $type = '')
+{
     global $wo;
     if (empty($media)) {
         return false;
@@ -2057,7 +2135,8 @@ function Wo_ImportImageFromFile($media, $custom_name = '_url_image', $type = '')
         return false;
     }
 }
-function Wo_ImportImageFromUrl($media, $custom_name = '_url_image') {
+function Wo_ImportImageFromUrl($media, $custom_name = '_url_image')
+{
     global $wo;
     if (empty($media)) {
         return false;
@@ -2090,7 +2169,8 @@ function Wo_ImportImageFromUrl($media, $custom_name = '_url_image') {
         return false;
     }
 }
-function Wo_IsFollowingNotify($following_id, $user_id = 0) {
+function Wo_IsFollowingNotify($following_id, $user_id = 0)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2106,7 +2186,8 @@ function Wo_IsFollowingNotify($following_id, $user_id = 0) {
     $query        = mysqli_query($sqlConnect, " SELECT COUNT(`id`) FROM " . T_FOLLOWERS . " WHERE `following_id` = {$following_id} AND `follower_id` = {$user_id} AND `active` = '1' AND `notify` = '1'");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_IsFollowing($following_id, $user_id = 0) {
+function Wo_IsFollowing($following_id, $user_id = 0)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2122,7 +2203,8 @@ function Wo_IsFollowing($following_id, $user_id = 0) {
     $query        = mysqli_query($sqlConnect, " SELECT COUNT(`id`) FROM " . T_FOLLOWERS . " WHERE `following_id` = {$following_id} AND `follower_id` = {$user_id} AND `active` = '1' ");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_RegisterFollow($following_id = 0, $followers_id = 0) {
+function Wo_RegisterFollow($following_id = 0, $followers_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2180,7 +2262,8 @@ function Wo_RegisterFollow($following_id = 0, $followers_id = 0) {
     }
     return true;
 }
-function Wo_CountFollowRequests($data = array()) {
+function Wo_CountFollowRequests($data = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2210,7 +2293,8 @@ function Wo_CountFollowRequests($data = array()) {
     }
     return false;
 }
-function Wo_IsFollowRequested($following_id = 0, $follower_id = 0) {
+function Wo_IsFollowRequested($following_id = 0, $follower_id = 0)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2232,7 +2316,8 @@ function Wo_IsFollowRequested($following_id = 0, $follower_id = 0) {
         return true;
     }
 }
-function Wo_DeleteFollow($following_id = 0, $follower_id = 0) {
+function Wo_DeleteFollow($following_id = 0, $follower_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2262,7 +2347,8 @@ function Wo_DeleteFollow($following_id = 0, $follower_id = 0) {
         }
     }
 }
-function Wo_CountMutualFriends($user_id, $active = true) {
+function Wo_CountMutualFriends($user_id, $active = true)
+{
     global $wo, $sqlConnect;
     $data = array();
     if ($wo['loggedin'] == false) {
@@ -2286,7 +2372,8 @@ WHERE f1.follower_id = {$user_id}
     $fetched_data   = mysqli_num_rows($query);
     return $fetched_data;
 }
-function Wo_CountFollowing($user_id, $active = true) {
+function Wo_CountFollowing($user_id, $active = true)
+{
     global $wo, $sqlConnect;
     $data = array();
     if (empty($user_id) or !is_numeric($user_id) or $user_id < 1) {
@@ -2309,7 +2396,8 @@ function Wo_CountFollowing($user_id, $active = true) {
     }
     return false;
 }
-function Wo_AcceptFollowRequest($following_id = 0, $follower_id = 0) {
+function Wo_AcceptFollowRequest($following_id = 0, $follower_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2358,7 +2446,8 @@ function Wo_AcceptFollowRequest($following_id = 0, $follower_id = 0) {
         }
     }
 }
-function Wo_DeleteFollowRequest($following_id, $follower_id) {
+function Wo_DeleteFollowRequest($following_id, $follower_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2380,7 +2469,8 @@ function Wo_DeleteFollowRequest($following_id, $follower_id) {
         }
     }
 }
-function Wo_GetFollowRequests($user_id = 0, $search_query = '') {
+function Wo_GetFollowRequests($user_id = 0, $search_query = '')
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2407,14 +2497,16 @@ function Wo_GetFollowRequests($user_id = 0, $search_query = '') {
     }
     return $data;
 }
-function GetGroupChatRequests() {
+function GetGroupChatRequests()
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
     }
     return $db->where('user_id', $wo['user']['id'])->where('active', '0')->get(T_GROUP_CHAT_USERS);
 }
-function Wo_CountFollowers($user_id) {
+function Wo_CountFollowers($user_id)
+{
     global $wo, $sqlConnect;
     if (empty($user_id) or !is_numeric($user_id) or $user_id < 1) {
         return false;
@@ -2433,7 +2525,8 @@ function Wo_CountFollowers($user_id) {
     }
     return false;
 }
-function Wo_SearchFollowers($user_id, $filter = '', $limit = 10, $event_id = 0) {
+function Wo_SearchFollowers($user_id, $filter = '', $limit = 10, $event_id = 0)
+{
     global $wo, $sqlConnect;
     $data = array();
     if (empty($user_id) || !is_numeric($user_id) || $user_id < 1) {
@@ -2461,7 +2554,8 @@ function Wo_SearchFollowers($user_id, $filter = '', $limit = 10, $event_id = 0) 
     }
     return $data;
 }
-function Wo_GetFollowing($user_id, $type = '', $limit = '', $after_user_id = '', $placement = array()) {
+function Wo_GetFollowing($user_id, $type = '', $limit = '', $after_user_id = '', $placement = array())
+{
     global $wo, $sqlConnect;
     $data = array();
     if (empty($user_id) or !is_numeric($user_id) or $user_id < 1) {
@@ -2506,7 +2600,8 @@ function Wo_GetFollowing($user_id, $type = '', $limit = '', $after_user_id = '',
     }
     return $data;
 }
-function Wo_GetMutualFriends($user_id, $type = '', $limit = '', $after_user_id = '', $placement = array()) {
+function Wo_GetMutualFriends($user_id, $type = '', $limit = '', $after_user_id = '', $placement = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2553,7 +2648,8 @@ WHERE f1.follower_id = {$user_id}
     }
     return $data;
 }
-function Wo_GetFollowers($user_id, $type = '', $limit = '', $after_user_id = '', $placement = array()) {
+function Wo_GetFollowers($user_id, $type = '', $limit = '', $after_user_id = '', $placement = array())
+{
     global $wo, $sqlConnect;
     $data = array();
     if (empty($user_id) or !is_numeric($user_id) or $user_id < 1) {
@@ -2599,7 +2695,8 @@ function Wo_GetFollowers($user_id, $type = '', $limit = '', $after_user_id = '',
     }
     return $data;
 }
-function Wo_GetFollowButton($user_id = 0) {
+function Wo_GetFollowButton($user_id = 0)
+{
     global $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2652,7 +2749,8 @@ function Wo_GetFollowButton($user_id = 0) {
         }
     }
 }
-function Wo_GetNotifyButton($user_id = 0) {
+function Wo_GetNotifyButton($user_id = 0)
+{
     global $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2685,7 +2783,8 @@ function Wo_GetNotifyButton($user_id = 0) {
     }
     return '';
 }
-function Wo_GetFollowNotifyUsers($user_id = 0) {
+function Wo_GetFollowNotifyUsers($user_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -2703,7 +2802,8 @@ function Wo_GetFollowNotifyUsers($user_id = 0) {
     }
     return $data;
 }
-function Wo_RegisterNotification($data = array()) {
+function Wo_RegisterNotification($data = array())
+{
     global $wo, $sqlConnect;
     if (empty($data['session_id'])) {
         if ($wo['loggedin'] == false) {
@@ -2785,7 +2885,7 @@ function Wo_RegisterNotification($data = array()) {
     $send_notification       = true;
     if (!empty($recipient['notification_settings'])) {
         //$old = unserialize(html_entity_decode($recipient['notification_settings']));
-        $recipient['notification_settings'] = (Array) json_decode(html_entity_decode($recipient['notification_settings']));
+        $recipient['notification_settings'] = (array) json_decode(html_entity_decode($recipient['notification_settings']));
         // if (empty($recipient['notification_settings']) && !empty($old)) {
         //     $impload   = json_encode($old);
         //     $query_one = " UPDATE " . T_USERS . " SET `notification_settings` = '{$impload}' WHERE `user_id` = '".$recipient['user_id']."' ";
@@ -3015,7 +3115,8 @@ function Wo_RegisterNotification($data = array()) {
         }
     }
 }
-function Wo_GetNotifications($data = array()) {
+function Wo_GetNotifications($data = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3116,7 +3217,8 @@ function Wo_GetNotifications($data = array()) {
     }
     return $get;
 }
-function Wo_CountNotifications($data = array()) {
+function Wo_CountNotifications($data = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3150,7 +3252,8 @@ function Wo_CountNotifications($data = array()) {
     }
     return false;
 }
-function Wo_GetSearch($search_qeury) {
+function Wo_GetSearch($search_qeury)
+{
     global $sqlConnect, $wo;
     $search_qeury = Wo_Secure($search_qeury);
     $data         = array();
@@ -3180,7 +3283,8 @@ function Wo_GetSearch($search_qeury) {
     }
     return $data;
 }
-function Wo_GetRecentSerachs() {
+function Wo_GetRecentSerachs()
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3204,7 +3308,8 @@ function Wo_GetRecentSerachs() {
     }
     return $data;
 }
-function Wo_GetSearchFilter($result, $limit = 30, $offset = 0) {
+function Wo_GetSearchFilter($result, $limit = 30, $offset = 0)
+{
     global $wo, $sqlConnect, $db;
     $data        = array();
     $profiledata = array();
@@ -3375,7 +3480,8 @@ function Wo_GetSearchFilter($result, $limit = 30, $offset = 0) {
     // }
     return $data;
 }
-function Wo_GetMessagesUsers($user_id, $searchQuery = '', $limit = 50, $new = false, $update = 0) {
+function Wo_GetMessagesUsers($user_id, $searchQuery = '', $limit = 50, $new = false, $update = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3417,7 +3523,8 @@ function Wo_GetMessagesUsers($user_id, $searchQuery = '', $limit = 50, $new = fa
     }
     return $data;
 }
-function Wo_GetMessagesUsersAPP2($fetch_array = array()) {
+function Wo_GetMessagesUsersAPP2($fetch_array = array())
+{
     global $wo, $sqlConnect;
     if (empty($fetch_array['session_id'])) {
         if ($wo['loggedin'] == false) {
@@ -3489,7 +3596,8 @@ function Wo_GetMessagesUsersAPP2($fetch_array = array()) {
     }
     return $data;
 }
-function Wo_GetPageChatList($user_id, $limit = 50, $new = false, $update = 0) {
+function Wo_GetPageChatList($user_id, $limit = 50, $new = false, $update = 0)
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3544,7 +3652,8 @@ function Wo_GetPageChatList($user_id, $limit = 50, $new = false, $update = 0) {
     }
     return $data;
 }
-function Wo_GetMessages($data = array(), $limit = 50) {
+function Wo_GetMessages($data = array(), $limit = 50)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3614,7 +3723,8 @@ function Wo_GetMessages($data = array(), $limit = 50) {
     }
     return $message_data;
 }
-function GetMessageById($id) {
+function GetMessageById($id)
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3656,7 +3766,8 @@ function GetMessageById($id) {
     }
     return array();
 }
-function Wo_GetGroupMessages($args = array()) {
+function Wo_GetGroupMessages($args = array())
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3730,7 +3841,8 @@ function Wo_GetGroupMessages($args = array()) {
     }
     return $message_data;
 }
-function Wo_GetPageMessages($args = array()) {
+function Wo_GetPageMessages($args = array())
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
@@ -3821,8 +3933,9 @@ function Wo_GetPageMessages($args = array()) {
     }
     return $message_data;
 }
-function Wo_GetGroupMessagesAPP($args = array()) {
-    global $wo, $sqlConnect,$db;
+function Wo_GetGroupMessagesAPP($args = array())
+{
+    global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
     }
@@ -3874,13 +3987,14 @@ function Wo_GetGroupMessagesAPP($args = array()) {
             if (!empty($fetched_data['reply_id'])) {
                 $fetched_data['reply'] = GetMessageById($fetched_data['reply_id']);
             }
-            $fetched_data['chat_data'] = $db->where('user_id', $wo['user']['user_id'])->where('group_id',$group_id)->ArrayBuilder()->getOne(T_GROUP_CHAT_USERS);
+            $fetched_data['chat_data'] = $db->where('user_id', $wo['user']['user_id'])->where('group_id', $group_id)->ArrayBuilder()->getOne(T_GROUP_CHAT_USERS);
             $message_data[] = $fetched_data;
         }
     }
     return $message_data;
 }
-function Wo_GetMessagesHeader($data = array(), $type = '') {
+function Wo_GetMessagesHeader($data = array(), $type = '')
+{
     global $wo, $sqlConnect;
     if (empty($data['session_id'])) {
         if ($wo['loggedin'] == false) {
@@ -3940,7 +4054,8 @@ function Wo_GetMessagesHeader($data = array(), $type = '') {
     }
     return false;
 }
-function Wo_RegisterMessage($ms_data = array()) {
+function Wo_RegisterMessage($ms_data = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4016,7 +4131,8 @@ function Wo_RegisterMessage($ms_data = array()) {
         return false;
     }
 }
-function Wo_RegisterMessageGroup($ms_data = array()) {
+function Wo_RegisterMessageGroup($ms_data = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4088,7 +4204,8 @@ function Wo_RegisterMessageGroup($ms_data = array()) {
         return false;
     }
 }
-function Wo_RegisterGroupMessage($ms_data = array()) {
+function Wo_RegisterGroupMessage($ms_data = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4154,7 +4271,8 @@ function Wo_RegisterGroupMessage($ms_data = array()) {
         return false;
     }
 }
-function Wo_RegisterPageMessage($ms_data = array()) {
+function Wo_RegisterPageMessage($ms_data = array())
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4225,7 +4343,8 @@ function Wo_RegisterPageMessage($ms_data = array()) {
         return false;
     }
 }
-function Wo_CreateUserChat($user_id = 0, $from_id = 0, $page_id = 0) {
+function Wo_CreateUserChat($user_id = 0, $from_id = 0, $page_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4290,7 +4409,8 @@ function Wo_CreateUserChat($user_id = 0, $from_id = 0, $page_id = 0) {
         }
     }
 }
-function Wo_DeleteConversation($user_id = 0) {
+function Wo_DeleteConversation($user_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4316,7 +4436,8 @@ function Wo_DeleteConversation($user_id = 0) {
         return true;
     }
 }
-function Wo_DeletePageConversation($user_id = 0, $page_id = 0) {
+function Wo_DeletePageConversation($user_id = 0, $page_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4347,7 +4468,8 @@ function Wo_DeletePageConversation($user_id = 0, $page_id = 0) {
         return true;
     }
 }
-function Wo_DeleteGroupConversation($id = 0) {
+function Wo_DeleteGroupConversation($id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4373,7 +4495,8 @@ function Wo_DeleteGroupConversation($id = 0) {
         return true;
     }
 }
-function Wo_DeleteMessage($message_id, $media = '', $deleter_id = 0) {
+function Wo_DeleteMessage($message_id, $media = '', $deleter_id = 0)
+{
     global $wo, $sqlConnect;
     if (empty($deleter_id)) {
         if ($wo['loggedin'] == false) {
@@ -4421,7 +4544,8 @@ function Wo_DeleteMessage($message_id, $media = '', $deleter_id = 0) {
         }
     }
 }
-function Wo_CountMessages($data = array(), $type = '') {
+function Wo_CountMessages($data = array(), $type = '')
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4472,7 +4596,8 @@ function Wo_CountMessages($data = array(), $type = '') {
     }
     return false;
 }
-function Wo_SeenMessage($message_id) {
+function Wo_SeenMessage($message_id)
+{
     global $sqlConnect;
     $message_id = Wo_Secure($message_id);
     $query      = mysqli_query($sqlConnect, " SELECT `seen` FROM " . T_MESSAGES . " WHERE `id` = '{$message_id}'");
@@ -4489,7 +4614,8 @@ function Wo_SeenMessage($message_id) {
     }
     return false;
 }
-function Wo_GetMessageButton($user_id = 0) {
+function Wo_GetMessageButton($user_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -4517,7 +4643,8 @@ function Wo_GetMessageButton($user_id = 0) {
         return false;
     }
 }
-function Wo_MarkupAPI($text, $link = true, $hashtag = true, $mention = true, $post_id = 0) {
+function Wo_MarkupAPI($text, $link = true, $hashtag = true, $mention = true, $post_id = 0)
+{
     global $sqlConnect;
     if ($mention == true) {
         $Orginaltext   = $text;
@@ -4576,7 +4703,8 @@ function Wo_MarkupAPI($text, $link = true, $hashtag = true, $mention = true, $po
     }
     return $text;
 }
-function Wo_Markup($text, $link = true, $hashtag = true, $mention = true, $post_id = 0, $comment_id = 0, $reply_id = 0) {
+function Wo_Markup($text, $link = true, $hashtag = true, $mention = true, $post_id = 0, $comment_id = 0, $reply_id = 0)
+{
     global $sqlConnect;
     if ($mention == true) {
         $Orginaltext   = $text;
@@ -4639,7 +4767,8 @@ function Wo_Markup($text, $link = true, $hashtag = true, $mention = true, $post_
     }
     return $text;
 }
-function Wo_EditMarkup($text, $link = true, $hashtag = true, $mention = true, $post_id = 0, $comment_id = 0, $reply_id = 0) {
+function Wo_EditMarkup($text, $link = true, $hashtag = true, $mention = true, $post_id = 0, $comment_id = 0, $reply_id = 0)
+{
     global $sqlConnect;
     if ($mention == true) {
         $Orginaltext   = $text;
@@ -4697,7 +4826,8 @@ function Wo_EditMarkup($text, $link = true, $hashtag = true, $mention = true, $p
     }
     return $text;
 }
-function Wo_Emo($string = '') {
+function Wo_Emo($string = '')
+{
     global $emo, $wo;
     foreach ($emo as $code => $name) {
         $code   = $code;
@@ -4706,7 +4836,8 @@ function Wo_Emo($string = '') {
     }
     return $string;
 }
-function Wo_EmoPhone($string = '') {
+function Wo_EmoPhone($string = '')
+{
     global $emo_full;
     foreach ($emo_full as $code => $name) {
         $code   = $code;
@@ -4714,7 +4845,8 @@ function Wo_EmoPhone($string = '') {
     }
     return $string;
 }
-function Wo_UploadLogo($data = array()) {
+function Wo_UploadLogo($data = array())
+{
     global $wo, $sqlConnect;
     if (isset($data['file']) && !empty($data['file'])) {
         $data['file'] = $data['file'];
@@ -4743,12 +4875,13 @@ function Wo_UploadLogo($data = array()) {
             unlink($filename);
             return false;
         }
-        if (Wo_SaveConfig('logo_extension', $file_extension.'?cache='.rand(100,999))) {
+        if (Wo_SaveConfig('logo_extension', $file_extension . '?cache=' . rand(100, 999))) {
             return true;
         }
     }
 }
-function Wo_UploadBackground($data = array()) {
+function Wo_UploadBackground($data = array())
+{
     global $wo, $sqlConnect;
     if (isset($data['file']) && !empty($data['file'])) {
         $data['file'] = $data['file'];
@@ -4782,7 +4915,8 @@ function Wo_UploadBackground($data = array()) {
         }
     }
 }
-function Wo_UploadFavicon($data = array()) {
+function Wo_UploadFavicon($data = array())
+{
     global $wo, $sqlConnect;
     if (isset($data['file']) && !empty($data['file'])) {
         $data['file'] = $data['file'];
@@ -4816,7 +4950,8 @@ function Wo_UploadFavicon($data = array()) {
         }
     }
 }
-function Wo_ShareFile($data = array(), $type = 0, $crop = true) {
+function Wo_ShareFile($data = array(), $type = 0, $crop = true)
+{
     global $wo, $sqlConnect, $s3;
     $allowed = '';
     if (!file_exists('upload/files/' . date('Y'))) {
@@ -4955,7 +5090,8 @@ function Wo_ShareFile($data = array(), $type = 0, $crop = true) {
         return $last_data;
     }
 }
-function Wo_DisplaySharedFile($media, $placement = '', $cache = false, $is_video = false) {
+function Wo_DisplaySharedFile($media, $placement = '', $cache = false, $is_video = false)
+{
     global $wo, $sqlConnect, $db;
     $orginal = $media['filename'];
     if (!$is_video) {
@@ -5110,7 +5246,8 @@ function Wo_DisplaySharedFile($media, $placement = '', $cache = false, $is_video
         return $last_file_view;
     }
 }
-function Wo_IsAdmin($user_id = 0) {
+function Wo_IsAdmin($user_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -5132,7 +5269,8 @@ function Wo_IsAdmin($user_id = 0) {
     }
     return false;
 }
-function Wo_IsModerator($user_id = '') {
+function Wo_IsModerator($user_id = '')
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -5154,7 +5292,8 @@ function Wo_IsModerator($user_id = '') {
     }
     return false;
 }
-function Wo_CheckIfUserCanPost($num = 10) {
+function Wo_CheckIfUserCanPost($num = 10)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -5173,7 +5312,8 @@ function Wo_CheckIfUserCanPost($num = 10) {
     }
     return true;
 }
-function Wo_CheckIfUserCanRegister($num = 10) {
+function Wo_CheckIfUserCanRegister($num = 10)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == true) {
         return false;
@@ -5192,7 +5332,8 @@ function Wo_CheckIfUserCanRegister($num = 10) {
     }
     return true;
 }
-function Wo_RegisterPost($re_data = array('recipient_id' => 0)) {    
+function Wo_RegisterPost($re_data = array('recipient_id' => 0))
+{
     global $wo, $sqlConnect;
     if ($wo['config']['website_mode'] == 'instagram' && empty($re_data['postFile']) && empty($re_data['multi_image']) && empty($re_data['postSticker']) && empty($re_data['product_id']) && empty($re_data['album_name'])) {
         if (!preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $re_data["postText"])) {
@@ -5509,7 +5650,8 @@ function Wo_RegisterPost($re_data = array('recipient_id' => 0)) {
         return $post_id;
     }
 }
-function Wo_GetHashtag($tag = '', $type = true) {
+function Wo_GetHashtag($tag = '', $type = true)
+{
     global $sqlConnect;
     $create = false;
     if (empty($tag)) {
@@ -5551,7 +5693,8 @@ function Wo_GetHashtag($tag = '', $type = true) {
         }
     }
 }
-function Wo_PostData($post_id, $placement = '', $limited = '', $comments_limit = 0) {
+function Wo_PostData($post_id, $placement = '', $limited = '', $comments_limit = 0)
+{
     global $wo, $sqlConnect, $cache, $db;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -5882,7 +6025,7 @@ function Wo_PostData($post_id, $placement = '', $limited = '', $comments_limit =
     }
     $story['is_still_live']  = false;
     $story['live_sub_users'] = 0;
-    if (!empty($story['stream_name']) && !empty($story['live_time']) &&$story['live_ended'] == 0) {
+    if (!empty($story['stream_name']) && !empty($story['live_time']) && $story['live_ended'] == 0) {
         $story['is_still_live']  = true;
         $story['live_sub_users'] = $db->where('post_id', $story['id'])->where('time', time() - 6, '>=')->getValue(T_LIVE_SUB, 'COUNT(*)');
     }
@@ -5896,14 +6039,14 @@ function Wo_PostData($post_id, $placement = '', $limited = '', $comments_limit =
     $row       = mysqli_query($sqlConnect, "SELECT * FROM " . T_ALBUMS_MEDIA . " WHERE `post_id` = '{$after_post_id}' && `parent_id` != '0'");
     if (mysqli_num_rows($row)) {
         $fetched_data = mysqli_fetch_assoc($row);
-        $query_check_hash = mysqli_query($sqlConnect, "SELECT COUNT(id) as count FROM " . T_ALBUMS_MEDIA . " WHERE `post_id` < '".$fetched_data['post_id']."' AND `parent_id` = '".$fetched_data['parent_id']."'");
+        $query_check_hash = mysqli_query($sqlConnect, "SELECT COUNT(id) as count FROM " . T_ALBUMS_MEDIA . " WHERE `post_id` < '" . $fetched_data['post_id'] . "' AND `parent_id` = '" . $fetched_data['parent_id'] . "'");
         if (mysqli_num_rows($query_check_hash)) {
             $query_get_hash = mysqli_fetch_assoc($query_check_hash);
             if ($query_get_hash['count'] == 0) {
                 $story['have_next_image'] = false;
             }
         }
-        $query_check_hash = mysqli_query($sqlConnect, "SELECT COUNT(id) as count FROM " . T_ALBUMS_MEDIA . " WHERE `post_id` > '".$fetched_data['post_id']."' AND `parent_id` = '".$fetched_data['parent_id']."'");
+        $query_check_hash = mysqli_query($sqlConnect, "SELECT COUNT(id) as count FROM " . T_ALBUMS_MEDIA . " WHERE `post_id` > '" . $fetched_data['post_id'] . "' AND `parent_id` = '" . $fetched_data['parent_id'] . "'");
         if (mysqli_num_rows($query_check_hash)) {
             $query_get_hash = mysqli_fetch_assoc($query_check_hash);
             if ($query_get_hash['count'] == 0) {
@@ -5916,7 +6059,8 @@ function Wo_PostData($post_id, $placement = '', $limited = '', $comments_limit =
 
     return $story;
 }
-function Wo_CountPostShare($post_id) {
+function Wo_CountPostShare($post_id)
+{
     global $wo, $sqlConnect;
     $data = array();
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
@@ -5930,7 +6074,8 @@ function Wo_CountPostShare($post_id) {
     }
     return false;
 }
-function Wo_CountUserPosts($user_id) {
+function Wo_CountUserPosts($user_id)
+{
     global $wo, $sqlConnect;
     $data = array();
     if (empty($user_id) or !is_numeric($user_id) or $user_id < 1) {
@@ -5944,7 +6089,8 @@ function Wo_CountUserPosts($user_id) {
     }
     return false;
 }
-function Wo_PostExists($post_id) {
+function Wo_PostExists($post_id)
+{
     global $sqlConnect;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -5953,7 +6099,8 @@ function Wo_PostExists($post_id) {
     $query   = mysqli_query($sqlConnect, "SELECT COUNT(`id`) FROM " . T_POSTS . " WHERE `id` = {$post_id}");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_IsPostOnwer($post_id, $user_id) {
+function Wo_IsPostOnwer($post_id, $user_id)
+{
     global $sqlConnect;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -5963,7 +6110,8 @@ function Wo_IsPostOnwer($post_id, $user_id) {
     $query   = mysqli_query($sqlConnect, "SELECT COUNT(`id`) FROM " . T_POSTS . " WHERE `id` = {$post_id} AND (`user_id` = {$user_id} OR `page_id` IN (SELECT `page_id` FROM " . T_PAGES . " WHERE `user_id` = {$user_id}) OR `page_id` IN (SELECT `page_id` FROM " . T_PAGE_ADMINS . " WHERE `user_id` = {$user_id}))");
     return (Wo_Sql_Result($query, 0) == 1) ? true : false;
 }
-function Wo_GetPostPublisherBox($user_id = 0, $recipient_id = 0) {
+function Wo_GetPostPublisherBox($user_id = 0, $recipient_id = 0)
+{
     global $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -6012,7 +6160,8 @@ function Wo_GetPostPublisherBox($user_id = 0, $recipient_id = 0) {
         return Wo_LoadPage('story/publisher-box');
     }
 }
-function Wo_GetPosts($data = array('filter_by' => 'all', 'after_post_id' => 0, 'page_id' => 0, 'group_id' => 0, 'publisher_id' => 0, 'limit' => 5, 'event_id' => 0, 'ad-id' => 0)) {
+function Wo_GetPosts($data = array('filter_by' => 'all', 'after_post_id' => 0, 'page_id' => 0, 'group_id' => 0, 'publisher_id' => 0, 'limit' => 5, 'event_id' => 0, 'ad-id' => 0))
+{
     global $wo, $sqlConnect;
     if (empty($data['filter_by'])) {
         $data['filter_by'] = 'all';
@@ -6337,7 +6486,8 @@ function Wo_GetPosts($data = array('filter_by' => 'all', 'after_post_id' => 0, '
     }
     return $data;
 }
-function Wo_DeletePost($post_id = 0, $type = '') {
+function Wo_DeletePost($post_id = 0, $type = '')
+{
     global $wo, $sqlConnect, $cache;
     if ($post_id < 1 || empty($post_id) || !is_numeric($post_id)) {
         return false;
@@ -6596,7 +6746,7 @@ function Wo_DeletePost($post_id = 0, $type = '') {
             $query_two_3 = mysqli_query($sqlConnect, "SELECT `id` FROM " . T_PRODUCT_REVIEW . " WHERE `product_id` = {$product_id}");
             if (mysqli_num_rows($query_two_3)) {
                 while ($fetched_data = mysqli_fetch_assoc($query_two_3)) {
-                    $query_two_ = mysqli_query($sqlConnect, "SELECT `image` FROM " . T_ALBUMS_MEDIA . " WHERE `review_id` = '".$fetched_data['id']."'");
+                    $query_two_ = mysqli_query($sqlConnect, "SELECT `image` FROM " . T_ALBUMS_MEDIA . " WHERE `review_id` = '" . $fetched_data['id'] . "'");
                     if (mysqli_num_rows($query_two_)) {
                         while ($fetched_data_ = mysqli_fetch_assoc($query_two_)) {
                             $explode2 = @end(explode('.', $fetched_data_['image']));
@@ -6608,7 +6758,7 @@ function Wo_DeletePost($post_id = 0, $type = '') {
                             $delete_from_s3 = Wo_DeleteFromToS3($fetched_data_['image']);
                         }
                     }
-                    mysqli_query($sqlConnect, "DELETE FROM " . T_ALBUMS_MEDIA . " WHERE `review_id` = '".$fetched_data['id']."'");
+                    mysqli_query($sqlConnect, "DELETE FROM " . T_ALBUMS_MEDIA . " WHERE `review_id` = '" . $fetched_data['id'] . "'");
                 }
             }
             mysqli_query($sqlConnect, "DELETE FROM " . T_USER_ORDERS . " WHERE `product_id` = {$product_id}");
@@ -6656,7 +6806,8 @@ function Wo_DeletePost($post_id = 0, $type = '') {
         return false;
     }
 }
-function Wo_DeleteGame($game_id) {
+function Wo_DeleteGame($game_id)
+{
     global $wo, $sqlConnect, $cache;
     if ($game_id < 1 || empty($game_id) || !is_numeric($game_id)) {
         return false;
@@ -6677,7 +6828,8 @@ function Wo_DeleteGame($game_id) {
         return false;
     }
 }
-function Wo_DeleteGift($gift_id) {
+function Wo_DeleteGift($gift_id)
+{
     global $wo, $sqlConnect, $cache;
     if ($gift_id < 1 || empty($gift_id) || !is_numeric($gift_id)) {
         return false;
@@ -6699,7 +6851,8 @@ function Wo_DeleteGift($gift_id) {
         return false;
     }
 }
-function Wo_DeleteSticker($sticker_id) {
+function Wo_DeleteSticker($sticker_id)
+{
     global $wo, $sqlConnect, $cache;
     if ($sticker_id < 1 || empty($sticker_id) || !is_numeric($sticker_id)) {
         return false;
@@ -6721,7 +6874,8 @@ function Wo_DeleteSticker($sticker_id) {
         return false;
     }
 }
-function Wo_GetUserIdFromPostId($post_id = 0) {
+function Wo_GetUserIdFromPostId($post_id = 0)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -6736,7 +6890,8 @@ function Wo_GetUserIdFromPostId($post_id = 0) {
         }
     }
 }
-function Wo_GetPinnedPost($user_id, $type = '') {
+function Wo_GetPinnedPost($user_id, $type = '')
+{
     global $sqlConnect, $wo;
     if (empty($user_id) || !is_numeric($user_id) || $user_id < 1) {
         return false;
@@ -6763,7 +6918,8 @@ function Wo_GetPinnedPost($user_id, $type = '') {
     }
     return $data;
 }
-function Wo_IsPostPinned($post_id) {
+function Wo_IsPostPinned($post_id)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -6780,7 +6936,8 @@ function Wo_IsPostPinned($post_id) {
     return false;
 }
 include_once('./assets/libraries/SimpleImage-master/vendor/claviska/simpleimage/src/claviska/SimpleImage-Class.php');
-function Wo_IsUserPinned($id, $type = '') {
+function Wo_IsUserPinned($id, $type = '')
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -6803,7 +6960,8 @@ function Wo_IsUserPinned($id, $type = '') {
     }
     return false;
 }
-function Wo_PinPost($post_id = 0, $type = '', $id = 0) {
+function Wo_PinPost($post_id = 0, $type = '', $id = 0)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -6870,7 +7028,8 @@ function Wo_PinPost($post_id = 0, $type = '', $id = 0) {
         }
     }
 }
-function Wo_BoostPost($post_id) {
+function Wo_BoostPost($post_id)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -6918,7 +7077,8 @@ function Wo_BoostPost($post_id) {
     }
 }
 
-function Wo_IsPostBoosted($post_id) {
+function Wo_IsPostBoosted($post_id)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -6934,7 +7094,8 @@ function Wo_IsPostBoosted($post_id) {
     }
     return false;
 }
-function Wo_RegisterActivity($data = array()) {
+function Wo_RegisterActivity($data = array())
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -6996,7 +7157,8 @@ function Wo_RegisterActivity($data = array()) {
         return true;
     }
 }
-function Wo_IsActivity($post_id, $comment_id, $replay_id, $follow_id, $user_id, $activity_type) {
+function Wo_IsActivity($post_id, $comment_id, $replay_id, $follow_id, $user_id, $activity_type)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7004,7 +7166,8 @@ function Wo_IsActivity($post_id, $comment_id, $replay_id, $follow_id, $user_id, 
     $query = mysqli_query($sqlConnect, "SELECT `id` FROM " . T_ACTIVITIES . " WHERE `user_id` = '{$user_id}' AND ( `post_id` = '{$post_id}' OR `comment_id` = '{$comment_id}' OR `reply_id` = '{$replay_id}' OR `follow_id` = '{$follow_id}' ) AND `activity_type` = '{$activity_type}'");
     return (mysqli_num_rows($query) > 0) ? true : false;
 }
-function Wo_DeleteSelectedActivity($user_id, $activity_type, $follow_id) {
+function Wo_DeleteSelectedActivity($user_id, $activity_type, $follow_id)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7018,7 +7181,8 @@ function Wo_DeleteSelectedActivity($user_id, $activity_type, $follow_id) {
     $query = mysqli_query($sqlConnect, "DELETE FROM " . T_ACTIVITIES . " WHERE `user_id` = '{$user_id}' AND `follow_id` = '{$follow_id}' AND `activity_type` = '{$activity_type}'");
     return ($query) ? true : false;
 }
-function Wo_DeleteActivity($post_id, $user_id, $activity_type) {
+function Wo_DeleteActivity($post_id, $user_id, $activity_type)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7032,7 +7196,8 @@ function Wo_DeleteActivity($post_id, $user_id, $activity_type) {
     $query = mysqli_query($sqlConnect, "DELETE FROM " . T_ACTIVITIES . " WHERE `user_id` = '{$user_id}' AND `post_id` = '{$post_id}' AND `activity_type` = '{$activity_type}'");
     return ($query) ? true : false;
 }
-function Wo_GetActivity($id) {
+function Wo_GetActivity($id)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7050,7 +7215,8 @@ function Wo_GetActivity($id) {
     }
     return false;
 }
-function Wo_GetActivities($data = array('after_activity_id' => 0, 'before_activity_id' => 0, 'limit' => 5, 'me' => false)) {
+function Wo_GetActivities($data = array('after_activity_id' => 0, 'before_activity_id' => 0, 'limit' => 5, 'me' => false))
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7086,7 +7252,8 @@ function Wo_GetActivities($data = array('after_activity_id' => 0, 'before_activi
     }
     return $get;
 }
-function Wo_DeleteReactions($post_id) {
+function Wo_DeleteReactions($post_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7104,7 +7271,8 @@ function Wo_DeleteReactions($post_id) {
         return true;
     }
 }
-function Wo_DeleteCommentReactions($comment_id) {
+function Wo_DeleteCommentReactions($comment_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7121,7 +7289,8 @@ function Wo_DeleteCommentReactions($comment_id) {
         return true;
     }
 }
-function Wo_DeleteReplayReactions($replay_id) {
+function Wo_DeleteReplayReactions($replay_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7138,7 +7307,8 @@ function Wo_DeleteReplayReactions($replay_id) {
         return true;
     }
 }
-function Wo_AddReactions($post_id, $reaction) {
+function Wo_AddReactions($post_id, $reaction)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7191,7 +7361,8 @@ function Wo_AddReactions($post_id, $reaction) {
         return 'reacted';
     }
 }
-function Wo_AddReplayReactions($user_id, $reply_id, $reaction) {
+function Wo_AddReplayReactions($user_id, $reply_id, $reaction)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7246,7 +7417,8 @@ function Wo_AddReplayReactions($user_id, $reply_id, $reaction) {
         return 'reacted';
     }
 }
-function Wo_AddCommentReactions($comment_id, $reaction) {
+function Wo_AddCommentReactions($comment_id, $reaction)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7301,7 +7473,8 @@ function Wo_AddCommentReactions($comment_id, $reaction) {
         return 'reacted';
     }
 }
-function Wo_IsReacted($object_id, $user_id, $col = "post", $type = '') {
+function Wo_IsReacted($object_id, $user_id, $col = "post", $type = '')
+{
     global $sqlConnect;
     if (empty($object_id) or !is_numeric($object_id) or $object_id < 1) {
         return false;
@@ -7320,7 +7493,8 @@ function Wo_IsReacted($object_id, $user_id, $col = "post", $type = '') {
         return true;
     }
 }
-function Wo_GetReactedTextIcon($object_id, $user_id, $col = "post") {
+function Wo_GetReactedTextIcon($object_id, $user_id, $col = "post")
+{
     global $sqlConnect, $wo;
     if (empty($object_id) or !is_numeric($object_id) or $object_id < 1) {
         return false;
@@ -7360,11 +7534,12 @@ function Wo_GetReactedTextIcon($object_id, $user_id, $col = "post") {
             if (!empty($wo['reactions_types'][$sql_fetch_one['reaction']]['wowonder_small_icon'])) {
                 $reaction_icon = "<div class='inline_post_count_emoji reaction'><img src='{$wo['reactions_types'][$sql_fetch_one['reaction']]['wowonder_small_icon']}' alt=\"" . $wo['reactions_types'][$sql_fetch_one['reaction']]['name'] . "\"></div>";
             }
-            return '<span class="status-reaction-' . $object_id . ' rea active-like'.$reaction_type.' active-like">' . $reaction_icon . ' &nbsp;' . $wo['reactions_types'][strtolower($sql_fetch_one['reaction'])]['name'] . '</span>';
+            return '<span class="status-reaction-' . $object_id . ' rea active-like' . $reaction_type . ' active-like">' . $reaction_icon . ' &nbsp;' . $wo['reactions_types'][strtolower($sql_fetch_one['reaction'])]['name'] . '</span>';
         }
     }
 }
-function Wo_CountReactions($object_id, $reaction, $col = "post") {
+function Wo_CountReactions($object_id, $reaction, $col = "post")
+{
     global $sqlConnect;
     if (empty($object_id) or !is_numeric($object_id) or $object_id < 1) {
         return false;
@@ -7382,7 +7557,8 @@ function Wo_CountReactions($object_id, $reaction, $col = "post") {
         }
     }
 }
-function Wo_GetPostReactions($object_id, $col = "post", $type = '') {
+function Wo_GetPostReactions($object_id, $col = "post", $type = '')
+{
     global $sqlConnect, $wo;
     if (empty($object_id) or !is_numeric($object_id) or $object_id < 1) {
         return false;
@@ -7473,7 +7649,8 @@ function Wo_GetPostReactions($object_id, $col = "post", $type = '') {
         return "";
     }
 }
-function Wo_GetPostReactionsTypes($object_id, $col = "post", $type = "post") {
+function Wo_GetPostReactionsTypes($object_id, $col = "post", $type = "post")
+{
     global $sqlConnect, $wo;
     if (empty($object_id) or !is_numeric($object_id) or $object_id < 1) {
         return false;
@@ -7506,7 +7683,8 @@ function Wo_GetPostReactionsTypes($object_id, $col = "post", $type = "post") {
     $reactions['count'] = $reactions_count;
     return $reactions;
 }
-function Wo_AddLikes($post_id) {
+function Wo_AddLikes($post_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7594,7 +7772,8 @@ function Wo_AddLikes($post_id) {
         }
     }
 }
-function Wo_CountLikes($post_id) {
+function Wo_CountLikes($post_id)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7610,7 +7789,8 @@ function Wo_CountLikes($post_id) {
     }
     return false;
 }
-function Wo_IsLiked($post_id, $user_id) {
+function Wo_IsLiked($post_id, $user_id)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7625,7 +7805,8 @@ function Wo_IsLiked($post_id, $user_id) {
         return true;
     }
 }
-function Wo_IsUserPostReacted($post_id, $user_id) {
+function Wo_IsUserPostReacted($post_id, $user_id)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7640,7 +7821,8 @@ function Wo_IsUserPostReacted($post_id, $user_id) {
         return true;
     }
 }
-function Wo_IsCommented($post_id, $user_id) {
+function Wo_IsCommented($post_id, $user_id)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7655,7 +7837,8 @@ function Wo_IsCommented($post_id, $user_id) {
     }
     return false;
 }
-function Wo_AddWonders($post_id) {
+function Wo_AddWonders($post_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -7750,7 +7933,8 @@ function Wo_AddWonders($post_id) {
         }
     }
 }
-function Wo_CountWonders($post_id) {
+function Wo_CountWonders($post_id)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7765,7 +7949,8 @@ function Wo_CountWonders($post_id) {
         }
     }
 }
-function Wo_IsWondered($post_id, $user_id) {
+function Wo_IsWondered($post_id, $user_id)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7777,7 +7962,8 @@ function Wo_IsWondered($post_id, $user_id) {
         return true;
     }
 }
-function Wo_GetPostLikes($post_id = 0, $limit = 20, $offset = 0) {
+function Wo_GetPostLikes($post_id = 0, $limit = 20, $offset = 0)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7799,7 +7985,8 @@ function Wo_GetPostLikes($post_id = 0, $limit = 20, $offset = 0) {
     }
     return $data;
 }
-function Wo_GetPostCommentLikes($comment_id = 0, $limit = 20, $offset = 0) {
+function Wo_GetPostCommentLikes($comment_id = 0, $limit = 20, $offset = 0)
+{
     global $sqlConnect;
     if (empty($comment_id) or !is_numeric($comment_id) or $comment_id < 1) {
         return false;
@@ -7821,7 +8008,8 @@ function Wo_GetPostCommentLikes($comment_id = 0, $limit = 20, $offset = 0) {
     }
     return $data;
 }
-function Wo_GetPostCommentReplyLikes($reply_id = 0, $limit = 20, $offset = 0) {
+function Wo_GetPostCommentReplyLikes($reply_id = 0, $limit = 20, $offset = 0)
+{
     global $sqlConnect;
     if (empty($reply_id) or !is_numeric($reply_id) or $reply_id < 1) {
         return false;
@@ -7843,7 +8031,8 @@ function Wo_GetPostCommentReplyLikes($reply_id = 0, $limit = 20, $offset = 0) {
     }
     return $data;
 }
-function Wo_GetPostCommentWonders($comment_id = 0, $limit = 20, $offset = 0) {
+function Wo_GetPostCommentWonders($comment_id = 0, $limit = 20, $offset = 0)
+{
     global $sqlConnect;
     if (empty($comment_id) or !is_numeric($comment_id) or $comment_id < 1) {
         return false;
@@ -7865,7 +8054,8 @@ function Wo_GetPostCommentWonders($comment_id = 0, $limit = 20, $offset = 0) {
     }
     return $data;
 }
-function Wo_GetPostCommentReplyWonders($reply_id = 0, $limit = 20, $offset = 0) {
+function Wo_GetPostCommentReplyWonders($reply_id = 0, $limit = 20, $offset = 0)
+{
     global $sqlConnect;
     if (empty($reply_id) or !is_numeric($reply_id) or $reply_id < 1) {
         return false;
@@ -7887,7 +8077,8 @@ function Wo_GetPostCommentReplyWonders($reply_id = 0, $limit = 20, $offset = 0) 
     }
     return $data;
 }
-function Wo_GetPostShared($post_id = 0, $limit = 20, $offset = 0) {
+function Wo_GetPostShared($post_id = 0, $limit = 20, $offset = 0)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7916,7 +8107,8 @@ function Wo_GetPostShared($post_id = 0, $limit = 20, $offset = 0) {
     }
     return $data;
 }
-function Wo_GetPostReactionUsers($post_id = 0, $type = "1", $limit = 20, $offset = 0, $col = 'post') {
+function Wo_GetPostReactionUsers($post_id = 0, $type = "1", $limit = 20, $offset = 0, $col = 'post')
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7941,7 +8133,8 @@ function Wo_GetPostReactionUsers($post_id = 0, $type = "1", $limit = 20, $offset
     }
     return $data;
 }
-function Wo_GetPostWonders($post_id = 0, $limit = 20, $offset = 0) {
+function Wo_GetPostWonders($post_id = 0, $limit = 20, $offset = 0)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -7963,7 +8156,8 @@ function Wo_GetPostWonders($post_id = 0, $limit = 20, $offset = 0) {
     }
     return $data;
 }
-function Wo_AddShare($post_id = 0) {
+function Wo_AddShare($post_id = 0)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] !== true) {
         return false;
@@ -8042,7 +8236,8 @@ function Wo_AddShare($post_id = 0) {
         }
     }
 }
-function Wo_CountShares($post_id = 0) {
+function Wo_CountShares($post_id = 0)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -8057,7 +8252,8 @@ function Wo_CountShares($post_id = 0) {
         }
     }
 }
-function Wo_IsShared($post_id, $user_id) {
+function Wo_IsShared($post_id, $user_id)
+{
     global $sqlConnect;
     if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
         return false;
@@ -8069,7 +8265,8 @@ function Wo_IsShared($post_id, $user_id) {
         return true;
     }
 }
-function Wo_RegisterPostComment($data = array()) {
+function Wo_RegisterPostComment($data = array())
+{
     global $sqlConnect, $wo, $db;
     if (empty($data['post_id']) || !is_numeric($data['post_id']) || $data['post_id'] < 0) {
         return false;
@@ -8231,7 +8428,8 @@ function Wo_RegisterPostComment($data = array()) {
         return $inserted_comment_id;
     }
 }
-function Wo_GetGroupsListAPP($fetch_array = array()) {
+function Wo_GetGroupsListAPP($fetch_array = array())
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -8283,7 +8481,8 @@ function Wo_GetGroupsListAPP($fetch_array = array()) {
     //    }
     //    return $data;
 }
-function Wo_GetPostCommentsSort($post_id = 0, $limit = 5, $type = 'latest') {
+function Wo_GetPostCommentsSort($post_id = 0, $limit = 5, $type = 'latest')
+{
     global $sqlConnect, $wo;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -8320,7 +8519,8 @@ function Wo_GetPostCommentsSort($post_id = 0, $limit = 5, $type = 'latest') {
     }
     return $data;
 }
-function Wo_GetPostCommentsLimited($post_id = 0, $comment_id = 0) {
+function Wo_GetPostCommentsLimited($post_id = 0, $comment_id = 0)
+{
     global $sqlConnect, $wo;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -8341,7 +8541,8 @@ function Wo_GetPostCommentsLimited($post_id = 0, $comment_id = 0) {
     }
     return $data;
 }
-function Wo_GetPostComments($post_id = 0, $limit = 5, $offset = 0) {
+function Wo_GetPostComments($post_id = 0, $limit = 5, $offset = 0)
+{
     global $sqlConnect, $wo;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -8373,7 +8574,8 @@ function Wo_GetPostComments($post_id = 0, $limit = 5, $offset = 0) {
     return $data;
 }
 // API
-function Wo_GetPostCommentsAPI($post_id = 0, $limit = 5, $offset = 0) {
+function Wo_GetPostCommentsAPI($post_id = 0, $limit = 5, $offset = 0)
+{
     global $sqlConnect, $wo;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -8400,7 +8602,8 @@ function Wo_GetPostCommentsAPI($post_id = 0, $limit = 5, $offset = 0) {
     }
     return $data;
 }
-function Wo_GetCommentRepliesAPI($comment_id = 0, $limit = 5, $order_by = 'ASC', $offset = 0) {
+function Wo_GetCommentRepliesAPI($comment_id = 0, $limit = 5, $order_by = 'ASC', $offset = 0)
+{
     global $sqlConnect, $wo;
     if (empty($comment_id) || !is_numeric($comment_id) || $comment_id < 0) {
         return false;
@@ -8428,7 +8631,8 @@ function Wo_GetCommentRepliesAPI($comment_id = 0, $limit = 5, $order_by = 'ASC',
     return $data;
 }
 // API
-function Wo_GetPostComment($comment_id = 0) {
+function Wo_GetPostComment($comment_id = 0)
+{
     global $wo, $sqlConnect;
     if (empty($comment_id) || !is_numeric($comment_id) || $comment_id < 0) {
         return false;
@@ -8472,7 +8676,8 @@ function Wo_GetPostComment($comment_id = 0) {
     }
     return false;
 }
-function Wo_CountPostComment($post_id = '') {
+function Wo_CountPostComment($post_id = '')
+{
     global $sqlConnect;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -8484,7 +8689,8 @@ function Wo_CountPostComment($post_id = '') {
     }
     return false;
 }
-function Wo_CountUserPostComment($post_id = '', $user_id = '') {
+function Wo_CountUserPostComment($post_id = '', $user_id = '')
+{
     global $sqlConnect;
     if (empty($post_id) || !is_numeric($post_id) || $post_id < 0) {
         return false;
@@ -8496,7 +8702,8 @@ function Wo_CountUserPostComment($post_id = '', $user_id = '') {
     }
     return false;
 }
-function Wo_DeletePostComment($comment_id = '') {
+function Wo_DeletePostComment($comment_id = '')
+{
     global $wo, $sqlConnect;
     if ($comment_id < 0 || empty($comment_id) || !is_numeric($comment_id)) {
         return false;
@@ -8536,7 +8743,8 @@ function Wo_DeletePostComment($comment_id = '') {
         return false;
     }
 }
-function Wo_DeletePostReplyComment($comment_id = '') {
+function Wo_DeletePostReplyComment($comment_id = '')
+{
     global $wo, $sqlConnect;
     if ($comment_id < 0 || empty($comment_id) || !is_numeric($comment_id)) {
         return false;
@@ -8562,7 +8770,8 @@ function Wo_DeletePostReplyComment($comment_id = '') {
         return false;
     }
 }
-function Wo_UpdateComment($data = array()) {
+function Wo_UpdateComment($data = array())
+{
     global $wo, $sqlConnect;
     if ($data['comment_id'] < 0 || empty($data['comment_id']) || !is_numeric($data['comment_id'])) {
         return false;
@@ -8579,7 +8788,7 @@ function Wo_UpdateComment($data = array()) {
     }
     $user_id      = Wo_Secure($wo['user']['user_id']);
     $comment_id   = Wo_Secure($data['comment_id']);
-    $comment_text = Wo_Secure($data['text'],1);
+    $comment_text = Wo_Secure($data['text'], 1);
     $query        = mysqli_query($sqlConnect, "SELECT `id`, `user_id` FROM " . T_COMMENTS . " WHERE `id` = {$comment_id} AND `user_id` = {$user_id}");
     if (mysqli_num_rows($query) > 0) {
         if (!empty($comment_text)) {
@@ -8655,7 +8864,8 @@ function Wo_UpdateComment($data = array()) {
         return false;
     }
 }
-function Wo_UpdatePostPrivacy($data = array()) {
+function Wo_UpdatePostPrivacy($data = array())
+{
     global $wo, $sqlConnect, $cache;
     if ($wo['loggedin'] == false) {
         return false;
@@ -8680,7 +8890,8 @@ function Wo_UpdatePostPrivacy($data = array()) {
         return $privacy_type;
     }
 }
-function Wo_UpdatePost($data = array()) {
+function Wo_UpdatePost($data = array())
+{
     global $wo, $sqlConnect, $cache;
     if ($wo['loggedin'] == false) {
         return false;
@@ -8695,7 +8906,7 @@ function Wo_UpdatePost($data = array()) {
     if (!empty($data['page_id'])) {
         $page_id = Wo_Secure($data['page_id']);
     }
-    $post_text = Wo_Secure($data['text'],1);
+    $post_text = Wo_Secure($data['text'], 1);
     $user_id   = Wo_Secure($wo['user']['user_id']);
     $post_id   = Wo_Secure($data['post_id']);
     if (Wo_IsPostOnwer($post_id, $user_id) === false) {
@@ -8774,7 +8985,8 @@ function Wo_UpdatePost($data = array()) {
         return false;
     }
 }
-function Wo_SavePosts($post_data = array()) {
+function Wo_SavePosts($post_data = array())
+{
     global $wo, $sqlConnect;
     if (empty($post_data)) {
         return false;
@@ -8795,7 +9007,8 @@ function Wo_SavePosts($post_data = array()) {
         }
     }
 }
-function Wo_GetChatColor($user_id = 0, $conversation_user_id = 0, $page_id = 0) {
+function Wo_GetChatColor($user_id = 0, $conversation_user_id = 0, $page_id = 0)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -8824,7 +9037,8 @@ function Wo_GetChatColor($user_id = 0, $conversation_user_id = 0, $page_id = 0) 
     }
     return false;
 }
-function Wo_UpdateChatColor($user_id = 0, $conversation_user_id = 0, $color = '', $page_id = 0) {
+function Wo_UpdateChatColor($user_id = 0, $conversation_user_id = 0, $color = '', $page_id = 0)
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -8869,7 +9083,8 @@ function Wo_UpdateChatColor($user_id = 0, $conversation_user_id = 0, $color = ''
     $sql_queryset = mysqli_query($sqlConnect, $query);
     return $sql_queryset;
 }
-function Wo_ProfileCompletion() {
+function Wo_ProfileCompletion()
+{
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {
         return false;
@@ -8898,7 +9113,8 @@ function Wo_ProfileCompletion() {
     }
     return $data;
 }
-function Wo_GetLastAttachments($user_id) {
+function Wo_GetLastAttachments($user_id)
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == false) {
         return false;
@@ -8918,7 +9134,8 @@ function Wo_GetLastAttachments($user_id) {
     }
     return $data;
 }
-function Wo_GetMessagesPagesAPP($fetch_array = array()) {
+function Wo_GetMessagesPagesAPP($fetch_array = array())
+{
     global $wo, $sqlConnect;
     if (empty($fetch_array['session_id'])) {
         if ($wo['loggedin'] == false) {
@@ -8979,7 +9196,8 @@ function Wo_GetMessagesPagesAPP($fetch_array = array()) {
     }
     return $data;
 }
-function Wo_AddCommentBlogReactions($comment_id, $reaction) {
+function Wo_AddCommentBlogReactions($comment_id, $reaction)
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
@@ -9037,7 +9255,8 @@ function Wo_AddCommentBlogReactions($comment_id, $reaction) {
         return 'reacted';
     }
 }
-function Wo_AddBlogReplyReactions($user_id, $reply_id, $reaction) {
+function Wo_AddBlogReplyReactions($user_id, $reply_id, $reaction)
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == false) {
         return false;
@@ -9088,7 +9307,8 @@ function Wo_AddBlogReplyReactions($user_id, $reply_id, $reaction) {
         return 'reacted';
     }
 }
-function WoAddBadLoginLog() {
+function WoAddBadLoginLog()
+{
     global $wo, $sqlConnect;
     if ($wo['loggedin'] == true) {
         return false;
@@ -9103,7 +9323,8 @@ function WoAddBadLoginLog() {
         return true;
     }
 }
-function WoCanLogin() {
+function WoCanLogin()
+{
     global $wo, $sqlConnect, $db;
     if ($wo['loggedin'] == true) {
         return false;
@@ -9129,7 +9350,8 @@ function WoCanLogin() {
     $db->where('time', time() - (60 * $wo['config']['lock_time'] * 2), '<')->delete(T_BAD_LOGIN);
     return true;
 }
-function Wo_GetMessagesAPPN($data = array(), $limit = 50) {
+function Wo_GetMessagesAPPN($data = array(), $limit = 50)
+{
     global $wo, $sqlConnect, $db;
     $message_data   = array();
     $user_id        = Wo_Secure($data['recipient_id']);
@@ -9216,15 +9438,17 @@ function Wo_GetMessagesAPPN($data = array(), $limit = 50) {
     }
     return $message_data;
 }
-function nofollow($html, $skip = null) {
-    return preg_replace_callback("#(<a[^>]+?)>#is", function($mach) use ($skip) {
+function nofollow($html, $skip = null)
+{
+    return preg_replace_callback("#(<a[^>]+?)>#is", function ($mach) use ($skip) {
         return (!($skip && strpos($mach[1], $skip) !== false) && strpos($mach[1], 'rel=') === false) ? $mach[1] . ' rel="nofollow">' : $mach[0];
     }, $html);
 }
-function Wo_ReplaceText($html = '', $replaces = array()) {
+function Wo_ReplaceText($html = '', $replaces = array())
+{
     global $wo;
     $lang = $wo['lang'];
-    $html = preg_replace_callback("/{{LANG (.*?)}}/", function($m) use ($lang) {
+    $html = preg_replace_callback("/{{LANG (.*?)}}/", function ($m) use ($lang) {
         return (isset($lang[$m[1]])) ? $lang[$m[1]] : '';
     }, $html);
     foreach ($replaces as $key => $replace) {
@@ -9235,51 +9459,51 @@ function Wo_ReplaceText($html = '', $replaces = array()) {
 }
 function GetNgeniusToken()
 {
-    global $wo, $sqlConnect,$db;
+    global $wo, $sqlConnect, $db;
     $ch = curl_init();
     if ($wo['config']['ngenius_mode'] == 'sandbox') {
         curl_setopt($ch, CURLOPT_URL, "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token");
-    }
-    else{
+    } else {
         curl_setopt($ch, CURLOPT_URL, "https://identity-uat.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token");
     }
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
         "accept: application/vnd.ni-identity.v1+json",
-        "authorization: Basic ".$wo['config']['ngenius_api_key'],
+        "authorization: Basic " . $wo['config']['ngenius_api_key'],
         "content-type: application/vnd.ni-identity.v1+json"
-      ));
+    ));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS,  "{\"realmName\":\"ni\"}");
     $output = json_decode(curl_exec($ch));
     return $output;
 }
-function CreateNgeniusOrder($token,$postData)
+function CreateNgeniusOrder($token, $postData)
 {
-    global $wo, $sqlConnect,$db;
+    global $wo, $sqlConnect, $db;
 
     $json = json_encode($postData);
     $ch = curl_init();
     if ($wo['config']['ngenius_mode'] == 'sandbox') {
-        curl_setopt($ch, CURLOPT_URL, "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$wo['config']['ngenius_outlet_id']."/orders");
-    }
-    else{
-        curl_setopt($ch, CURLOPT_URL, "https://api-gateway-uat.ngenius-payments.com/transactions/outlets/".$wo['config']['ngenius_outlet_id']."/orders");
+        curl_setopt($ch, CURLOPT_URL, "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $wo['config']['ngenius_outlet_id'] . "/orders");
+    } else {
+        curl_setopt($ch, CURLOPT_URL, "https://api-gateway-uat.ngenius-payments.com/transactions/outlets/" . $wo['config']['ngenius_outlet_id'] . "/orders");
     }
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-    "Authorization: Bearer ".$token,
-    "Content-Type: application/vnd.ni-payment.v2+json",
-    "Accept: application/vnd.ni-payment.v2+json"));
+        "Authorization: Bearer " . $token,
+        "Content-Type: application/vnd.ni-payment.v2+json",
+        "Accept: application/vnd.ni-payment.v2+json"
+    ));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
 
     $output = json_decode(curl_exec($ch));
-    curl_close ($ch);
+    curl_close($ch);
     return $output;
 }
-function coinpayments_api_call($req = array()) {
-    global $wo, $sqlConnect,$db;
+function coinpayments_api_call($req = array())
+{
+    global $wo, $sqlConnect, $db;
     $result = array('status' => 400);
 
     // Generate the query string
@@ -9294,7 +9518,7 @@ function coinpayments_api_call($req = array()) {
     $ch = curl_init('https://www.coinpayments.net/api.php');
     curl_setopt($ch, CURLOPT_FAILONERROR, TRUE);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('HMAC: '.$hmac));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('HMAC: ' . $hmac));
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 
     // Execute the call and close cURL handle
@@ -9304,40 +9528,40 @@ function coinpayments_api_call($req = array()) {
     if ($data !== FALSE) {
         $info = json_decode($data, TRUE);
         if (!empty($info) && !empty($info['result'])) {
-            $result = array('status' => 200,
-                            'data' => $info['result']);
-        }
-        else{
+            $result = array(
+                'status' => 200,
+                'data' => $info['result']
+            );
+        } else {
             $result['message'] = $info['error'];
         }
     } else {
-        $result['message'] = 'cURL error: '.curl_error($ch);
+        $result['message'] = 'cURL error: ' . curl_error($ch);
     }
     return $result;
 }
-function FilterStripTags($string='')
+function FilterStripTags($string = '')
 {
     return filter_var(strip_tags($string), FILTER_SANITIZE_STRING);
 }
 function GetIso()
 {
-    global $wo,$db,$all_langs;
+    global $wo, $db, $all_langs;
     $iso = array();
     foreach ($all_langs as $key => $value) {
         try {
-            $info = $db->where('lang_name',$value)->getOne(T_LANG_ISO);
+            $info = $db->where('lang_name', $value)->getOne(T_LANG_ISO);
             if (!empty($info) && !empty($info->iso)) {
                 $iso[$value] = $info->iso;
             }
         } catch (Exception $e) {
-            
         }
     }
     return $iso;
 }
-function BackblazeConnect($args=[])
+function BackblazeConnect($args = [])
 {
-    global $wo,$db;
+    global $wo, $db;
 
     $session = curl_init($args['apiUrl'] . $args['uri']);
     $content_type = '';
@@ -9345,102 +9569,99 @@ function BackblazeConnect($args=[])
     if ($args['uri'] == '/b2api/v2/b2_list_buckets') {
         $data = array("accountId" => $args['accountId']);
         $post_fields = json_encode($data);
-        curl_setopt($session, CURLOPT_POSTFIELDS, $post_fields); 
+        curl_setopt($session, CURLOPT_POSTFIELDS, $post_fields);
         curl_setopt($session, CURLOPT_POST, true); // HTTP POST
-    }
-    else if ($args['uri'] == '/b2api/v2/b2_get_upload_url' || $args['uri'] == '/b2api/v2/b2_list_file_names') {
+    } else if ($args['uri'] == '/b2api/v2/b2_get_upload_url' || $args['uri'] == '/b2api/v2/b2_list_file_names') {
         $data = array("bucketId" => $wo['config']['backblaze_bucket_id']);
         $post_fields = json_encode($data);
-        curl_setopt($session, CURLOPT_POSTFIELDS, $post_fields); 
+        curl_setopt($session, CURLOPT_POSTFIELDS, $post_fields);
         curl_setopt($session, CURLOPT_POST, true); // HTTP POST
-    }
-    else if ($args['uri'] == '/b2api/v2/b2_delete_file_version') {
+    } else if ($args['uri'] == '/b2api/v2/b2_delete_file_version') {
         $data = array("fileId" => $args['fileId'], "fileName" => $args['fileName']);
         $post_fields = json_encode($data);
-        curl_setopt($session, CURLOPT_POSTFIELDS, $post_fields); 
+        curl_setopt($session, CURLOPT_POSTFIELDS, $post_fields);
         curl_setopt($session, CURLOPT_POST, true); // HTTP POST
-    }
-    elseif (isset($args['file']) && !empty($args['file'])) {
+    } elseif (isset($args['file']) && !empty($args['file'])) {
         $handle = fopen($args['file'], 'r');
-        $read_file = fread($handle,filesize($args['file']));
-        curl_setopt($session, CURLOPT_POSTFIELDS, $read_file); 
+        $read_file = fread($handle, filesize($args['file']));
+        curl_setopt($session, CURLOPT_POSTFIELDS, $read_file);
     }
 
     // Add post fields
-    
-    
+
+
 
     // Add headers
     $headers = array();
-    
+
     if ($args['uri'] == '/b2api/v2/b2_authorize_account') {
         $credentials = base64_encode($wo['config']['backblaze_access_key_id'] . ":" . $wo['config']['backblaze_access_key']);
         $headers[] = "Accept: application/json";
         $headers[] = "Authorization: Basic " . $credentials;
         curl_setopt($session, CURLOPT_HTTPGET, true);
-    }
-    else if (isset($args['file']) && !empty($args['file'])) {
+    } else if (isset($args['file']) && !empty($args['file'])) {
         $headers[] = "X-Bz-File-Name: " . $args['file'];
         $headers[] = "Content-Type: " . mime_content_type($args['file']);
         $headers[] = "X-Bz-Content-Sha1: " . sha1_file($args['file']);
         $headers[] = "X-Bz-Info-Author: " . "unknown";
         $headers[] = "X-Bz-Server-Side-Encryption: " . "AES256";
         $headers[] = "Authorization: " . $args['authorizationToken'];
-    }
-    else{
+    } else {
         $headers[] = "Authorization: " . $args['authorizationToken'];
     }
 
-    curl_setopt($session, CURLOPT_HTTPHEADER, $headers); 
+    curl_setopt($session, CURLOPT_HTTPHEADER, $headers);
 
-    
+
     curl_setopt($session, CURLOPT_RETURNTRANSFER, true);  // Receive server response
     $server_output = curl_exec($session); // Let's do this!
-    curl_close ($session); // Clean up
-    
+    curl_close($session); // Clean up
+
     return $server_output;
 }
 
-function file_upload_max_size() {
-  static $max_size = -1;
+function file_upload_max_size()
+{
+    static $max_size = -1;
 
-  if ($max_size < 0) {
-    // Start with post_max_size.
-    $post_max_size = parse_size(ini_get('post_max_size'));
-    if ($post_max_size > 0) {
-      $max_size = $post_max_size;
-    }
+    if ($max_size < 0) {
+        // Start with post_max_size.
+        $post_max_size = parse_size(ini_get('post_max_size'));
+        if ($post_max_size > 0) {
+            $max_size = $post_max_size;
+        }
 
-    // If upload_max_size is less, then reduce. Except if upload_max_size is
-    // zero, which indicates no limit.
-    $upload_max = parse_size(ini_get('upload_max_filesize'));
-    if ($upload_max > 0 && $upload_max < $max_size) {
-      $max_size = $upload_max;
+        // If upload_max_size is less, then reduce. Except if upload_max_size is
+        // zero, which indicates no limit.
+        $upload_max = parse_size(ini_get('upload_max_filesize'));
+        if ($upload_max > 0 && $upload_max < $max_size) {
+            $max_size = $upload_max;
+        }
     }
-  }
-  return $max_size;
+    return $max_size;
 }
 
 function formatBytes($size, $precision = 2)
 {
     $base = log($size, 1024);
-    $suffixes = array('', 'K', 'M', 'G', 'T');   
+    $suffixes = array('', 'K', 'M', 'G', 'T');
 
-    return round(pow(1024, $base - floor($base)), $precision) .$suffixes[floor($base)];
+    return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
 }
-function parse_size($size) {
-  $unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
-  $size = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.
-  if ($unit) {
-    // Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
-    return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
-  }
-  else {
-    return round($size);
-  }
+function parse_size($size)
+{
+    $unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
+    $size = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.
+    if ($unit) {
+        // Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
+        return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+    } else {
+        return round($size);
+    }
 }
 
-function getDirContents($dir, &$results = array()) {
+function getDirContents($dir, &$results = array())
+{
     global $db;
     $files = @scandir($dir);
     $forbiddenArray = ['.htaccess', 'index.html', 'step2.png', 'thumbnail.jpg', 'speed.jpg', 'parts.jpg', 'f-avatar.png', 'd-cover.jpg', 'd-avatar.jpg', 'step1.png'];
@@ -9460,12 +9681,13 @@ function getDirContents($dir, &$results = array()) {
     return $results;
 }
 
-function filterFiles($results, $storage) {
+function filterFiles($results, $storage)
+{
     global $db;
     $fianlToAdd = [];
     foreach ($results as $key => $fileName) {
         $checkIfFileExistsInUpload = $db->where('filename', Wo_Secure($fileName))->where('storage', $storage)->getOne(T_UPLOADED_MEDIA);
-        
+
         if (empty($checkIfFileExistsInUpload)) {
             $fianlToAdd[] = $fileName;
         }
@@ -9473,18 +9695,19 @@ function filterFiles($results, $storage) {
     return $fianlToAdd;
 }
 
-function getStatus($config = array()) {
-    global $wo,$db;
+function getStatus($config = array())
+{
+    global $wo, $db;
 
     $errors = [];
 
     if (!is_writable('./nodejs/models/wo_langs.js')) {
         $errors[] = ["type" => "error", "message" => "The file: <strong>nodejs/models/wo_langs.js</strong> is not writable, file permission should be <strong>777</strong>."];
     }
-    if(!ini_get('allow_url_fopen') ) {
+    if (!ini_get('allow_url_fopen')) {
         $errors[] = ["type" => "error", "message" => "PHP function <strong>allow_url_fopen</strong> is disabled on your server, it is required to be enabled."];
     }
-    if(!function_exists('mime_content_type')) {
+    if (!function_exists('mime_content_type')) {
         $errors[] = ["type" => "error", "message" => "PHP <strong>FileInfo</strong> extension is disabled on your server, it is required to be enabled."];
     }
     if (!class_exists('DOMDocument')) {
@@ -9534,7 +9757,7 @@ function getStatus($config = array()) {
             $errors[] = ["type" => "error", "message" => "The file: <strong>/ffmpeg/ffmpeg</strong> is not writable, file permission should be <strong>777</strong>."];
         }
     }
-    
+
 
     if (!is_writable('./sitemap.xml')) {
         $errors[] = ["type" => "error", "message" => "The file: <strong>./sitemap.xml</strong> is not writable, the file permission should be set to <strong>777</strong>."];
@@ -9549,20 +9772,20 @@ function getStatus($config = array()) {
     }
 
     if (!empty($config['curl'])) {
-        $ch = curl_init ();
-        $timeout = 10; 
+        $ch = curl_init();
+        $timeout = 10;
         $myHITurl = "https://www.google.com";
-        curl_setopt ( $ch, CURLOPT_URL, $myHITurl );
-        curl_setopt ( $ch, CURLOPT_HEADER, 0 );
-        curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt ( $ch, CURLOPT_CONNECTTIMEOUT, $timeout );
+        curl_setopt($ch, CURLOPT_URL, $myHITurl);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        $file_contents = curl_exec ( $ch );
-        if (curl_errno ( $ch )) {
-            $errors[] = ["type" => "error", "message" => "<strong>cURL</strong> is not functioning, can't connect to the outside world, error found: <strong>" . curl_error ( $ch ) . "</strong>, please contact your hosting provider to fix it."];
+        $file_contents = curl_exec($ch);
+        if (curl_errno($ch)) {
+            $errors[] = ["type" => "error", "message" => "<strong>cURL</strong> is not functioning, can't connect to the outside world, error found: <strong>" . curl_error($ch) . "</strong>, please contact your hosting provider to fix it."];
         }
-        curl_close ( $ch );
+        curl_close($ch);
     }
 
     if (!empty($config['htaccess'])) {
@@ -9581,18 +9804,16 @@ function getStatus($config = array()) {
         $parse = parse_url($wo['config']['site_url']);
         $host = $parse['host'];
         $ports = array($wo['config']['nodejs_port']);
-        if ($wo['config']['nodejs_ssl'] == "1") { 
+        if ($wo['config']['nodejs_ssl'] == "1") {
             $ports = array($wo['config']['nodejs_ssl_port']);
         }
 
-        foreach ($ports as $port)
-        {
+        foreach ($ports as $port) {
             $connection = @fsockopen($host, $port);
 
-            if (!is_resource($connection))
-            {
+            if (!is_resource($connection)) {
                 $errors[] = ["type" => "error", "message" => "<strong>NodeJS</strong>is enabled, but the system can't connect to NodeJS server, <strong> " . $host . ':' . $port . " </strong>is down or port <strong>$port</strong> is blocked."];
-            } 
+            }
         }
     }
 
@@ -9606,12 +9827,11 @@ function getStatus($config = array()) {
     ];
 
     foreach ($list_ofFiles as $key => $file) {
-        if(!file_exists($file)) {
+        if (!file_exists($file)) {
             $errors[] = ["type" => "error", "message" => "The file: <strong>{$file}</strong> is required and not uploaded, please upload the 'upload/files/09' folder again."];
-            
         }
         if ($wo['config']['amazone_s3'] == 1 || $wo['config']['ftp_upload'] == 1 || $wo['config']['spaces'] == 1 || $wo['config']['cloud_upload'] == 1 || $wo['config']['wasabi_storage'] == 1 || $wo['config']['backblaze_storage'] == 1) {
-            if(!is_readable($file)) {
+            if (!is_readable($file)) {
                 $errors[] = ["type" => "error", "message" => "The file: <strong>{$file}</strong> is not readable, make sure the permission of this file is set to 777."];
             }
         }
@@ -9634,12 +9854,12 @@ function getStatus($config = array()) {
     if (!is_writable('./themes/' . $wo['config']['theme'] . '/img')) {
         $errors[] = ["type" => "error", "message" => "The folder: <strong>/themes/{$wo['config']['theme']}/img</strong> is not writable, the path and all subfolder(s) permission should be set to <strong>777</strong>, including <strong>logo.png</strong>"];
     }
-    
+
 
     if (file_exists('./install')) {
         $errors[] = ["type" => "error", "message" => "The folder: <strong>./install</strong> is not deleted or renamed, make sure the folder <strong>./install</strong> is deleted."];
     }
-    
+
 
     if (!empty($wo['config']['filesVersion'])) {
         if ($wo['config']['filesVersion'] > $wo['config']['version']) {
@@ -9657,34 +9877,34 @@ function getStatus($config = array()) {
             $errors[] = ["type" => "error", "message" => "File <strong>cron-job.php</strong> last run exceeded 15 minutes, make sure it's added to cronjob list. <br> <a href=" . Wo_LoadAdminLinkSettings('cronjob_settings') . ">CronJob Settings</a>"];
         }
     }
-    
+
 
     $getSqlModes = $db->rawQuery("SELECT @@sql_mode as modes;");
-      if (!empty($getSqlModes[0]->modes)) {
-         $results = @explode(',', strtolower($getSqlModes[0]->modes));
-         if (in_array('strict_trans_tables', $results)) {
-           $errors[] = ["type" => "error", "message" => "The sql-mode <b>strict_trans_tables</b> is enabled in your mysql server, please contact your host provider to disable it."];
-         }
-         if (in_array('only_full_group_by', $results)) {
-           $errors[] = ["type" => "error", "message" => "The sql-mode <b>only_full_group_by</b> is enabled in your mysql server, this can cause some issues on your website, please contact your host provider to disable it."];
-         }
-      }
+    if (!empty($getSqlModes[0]->modes)) {
+        $results = @explode(',', strtolower($getSqlModes[0]->modes));
+        if (in_array('strict_trans_tables', $results)) {
+            $errors[] = ["type" => "error", "message" => "The sql-mode <b>strict_trans_tables</b> is enabled in your mysql server, please contact your host provider to disable it."];
+        }
+        if (in_array('only_full_group_by', $results)) {
+            $errors[] = ["type" => "error", "message" => "The sql-mode <b>only_full_group_by</b> is enabled in your mysql server, this can cause some issues on your website, please contact your host provider to disable it."];
+        }
+    }
 
     $getUploadSize = file_upload_max_size();
 
     if ($getUploadSize < 1000000000) {
-        $errors[] = ["type" => "warning", "message" => "Your server max upload size is less than 100MB, Current: <strong>" . formatBytes($getUploadSize). "</strong> Recommended is <strong>1024MB</strong>. You should update both: upload_max_filesize, post_max_size."];
+        $errors[] = ["type" => "warning", "message" => "Your server max upload size is less than 100MB, Current: <strong>" . formatBytes($getUploadSize) . "</strong> Recommended is <strong>1024MB</strong>. You should update both: upload_max_filesize, post_max_size."];
     }
 
     if (ini_get('max_execution_time') < 100 && ini_get('max_execution_time') > 0) {
-        $errors[] = ["type" => "warning", "message" => "Your server max_execution_time is less than 100 seconds, Current: <strong>" . ini_get('max_execution_time'). "</strong> Recommended is <strong>3000</strong>."];
+        $errors[] = ["type" => "warning", "message" => "Your server max_execution_time is less than 100 seconds, Current: <strong>" . ini_get('max_execution_time') . "</strong> Recommended is <strong>3000</strong>."];
     }
 
     if ($wo['config']['developer_mode'] == "1") {
         $errors[] = ["type" => "warning", "message" => "<strong>Developer Mode</strong> is enabled in <strong>Settings -> General Configuration</strong>, it's not recommended to enable <strong>Developer Mode</strong> if your website is live, some errors may show."];
     }
 
-    if(!function_exists('exif_read_data')) {
+    if (!function_exists('exif_read_data')) {
         $errors[] = ["type" => "warning", "message" => "PHP <strong>exif</strong> extension is disabled on your server, it is recommended to be enabled."];
     }
 
@@ -9692,17 +9912,17 @@ function getStatus($config = array()) {
         $getSqlWait = $db->rawQuery("show variables where Variable_name='wait_timeout';");
         if (!empty($getSqlWait[0]->Value)) {
             if ($getSqlWait[0]->Value < 1000) {
-              $errors[] = ["type" => "warning", "message" => "The MySQL variable <b>wait_timeout</b> is {$getSqlWait[0]->Value}, minumum required is <strong>1000</strong>, please contact your host provider to update it."];
+                $errors[] = ["type" => "warning", "message" => "The MySQL variable <b>wait_timeout</b> is {$getSqlWait[0]->Value}, minumum required is <strong>1000</strong>, please contact your host provider to update it."];
             }
         }
     } catch (Exception $e) {
-        
     }
 
     return $errors;
 }
 
-function checkIfThereIsError($object) {
+function checkIfThereIsError($object)
+{
     foreach ($object as $key => $value) {
         if ($value['type'] == "error") {
             return true;
@@ -9711,7 +9931,8 @@ function checkIfThereIsError($object) {
     return false;
 }
 
-function isfuncEnabled($func) {
+function isfuncEnabled($func)
+{
     return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
 }
 

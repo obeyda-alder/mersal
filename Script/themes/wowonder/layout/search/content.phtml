@@ -262,7 +262,20 @@ $type_to_find = '<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg
 				</ul>
 			</div>
 			<button type="submit" class="btn btn-main btn-mat"><?php echo $wo['lang']['search'];?></button>
-			
+			</br>
+			<div class="pp_mat_input">
+				<ul style="list-style: none;">
+					<li class="list-group-item sidebar-title-back" contenteditable="false">
+						<i class="fa fa-users fa-fw" style="margin-right: 5px;"> </i> 
+						<?php echo $wo['lang']['fbinvite']; ?>
+					</li>
+					<li>
+						<a class="btn btn-main btn-sm fa fa-facebook "  style="margin:10px;" data-ajax="?link1=terms&type=fbinvite" href="<?php echo Wo_SeoLink('index.php?link1=terms&type=fbinvite');?>">
+							&nbsp;<?php echo $wo['lang']['fbinvite']; ?>
+						</a>
+					</li>
+				</ul>
+			</div>
 			<ul class="nav nav-tabs wow_srch_tabs">
 				<li class="active">
 					<a data-toggle="tab" data-target="#users" href="#" class="btn btn-mat">

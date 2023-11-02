@@ -687,6 +687,7 @@ function Wo_GetMorePosts() {
   if ($('.post').length > 0) {
     posts_count = $('.post').length;
   }
+  console.log(posts_count);
 
   if ($(".user-ad-container").length > 0) {
     ad_id = $(".user-ad-container").last().attr('id');

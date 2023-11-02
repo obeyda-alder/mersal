@@ -34,7 +34,7 @@ if (empty($error_code)) {
     } else if (in_array($username, $wo['site_pages']) || !preg_match('/^[\w]+$/', $username)) {
         $error_code    = 5;
         $error_message = 'Invalid username characters, please choose another username';
-    } else if (strlen($username) < 5 OR strlen($username) > 32) {
+    } else if (strlen($username) < 5 or strlen($username) > 32) {
         $error_code    = 6;
         $error_message = 'Username must be between 5 / 32 letters';
     } else if (Wo_EmailExists($email) === true) {
@@ -63,6 +63,7 @@ if (empty($error_code)) {
             'username' => Wo_Secure($username, 0),
             'password' => $password,
             'email_code' => $code,
+            'verify_code' => rand(100000, 999999),
             'src' => 'Phone',
             'timezone' => 'UTC',
             'gender' => Wo_Secure($gender),
@@ -100,8 +101,7 @@ if (empty($error_code)) {
                                 }
                                 unset($_SESSION['ref']);
                             }
-                        }
-                        elseif (!empty($_SESSION['ref']) && $wo['config']['affiliate_type'] == 1) {
+                        } elseif (!empty($_SESSION['ref']) && $wo['config']['affiliate_type'] == 1) {
                             $ref_user_id = Wo_UserIdFromUsername($_SESSION['ref']);
                             if (!empty($ref_user_id) && is_numeric($ref_user_id)) {
                                 $account_data['ref_user_id']      = Wo_Secure($ref_user_id);
@@ -115,7 +115,7 @@ if (empty($error_code)) {
         if ($register === true) {
             if (!empty($account_data['referrer']) && is_numeric($wo['config']['affiliate_level']) && $wo['config']['affiliate_level'] > 1) {
                 $user_id = Wo_UserIdFromUsername($username);
-                AddNewRef($account_data['referrer'],$user_id,$wo['config']['amount_ref']);
+                AddNewRef($account_data['referrer'], $user_id, $wo['config']['amount_ref']);
             }
             if (!empty($wo['config']['auto_friend_users'])) {
                 $autoFollow = Wo_AutoFollow(Wo_UserIdFromUsername($_POST['username']));
@@ -126,13 +126,13 @@ if (empty($error_code)) {
             if (!empty($wo['config']['auto_group_join'])) {
                 Wo_AutoGroupJoin(Wo_UserIdFromUsername($_POST['username']));
             }
-            
+
             if ($activate == 1) {
                 $access_token        = sha1(rand(111111111, 999999999)) . md5(microtime()) . rand(11111111, 99999999) . md5(rand(5555, 9999));
                 $time                = time();
                 $user_id             = Wo_UserIdFromUsername($username);
                 $device_type = 'phone';
-                if (!empty($_POST['device_type']) && in_array($_POST['device_type'], array('phone','windows'))) {
+                if (!empty($_POST['device_type']) && in_array($_POST['device_type'], array('phone', 'windows'))) {
                     $device_type = Wo_Secure($_POST['device_type']);
                 }
                 $create_access_token = mysqli_query($sqlConnect, "INSERT INTO " . T_APP_SESSIONS . " (`user_id`, `session_id`, `platform`, `time`) VALUES ('{$user_id}', '{$access_token}', '{$device_type}', '{$time}')");
@@ -169,8 +169,7 @@ if (empty($error_code)) {
                     $error_code    = 11;
                     $error_message = 'Error found while sending the verification email, please try again later.';
                 }
-            }
-            elseif ($wo['config']['sms_or_email'] == 'sms' && !empty($_POST['phone_num'])) {
+            } elseif ($wo['config']['sms_or_email'] == 'sms' && !empty($_POST['phone_num'])) {
                 $random_activation = Wo_Secure(rand(11111, 99999));
                 $message           = "Your confirmation code is: {$random_activation}";
 
@@ -186,8 +185,7 @@ if (empty($error_code)) {
                     $error_code    = 11;
                     $error_message = 'Error found while sending the verification sms, please try again later.';
                 }
-            }
-            elseif ($wo['config']['sms_or_email'] == 'sms' && empty($_POST['phone_num'])) {
+            } elseif ($wo['config']['sms_or_email'] == 'sms' && empty($_POST['phone_num'])) {
                 $error_code    = 12;
                 $error_message = 'phone_num can not be empty.';
             }

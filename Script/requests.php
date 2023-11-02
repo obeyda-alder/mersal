@@ -139,8 +139,7 @@ if ($f != 'admin_setting' && $f != 'admincp') {
 }
 if (file_exists('xhr/' . $f . '.php') && in_array($f . '.php', $files)) {
     include 'xhr/' . $f . '.php';
-}
-elseif (!empty($_GET['mode_type']) && in_array($_GET['mode_type'], array('linkedin','instagram'))) {
+} elseif (!empty($_GET['mode_type']) && in_array($_GET['mode_type'], array('linkedin', 'instagram'))) {
     include 'xhr/modes/' . Wo_Secure($_GET['mode_type']) . '.php';
 }
 mysqli_close($sqlConnect);

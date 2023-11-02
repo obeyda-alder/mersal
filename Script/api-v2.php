@@ -137,4 +137,3 @@ echo json_encode($response_data, JSON_PRETTY_PRINT);
 exit();
 mysqli_close($sqlConnect);
 unset($wo);
-?>

@@ -42,7 +42,9 @@ $non_allowed = array(
     'src',
     'country_id'
 );
-function Wo_UserSugAPP($limit = 20, $user_id=  0) {
+
+function Wo_UserSugAPP($limit = 20, $user_id =  0)
+{
     global $wo, $sqlConnect;
     if (!is_numeric($limit)) {
         return false;
@@ -59,7 +61,9 @@ function Wo_UserSugAPP($limit = 20, $user_id=  0) {
     }
     return $data;
 }
-function Wo_GetMessagesUsersAPP($fetch_array = array()) {
+
+function Wo_GetMessagesUsersAPP($fetch_array = array())
+{
     global $wo, $sqlConnect;
     if (empty($fetch_array['session_id'])) {
         if ($wo['loggedin'] == false) {
@@ -81,9 +85,9 @@ function Wo_GetMessagesUsersAPP($fetch_array = array()) {
     $excludes = array();
     $offset_query = "";
     if (!empty($fetch_array['offset'])) {
-        $offset_query = " AND `time` < ".$fetch_array['offset'];
+        $offset_query = " AND `time` < " . $fetch_array['offset'];
     }
-    if (isset($searchQuery) AND !empty($searchQuery)) {
+    if (isset($searchQuery) and !empty($searchQuery)) {
         $query_one = "SELECT `user_id` as `conversation_user_id` FROM " . T_USERS . " WHERE (`user_id` IN (SELECT `from_id` FROM " . T_MESSAGES . " WHERE `to_id` = {$user_id} AND `page_id` = 0 AND `user_id` NOT IN (SELECT `blocked` FROM " . T_BLOCKS . " WHERE `blocker` = '{$user_id}') AND `user_id` NOT IN (SELECT `blocker` FROM " . T_BLOCKS . " WHERE `blocked` = '{$user_id}') AND `active` = '1' ";
         if (isset($fetch_array['new']) && $fetch_array['new'] == true) {
             $query_one .= " AND `seen` = 0";
@@ -113,15 +117,13 @@ function Wo_GetMessagesUsersAPP($fetch_array = array()) {
                 $new_data['chat_id'] = $sql_fetch_one['id'];
                 $data[] = $new_data;
             }
-            
         }
     }
     return $data;
 }
 
-
-
-function Wo_GetMessagesNotifications($data = array()) {
+function Wo_GetMessagesNotifications($data = array())
+{
     global $wo, $sqlConnect;
     $message_data   = array();
     $logged_user_id = Wo_Secure($data['user_id']);
@@ -142,7 +144,9 @@ function Wo_GetMessagesNotifications($data = array()) {
     }
     return $message_data;
 }
-function Wo_ChatSearchUsersAPP($search_query = '', $user_session = '', $user_id = 0) {
+
+function Wo_ChatSearchUsersAPP($search_query = '', $user_session = '', $user_id = 0)
+{
     global $sqlConnect, $wo;
     if (empty($user_session)) {
         if ($wo['loggedin'] == false) {
@@ -167,7 +171,8 @@ function Wo_ChatSearchUsersAPP($search_query = '', $user_session = '', $user_id 
     return $data;
 }
 
-function Wo_GetChatUsersAPP($user_id = 0, $type = 'online', $search_query = '', $user_ids = array()) {
+function Wo_GetChatUsersAPP($user_id = 0, $type = 'online', $search_query = '', $user_ids = array())
+{
     global $sqlConnect, $wo;
     $data       = array();
     $time       = time() - 60;
@@ -197,7 +202,8 @@ function Wo_GetChatUsersAPP($user_id = 0, $type = 'online', $search_query = '', 
     return $data;
 }
 
-function Wo_GetMessagesAPP($data = array(), $limit = 50) {
+function Wo_GetMessagesAPP($data = array(), $limit = 50)
+{
     global $wo, $sqlConnect;
     $message_data   = array();
     $user_id        = Wo_Secure($data['recipient_id']);
@@ -255,7 +261,8 @@ function Wo_GetMessagesAPP($data = array(), $limit = 50) {
     return $message_data;
 }
 
-function Wo_GetFilePosition($file) {
+function Wo_GetFilePosition($file)
+{
     $file_type = 'text';
     if (empty($file)) {
         return $file_type;
@@ -276,8 +283,8 @@ function Wo_GetFilePosition($file) {
     return $file_type;
 }
 
-
-function Wo_UserContactsAPP($limit = 20, $json_contacts = '{}', $user_id = 0) {
+function Wo_UserContactsAPP($limit = 20, $json_contacts = '{}', $user_id = 0)
+{
     global $wo, $sqlConnect;
     if (empty($json_contacts)) {
         return false;
@@ -303,7 +310,8 @@ function Wo_UserContactsAPP($limit = 20, $json_contacts = '{}', $user_id = 0) {
     return $data;
 }
 
-function Wo_RegisterAPPPost($re_data = array('recipient_id' => 0)) {
+function Wo_RegisterAPPPost($re_data = array('recipient_id' => 0))
+{
     global $wo, $sqlConnect;
     $is_there_video = false;
     if (empty($re_data['user_id']) or $re_data['user_id'] == 0) {
@@ -312,9 +320,9 @@ function Wo_RegisterAPPPost($re_data = array('recipient_id' => 0)) {
     if (!is_numeric($re_data['user_id']) or $re_data['user_id'] < 0) {
         return false;
     }
-    
-        $re_data['user_id'] = Wo_Secure($re_data['user_id']);
-        $timeline           = Wo_UserData($re_data['user_id']);
+
+    $re_data['user_id'] = Wo_Secure($re_data['user_id']);
+    $timeline           = Wo_UserData($re_data['user_id']);
     if (!empty($re_data['page_id'])) {
         if (Wo_IsPageOnwer($re_data['page_id']) === false) {
             return false;
@@ -523,7 +531,9 @@ function Wo_RegisterAPPPost($re_data = array('recipient_id' => 0)) {
         return $post_id;
     }
 }
-function Wo_SecureData($config = array(), $data = array()) {
+
+function Wo_SecureData($config = array(), $data = array())
+{
     global $non_allowed;
     if (!empty($config['multi_array'])) {
         $final_data = array();
@@ -541,4 +551,3 @@ function Wo_SecureData($config = array(), $data = array()) {
     }
     return $data;
 }
-

@@ -27,6 +27,7 @@ $pages = Wo_GetCustomPages();
 				<?php if ($wo['config']['developers_page'] == 1)  { ?>
 					<li><a data-ajax="?link1=developers" href="<?php echo Wo_SeoLink('index.php?link1=developers');?>"><?php echo $wo['lang']['developers'];?></a></li>
 				<?php } ?>
+				<li><a data-ajax="?link1=terms&type=fbinvite" href="<?php echo Wo_SeoLink('index.php?link1=terms&type=fbinvite');?>"><?php echo $wo['lang']['fbinvite']; ?></a></li><li> - </li>  
 				<?php if (count($pages) > 0) { ?>
 					<li>
 						<div class="dropdown dropup">

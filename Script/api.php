@@ -241,4 +241,3 @@ if ($_GET['type'] == 'user_data') {
     ), JSON_PRETTY_PRINT);
     exit();
 }
-?>

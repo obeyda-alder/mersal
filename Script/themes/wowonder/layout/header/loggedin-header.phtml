@@ -306,6 +306,11 @@ if ($followers_alert == 0) {
 				</li>
 			<?php } ?>
 			<li><hr></li>
+		 	<li>
+				<a href="<?php echo Wo_SeoLink('index.php?link1=terms&type=fbinvite'); ?>">
+					<i class="fa fa-users fa-fw" style="margin-right: 5px;"> </i>  <?php echo $wo['lang']['fbinvite']; ?>
+				</a>
+			</li>
 			<li>
 				<a href="<?php echo Wo_SeoLink('index.php?link1=logout')."/?cache=".time(); ?>"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M14.08,15.59L16.67,13H7V11H16.67L14.08,8.41L15.5,7L20.5,12L15.5,17L14.08,15.59M19,3A2,2 0 0,1 21,5V9.67L19,7.67V5H5V19H19V16.33L21,14.33V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19Z" /></svg> <?php echo $wo['lang']['log_out']; ?></a>
 			</li>

@@ -1,0 +1,12 @@
+<?php
+$data = $db->where('name', 'email_to_phone_verify_code')->getOne(T_HTML_EMAILS);
+$html = $data->value;
+$replaces = array(
+    'USERNAME' => $wo['user']['name'],
+    'SITE_URL' => $wo['config']['site_url'],
+    'EMAIL' => $wo['user']['email'],
+    'CODE' => $wo['verify_code'],
+    'SITE_NAME' => $wo['config']['siteName']
+);
+$html = Wo_ReplaceText($html, $replaces);
+echo $html;

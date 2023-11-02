@@ -50,7 +50,7 @@ if ($f == 'register') {
         if (in_array($_POST['username'], $wo['site_pages'])) {
             $errors = $error_icon . $wo['lang']['username_invalid_characters'];
         }
-        if (strlen($_POST['username']) < 5 OR strlen($_POST['username']) > 32) {
+        if (strlen($_POST['username']) < 5 or strlen($_POST['username']) > 32) {
             $errors = $error_icon . $wo['lang']['username_characters_length'];
         }
         if (!preg_match('/^[\w]+$/', $_POST['username'])) {
@@ -118,6 +118,7 @@ if ($f == 'register') {
             'username' => Wo_Secure($_POST['username'], 0),
             'password' => $_POST['password'],
             'email_code' => Wo_Secure($code, 0),
+            'verify_code' => rand(100000, 999999),
             'src' => 'site',
             'gender' => Wo_Secure($gender),
             'lastseen' => time(),
@@ -133,10 +134,10 @@ if ($f == 'register') {
         }
         if ($wo['config']['auto_username'] == 1) {
             if (!empty($_POST['first_name'])) {
-                $re_data['first_name'] = Wo_Secure($_POST['first_name'],1);
+                $re_data['first_name'] = Wo_Secure($_POST['first_name'], 1);
             }
             if (!empty($_POST['last_name'])) {
-                $re_data['last_name'] = Wo_Secure($_POST['last_name'],1);
+                $re_data['last_name'] = Wo_Secure($_POST['last_name'], 1);
             }
         }
         if ($gender == 'female') {
@@ -212,6 +213,7 @@ if ($f == 'register') {
             } else if ($wo['config']['sms_or_email'] == 'mail') {
                 $wo['user']        = $_POST;
                 $wo['code']        = $code;
+                $wo['verify_code'] = $re_data['verify_code'];
                 $body              = Wo_LoadPage('emails/activate');
                 $send_message_data = array(
                     'from_email' => $wo['config']['siteEmail'],

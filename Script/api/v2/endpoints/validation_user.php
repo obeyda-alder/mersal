@@ -1,27 +1,27 @@
 <?php
 if (!empty($_POST['code']) && !empty($_POST['email'])) {
-	$code   = Wo_Secure($_POST['code']);
-	$email   = Wo_Secure($_POST['email']);
-	if (Wo_EmailExists($email) === false) {
+    $code   = Wo_Secure($_POST['code']);
+    $email   = Wo_Secure($_POST['email']);
+    if (Wo_EmailExists($email) === false) {
         $response_data       = array(
-	        'api_status'     => '400',
-	        'errors'         => array(
-	            'error_id'   => '5',
-	            'error_text' => 'wrong email'
-	        )
-	    );
-	    echo json_encode($response_data, JSON_PRETTY_PRINT);
-	    exit();
-    } else if (Wo_ActivateUser($email, $code) === false) {   
+            'api_status'     => '400',
+            'errors'         => array(
+                'error_id'   => '5',
+                'error_text' => 'wrong email'
+            )
+        );
+        echo json_encode($response_data, JSON_PRETTY_PRINT);
+        exit();
+    } else if (Wo_ActivateVerifyCode($email, $code) === false) { //(Wo_ActivateUser($email, $code) === false)
         $response_data       = array(
-	        'api_status'     => '400',
-	        'errors'         => array(
-	            'error_id'   => '6',
-	            'error_text' => 'wrong data'
-	        )
-	    );
-	    echo json_encode($response_data, JSON_PRETTY_PRINT);
-	    exit();
+            'api_status'     => '400',
+            'errors'         => array(
+                'error_id'   => '6',
+                'error_text' => 'wrong data'
+            )
+        );
+        echo json_encode($response_data, JSON_PRETTY_PRINT);
+        exit();
     } else {
         $session = Wo_CreateLoginSession(Wo_UserIdFromEmail($email));
         $access_token = $session;
@@ -73,9 +73,7 @@ if (!empty($_POST['code']) && !empty($_POST['email'])) {
             );
         }
     }
-
-}
-else{
-	$error_code    = 4;
+} else {
+    $error_code    = 4;
     $error_message = 'email , code can not be empty';
 }

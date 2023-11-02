@@ -7,7 +7,8 @@ $pages = array(
     'terms',
     'privacy-policy',
     'about-us',
-    'developers'
+    'developers',
+    'fbinvite'
 );
 if ($wo['config']['refund_system'] == 'on') {
     $pages[] = 'refund';
@@ -36,6 +37,8 @@ if ($type == 'terms') {
     $wo['title'] = $wo['lang']['developers'];
 } else if ($type == 'refund') {
     $wo['title'] = $wo['lang']['refund'];
+} else if ($type == 'fbinvite') {
+    $wo['title']  = $wo['lang']['fbinvite'];
 }
 $page          = 'terms/' . $type;
 $wo['title']   = $wo['config']['siteName'] . ' | ' . $wo['title'];

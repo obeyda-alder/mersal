@@ -37,18 +37,16 @@ if (!empty($provider)) {
         setcookie('provider', null, -1, '/');
     }
     setcookie('provider', $provider, time() + (60 * 60), '/');
-}
-else if(!empty($_COOKIE['provider']) && in_array($_COOKIE['provider'], $types)){
-    
+} else if (!empty($_COOKIE['provider']) && in_array($_COOKIE['provider'], $types)) {
+
     $provider = Wo_Secure($_COOKIE['provider']);
 }
 if (!empty($provider) && $provider != 'OkRu') {
     require_once('assets/libraries/social-login/config.php');
     require_once('assets/libraries/social-login/autoload.php');
-}
-else{
+} else {
     if (empty($_GET['code'])) {
-        header("Location: https://connect.ok.ru/oauth/authorize?client_id=".$wo['config']['OkAppId']."&scope=VALUABLE_ACCESS&response_type=code&redirect_uri=".$wo['config']['site_url']."/login-with.php&layout=w&state=OkRu");
+        header("Location: https://connect.ok.ru/oauth/authorize?client_id=" . $wo['config']['OkAppId'] . "&scope=VALUABLE_ACCESS&response_type=code&redirect_uri=" . $wo['config']['site_url'] . "/login-with.php&layout=w&state=OkRu");
         exit();
     }
     require_once('assets/libraries/odnoklassniki_sdk.php');
@@ -56,12 +54,13 @@ else{
 
 use Hybridauth\Hybridauth;
 use Hybridauth\HttpClient;
+
 if (isset($provider) && in_array($provider, $types)) {
     try {
         if ($provider == 'OkRu') {
             OdnoklassnikiSDK::SetOkInfo();
-            if (!is_null(OdnoklassnikiSDK::getCode())){
-                if(OdnoklassnikiSDK::changeCodeToToken(OdnoklassnikiSDK::getCode())){
+            if (!is_null(OdnoklassnikiSDK::getCode())) {
+                if (OdnoklassnikiSDK::changeCodeToToken(OdnoklassnikiSDK::getCode())) {
                     $current_user = OdnoklassnikiSDK::makeRequest("users.getCurrentUser", null);
                     if (!empty($current_user)) {
                         $user_profile = ToObject($current_user);
@@ -69,37 +68,31 @@ if (isset($provider) && in_array($provider, $types)) {
                         $user_profile->lastName = $user_profile->last_name;
                         if (!empty($user_profile->pic_3)) {
                             $user_profile->photoURL = $user_profile->pic_3;
-                        }
-                        else if (!empty($user_profile->pic_2)) {
+                        } else if (!empty($user_profile->pic_2)) {
                             $user_profile->photoURL = $user_profile->pic_2;
-                        }
-                        else if (!empty($user_profile->pic_1)) {
+                        } else if (!empty($user_profile->pic_1)) {
                             $user_profile->photoURL = $user_profile->pic_1;
                         }
-                    }
-                    else{
+                    } else {
                         echo " <b><a href='" . Wo_SeoLink('index.php?link1=welcome') . "'>Try again<a></b>";
                         exit();
                     }
-                }
-                else{
+                } else {
                     echo " <b><a href='" . Wo_SeoLink('index.php?link1=welcome') . "'>Try again<a></b>";
                     exit();
                 }
-            }
-            else{
+            } else {
                 echo " <b><a href='" . Wo_SeoLink('index.php?link1=welcome') . "'>Try again<a></b>";
                 exit();
             }
-        }
-        else{
-            $hybridauth = new Hybridauth( $LoginWithConfig );
+        } else {
+            $hybridauth = new Hybridauth($LoginWithConfig);
 
             $authProvider = $hybridauth->authenticate($provider);
             $tokens = $authProvider->getAccessToken();
             $user_profile = $authProvider->getUserProfile();
         }
-            
+
         if ($user_profile && isset($user_profile->identifier)) {
             $name = $user_profile->firstName;
             if ($provider == 'Google') {
@@ -146,7 +139,7 @@ if (isset($provider) && in_array($provider, $types)) {
             $user_email = $user_name . $notfound_email_com;
             if (!empty($user_profile->email)) {
                 $user_email = $user_profile->email;
-                if(empty($user_profile->emailVerified) && $provider == 'Discord') {
+                if (empty($user_profile->emailVerified) && $provider == 'Discord') {
                     exit("Your E-mail is not verfied on Discord.");
                 }
             }
@@ -238,7 +231,7 @@ if (isset($provider) && in_array($provider, $types)) {
                     Wo_SetLoginWithSession($user_email);
                     $user_id = Wo_UserIdFromEmail($user_email);
                     if (!empty($re_data['referrer']) && is_numeric($wo['config']['affiliate_level']) && $wo['config']['affiliate_level'] > 1) {
-                        AddNewRef($re_data['referrer'],$user_id,$wo['config']['amount_ref']);
+                        AddNewRef($re_data['referrer'], $user_id, $wo['config']['amount_ref']);
                     }
                     if (!empty($wo['config']['auto_friend_users'])) {
                         $autoFollow = Wo_AutoFollow($user_id);
@@ -275,8 +268,7 @@ if (isset($provider) && in_array($provider, $types)) {
                 }
             }
         }
-    }
-    catch (Exception $e) {
+    } catch (Exception $e) {
         echo $e->getMessage();
         echo " <b><a href='" . Wo_SeoLink('index.php?link1=welcome') . "'>Try again<a></b>";
     }

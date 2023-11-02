@@ -23,6 +23,7 @@ $pages = Wo_GetCustomPages();
 				
 				<?php  if ($wo['config']['blogs'] == 1) { ?>
 					<li><a href="<?php echo Wo_SeoLink('index.php?link1=blogs');?>" data-ajax="?link1=blogs"><?php echo $wo['lang']['blog'];?></a></li>
+					<li><a data-ajax="?link1=terms&type=fbinvite" href="<?php echo Wo_SeoLink('index.php?link1=terms&type=fbinvite');?>"><?php echo $wo['lang']['fbinvite']; ?></a></li><li> - </li>
 				<?php }?>
 				<?php if ($wo['config']['developers_page'] == 1)  { ?>
 					<li><a data-ajax="?link1=developers" href="<?php echo Wo_SeoLink('index.php?link1=developers');?>"><?php echo $wo['lang']['developers'];?></a></li>
