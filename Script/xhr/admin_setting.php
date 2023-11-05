@@ -5807,4 +5807,52 @@ if ($f == 'admin_setting' and (Wo_IsAdmin() || Wo_IsModerator())) {
         echo json_encode($data);
         exit();
     }
+    if ($s == 'monetization_verify_request' && Wo_CheckMainSession($hash_id) === true) {
+        if (!empty($_GET['id'])) {
+            if (Wo_VerifyMonetizationUser($_GET['id'], $_GET['monetization_id']) === true) {
+                $data = array(
+                    'status' => 200
+                );
+            }
+        }
+        header("Content-type: application/json");
+        echo json_encode($data);
+        exit();
+    }
+    if ($s == 'remove_multi_monetization') {
+        if (!empty($_POST['ids']) && !empty($_POST['type'])) {
+            foreach ($_POST['ids'] as $key => $value) {
+                if (is_numeric($value) && $value > 0) {
+                    $verify = $db->where('id', Wo_Secure($value))->getOne(T_MON_REQUESTS);
+                    if ($_POST['type'] == 'delete') {
+                        Wo_DeleteMonetizationRequest(Wo_Secure($value));
+                    } elseif ($_POST['type'] == 'verify') {
+                        $id = $verify->user_id;
+                        if (!empty($verify->page_id) && $verify->page_id > 0) {
+                            $id = $verify->page_id;
+                        }
+                        Wo_VerifyMonetizationUser($id, $verify->id);
+                    }
+                }
+            }
+            $data = array(
+                'status' => 200
+            );
+            header("Content-type: application/json");
+            echo json_encode($data);
+            exit();
+        }
+    }
+    if ($s == 'delete_monetization') {
+        if (!empty($_GET['id'])) {
+            if (Wo_DeleteMonetizationRequest($_GET['id']) === true) {
+                $data = array(
+                    'status' => 200
+                );
+            }
+        }
+        header("Content-type: application/json");
+        echo json_encode($data);
+        exit();
+    }
 }

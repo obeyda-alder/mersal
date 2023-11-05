@@ -1,0 +1,77 @@
+<tr class="setting-verificationlist" id="MonetizationID_<?php echo $wo['monetization']['id'] ?>" data_selected="<?php echo $wo['monetization']['id'] ?>">
+	<td><input type="checkbox" id="check-data-<?php echo $wo['monetization']['id'] ?>" class="delete-checkbox filled-in"><label for="check-data-<?php echo $wo['monetization']['id'] ?>"></label></td>
+	<td><?php echo $wo['monetization']['id'] ?> </td>
+	<td>
+		<a href="<?php echo $wo['monetization']['request_from']['url']; ?>">
+			<img src="<?php echo $wo['monetization']['request_from']['avatar'] ?>" class="setting-avatar rounded-circle" alt="<?php echo $wo['monetization']['request_from']['name']; ?> Profile Picture">
+			<?php echo $wo['monetization']['request_from']['name']; ?>
+		</a>
+	</td>
+	<td><?php echo $wo['monetization']['name']; ?></td>
+	<td><?php echo $wo['monetization']['message']; ?></td>
+	<td>
+		<button onclick="Wo_Verify(<?php echo $wo['monetization']['request_from']['id'] ?>,<?php echo $wo['monetization']['id'] ?>,'hide')" type="button" class="btn bg-success admn_table_btn"><?php echo $wo['lang']['verify']; ?></button>
+		<button type="button" data-toggle="modal" class="btn bg-info admn_table_btn toggle-monetization-request" data-target="#review-monetization-request-info-<?php echo $wo['monetization']['id']; ?>"><?php echo $wo['lang']['show']; ?></button>
+		<button onclick="Wo_DeleteMonetization(<?php echo $wo['monetization']['id'] ?>,'hide')" type="button" class="btn bg-danger admn_table_btn"><?php echo $wo['lang']['delete']; ?></button>
+	</td>
+</tr>
+
+<div class="modal fade" id="review-monetization-request-info-<?php echo $wo['monetization']['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">monetization Info</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<a href="<?php echo Wo_GetMedia($wo['monetization']['personal_photo']); ?>" class="image-popup-gallery-item-<?php echo $wo['monetization']['id']; ?>">
+							<div class="image-hover">
+								<img src="<?php echo Wo_GetMedia($wo['monetization']['personal_photo']); ?>" class="rounded" alt="image" style="width: 100%;min-height: 200px;max-height: 200px;">
+								<div class="image-hover-body rounded">
+									<div>
+										<h4 class="mb-2">Photo</h4>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-md-6">
+						<a href="<?php echo Wo_GetMedia($wo['monetization']['id_photo']); ?>" class="image-popup-gallery-item-<?php echo $wo['monetization']['id']; ?>">
+							<div class="image-hover">
+								<img src="<?php echo Wo_GetMedia($wo['monetization']['id_photo']); ?>" class="rounded" alt="image" style="width: 100%;min-height: 200px;max-height: 200px;">
+								<div class="image-hover-body rounded">
+									<div>
+										<h4 class="mb-2">Passport</h4>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.image-popup-gallery-item-<?php echo $wo['monetization']['id']; ?>').magnificPopup({
+			type: 'image',
+			gallery: {
+				enabled: true
+			},
+			zoom: {
+				enabled: true,
+				duration: 300,
+				easing: 'ease-in-out',
+				opener: function(openerElement) {
+					return openerElement.is('img') ? openerElement : openerElement.find('img');
+				}
+			}
+		});
+	});
+</script>

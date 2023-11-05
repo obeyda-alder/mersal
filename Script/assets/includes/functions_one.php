@@ -7329,6 +7329,17 @@ function Wo_AddReactions($post_id, $reaction)
             return false;
         }
     }
+
+    $check_monetization_system   = false;
+    $user_monetization_system_id = 0;
+    if ($wo['config']['monetization_system'] == 1) {
+        $Wo_UserData = Wo_UserData($user_id);
+        if ($Wo_UserData['like_mon'] == 1 && $Wo_UserData['monetization'] == 1 && $Wo_UserData['details']['followers_count'] >= $wo['config']['followers_count_to_start_monetization']) {
+            $check_monetization_system = true;
+            $user_monetization_system_id = $Wo_UserData['user_id'];
+        }
+    }
+
     if (Wo_IsReacted($post_id, $wo['user']['user_id']) == true) {
         $query_one        = "DELETE FROM " . T_REACTIONS . " WHERE `post_id` = '{$post_id}' AND `user_id` = '{$logged_user_id}'";
         $query_delete_one = mysqli_query($sqlConnect, "DELETE FROM " . T_NOTIFICATION . " WHERE `post_id` = '{$post_id}' AND `recipient_id` = '{$user_id}' AND `type` = 'reaction'");
@@ -7336,6 +7347,10 @@ function Wo_AddReactions($post_id, $reaction)
         $sql_query_one    = mysqli_query($sqlConnect, $query_one);
         //Register point level system for reaction
         Wo_RegisterPoint($post_id, "reaction", "-");
+        
+        if($check_monetization_system && $user_monetization_system_id > 0) {
+            Wo_RegisterMonetizationPoint($post_id, "reaction", "-", $user_monetization_system_id);
+        } 
     }
     $query_two     = "INSERT INTO " . T_REACTIONS . " (`user_id`, `post_id`, `reaction`) VALUES ('{$logged_user_id}', '{$post_id}','{$reaction}')";
     $sql_query_two = mysqli_query($sqlConnect, $query_two);
@@ -7358,6 +7373,11 @@ function Wo_AddReactions($post_id, $reaction)
         Wo_RegisterNotification($notification_data_array);
         //Register point level system for reaction
         Wo_RegisterPoint($post_id, "reaction");
+
+        if($check_monetization_system && $user_monetization_system_id > 0) {
+            Wo_RegisterMonetizationPoint($post_id, "reaction", "+", $user_monetization_system_id);
+        } 
+
         return 'reacted';
     }
 }

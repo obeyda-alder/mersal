@@ -154,6 +154,104 @@ function Wo_RegisterPoint($post_id, $type, $action = '+', $user_id = 0, $need_de
         }
     }
 }
+function Wo_RegisterMonetizationPoint($post_id, $type, $action, $user_id) {
+    global $wo, $sqlConnect, $db;
+    if ($wo['config']['point_level_system'] == 0) {
+        return false;
+    }
+    if (empty($post_id) or !is_numeric($post_id) or $post_id < 1) {
+        return false;
+    }
+    if (empty($type)) {
+        return false;
+    }
+    if ($wo['config']['monetization_system'] == 0) {
+        return false;
+    }
+    if (!empty($user_id) && is_numeric($user_id) && $user_id > 0) {
+        $user_id = Wo_Secure($user_id);
+    } else {
+        $user_id = Wo_Secure($wo["user"]["id"]);
+        if (empty($user_id) || !is_numeric($user_id) || $user_id < 1) {
+            return false;
+        }
+    }
+    if (empty($wo["user"]["point_day_expire"])) {
+        $today_end = strtotime(date('M') . " " . date('d') . ", " . date('Y') . " 11:59pm");
+        $db->where('user_id', $user_id)->update(T_USERS, array(
+            'point_day_expire' => $today_end
+        ));
+    }
+    if ($wo["user"]["point_day_expire"] <= time()) {
+        $today_end = strtotime(date('M') . " " . date('d') . ", " . date('Y') . " 11:59pm");
+        $db->where('user_id', $user_id)->update(T_USERS, array(
+            'point_day_expire' => $today_end,
+            'daily_points' => 0
+        ));
+    }
+    $points = 0;
+    $dollar_to_point_cost = $wo['config']['dollar_to_point_cost'];
+
+    switch ($type) {
+        case "reaction":
+            $points = $wo['config']['like_mon_point'];
+            break;
+        default:
+            $points = 0;
+            break;
+    }
+    if ($points == 0) {
+        return false;
+    }
+
+    $more_details = [];
+    $more_details['point_count'] = $points;
+    $more_details['dollar_to_point_cost'] = $dollar_to_point_cost;
+
+    $wallet            = $points / $dollar_to_point_cost;
+    $user_data         = Wo_UserData($user_id);
+    $converted_points  = 0;
+    $points_amount     = 0;
+    $wallet_amount     = 0;
+    $balance_amount    = 0;
+    $daily_points      = 0;
+
+    if ($action == '+') {
+        $converted_points  = ($user_data['converted_points'] + $points);
+        $points_amount  = ($user_data['points'] + $points);
+        $daily_points   = ($user_data['daily_points'] + $points);
+        $wallet_amount  = max(($user_data['wallet'] + $wallet), 0);
+        $balance_amount = max(($user_data['balance'] + $wallet), 0);
+
+        $more_details['wallet_amount_after_calculated'] = $wallet_amount;
+        $more_details['balance_amount_after_calculated'] = $balance_amount;
+
+        if ($wo["user"]["is_pro"] && $daily_points > $wo['config']['pro_day_limit']) {
+            return false;
+        } elseif ($wo["user"]["is_pro"] == 0 && $daily_points > $wo['config']['free_day_limit']) {
+            return false;
+        }
+    } else if ($action == '-') {
+        $converted_points  = ($user_data['converted_points'] - $points);
+        $points_amount  = ($user_data['points'] - $points);
+        $daily_points   = ($user_data['daily_points'] - $points);
+        $wallet_amount  = max(($user_data['wallet'] - $wallet), 0);
+        $balance_amount = max(($user_data['balance'] - $wallet), 0);
+
+        $more_details['wallet_amount_after_calculated'] = $wallet_amount;
+        $more_details['balance_amount_after_calculated'] = $balance_amount;
+    }
+    $query_one = "";
+    if ($wo['config']['point_allow_withdrawal'] == 1) {
+        $query_one = "UPDATE " . T_USERS . " SET `points` = '{$points_amount}',`monetization_points` = '{$points_amount}', `daily_points` = '{$daily_points}', `balance` = '{$balance_amount}', `converted_points` = '{$converted_points}' WHERE `user_id` = {$user_id} ";
+    } else {
+        $query_one = "UPDATE " . T_USERS . " SET `points` = '{$points_amount}',`monetization_points` = '{$points_amount}', `daily_points` = '{$daily_points}', `wallet` = '{$wallet_amount}', `converted_points` = '{$converted_points}' WHERE `user_id` = {$user_id} ";
+    }
+    $query = mysqli_query($sqlConnect, $query_one);
+    if ($query) {
+        return true;
+    }
+}
 function logData($data) {
     file_put_contents('upload/log.txt', $data . PHP_EOL, FILE_APPEND);
 }
@@ -8824,4 +8922,18 @@ function AddNewRef($ref_id, $user_id, $amount) {
             //unset($parents[$key]);
         }
     }
+}
+function Wo_Monetization($data)
+{
+    global $wo, $sqlConnect;
+    if (empty($data)) {
+        return false;
+    }
+    $fields = '`' . implode('`, `', array_keys($data)) . '`';
+    $data   = '\'' . implode('\', \'', $data) . '\'';
+    $query  = mysqli_query($sqlConnect, "INSERT INTO " . T_MON_REQUESTS . " ({$fields}) VALUES ({$data})");
+    if ($query) {
+        return true;
+    }
+    return false;
 }

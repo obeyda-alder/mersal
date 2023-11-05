@@ -501,4 +501,71 @@ if ($f == 'pages') {
         echo json_encode($data);
         exit();
     }
+    if($s =='monetization' && $wo[ 'config']['monetization_system'] == 1) {
+        if (isset($_POST['user_id']) && is_numeric($_POST['user_id']) && $_POST['user_id'] > 0 && Wo_CheckSession($hash_id) === true) {
+            $request_exists = ($db->where('user_id', $_POST['user_id'])->getValue(T_MON_REQUESTS, 'count(*)'));
+
+            if (!empty($request_exists)) {
+                $errors[] = $wo['lang']['submit_monetization_request_error'];
+            }
+
+            if (isset($_FILES['personal_Photo']['name'])) {
+                $personal_Photo = Wo_UploadImage($_FILES["personal_Photo"]["tmp_name"], $_FILES['personal_Photo']['name'], 'document_shared_images', $_FILES['personal_Photo']['type'], $_POST['user_id']);
+            }
+
+            if (isset($_FILES['passport_Photo']['name'])) {
+                $passport_Photo = Wo_UploadImage($_FILES["passport_Photo"]["tmp_name"], $_FILES['passport_Photo']['name'], 'document_shared_images', $_FILES['passport_Photo']['type'], $_POST['user_id']);
+            }
+
+            if (empty($errors)) {
+                $Update_data = array(
+                    'user_id'          => $_POST['user_id'],
+                    'name'             => $_POST['name'],
+                    'message'          => $_POST['additional_details'],
+                    'personal_photo'   => $personal_Photo,
+                    'id_photo'         => $passport_Photo,
+                    'time'             => time()
+                );
+
+                if (Wo_Monetization($Update_data)) {
+                    $data = array(
+                        'status'  => 200,
+                        'message' => $wo['lang']['verif_request_sent'],
+                    );
+                }
+            }
+        }
+
+        header("Content-type: application/json");
+        if (isset($errors)) {
+            echo json_encode(array(
+                'errors' => $errors
+            ));
+        } else {
+            echo json_encode($data);
+        }
+    }
+    if($s == 'like_mon_form' && $wo['config']['monetization_system'] == 1 && $wo['user']['monetization'] == 1) {
+        if (isset($_POST['user_id']) && is_numeric($_POST['user_id']) && $_POST['user_id'] > 0 && Wo_CheckSession($hash_id) === true) {
+            
+            if (empty($errors)) {
+                $user_id = $_POST['user_id'];
+                $like_mon = ($wo['user']['like_mon'] == 1) ? 0 : 1;                
+                $db->where('user_id', $user_id)->update(T_USERS, ['like_mon' => $like_mon]);
+                $data = array(
+                    'status'  => 200,
+                    'message' => $wo['lang']['setting_updated'],
+                );
+            }
+        }
+
+        header("Content-type: application/json");
+        if (isset($errors)) {
+            echo json_encode(array(
+                'errors' => $errors
+            ));
+        } else {
+            echo json_encode($data);
+        }
+    }
 }

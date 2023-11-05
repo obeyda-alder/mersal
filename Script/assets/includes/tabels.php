@@ -65,6 +65,7 @@ define('T_A_REQUESTS', 'Wo_Affiliates_Requests');
 define('T_U_CHATS', 'Wo_UsersChat');
 define('T_APPS_HASH', 'Wo_Apps_Hash');
 define('T_AUDIO_CALLES', 'Wo_AudioCalls');
+define('T_MON_REQUESTS', 'Wo_Monetization_requests');
 define('T_LANGS', 'Wo_Langs');
 define('T_CODES', 'Wo_Codes');
 define('T_BLOG', 'Wo_Blog');

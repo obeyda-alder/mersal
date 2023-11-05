@@ -7313,4 +7313,65 @@ function send_bulksms_message ( $post_body, $url, $username, $password) {
   curl_close( $ch );
   return $output;
 }
+function Wo_DeleteMonetizationRequest($id = "") {
+    global $sqlConnect, $wo;
+    if ($wo["loggedin"] == false) {
+        return false;
+    }
+    if (empty($id)) {
+        return false;
+    }
+    if (Wo_IsAdmin() === false) {
+        return false;
+    }
+    $id    = Wo_Secure($id);
+
+    $query_one = "SELECT * FROM " . T_MON_REQUESTS . " WHERE `id` = '" . $id . "'";
+    $sql       = mysqli_query($sqlConnect, $query_one);
+    if (mysqli_num_rows($sql)) {
+        $fetched_data = mysqli_fetch_assoc($sql);
+        if (file_exists($fetched_data['personal_photo'])) {
+            @unlink($fetched_data['personal_photo']);
+        }
+        if (file_exists($fetched_data['id_photo'])) {
+            @unlink($fetched_data['id_photo']);
+        }
+        @Wo_DeleteFromToS3($fetched_data['personal_photo']);
+        @Wo_DeleteFromToS3($fetched_data['id_photo']);
+    }
+
+    $query = mysqli_query($sqlConnect, "DELETE FROM " . T_MON_REQUESTS . " WHERE `id` = {$id}");
+    if ($query) {
+        return true;
+    }
+}
+function Wo_VerifyMonetizationUser($id = 0, $monetization_id = 0) {
+    global $sqlConnect, $wo;
+    if ($wo["loggedin"] == false) {
+        return false;
+    }
+
+    if (empty($id) || empty($monetization_id)) {
+        return false;
+    }
+  
+    
+    if (Wo_IsAdmin() === false) {
+        return false;
+    }
+
+    $id = Wo_Secure($id);
+    $update_data = [
+        // "like_mon" => 1,
+        "monetization" => 1,
+    ];
+    $update = false;
+    $update = Wo_UpdateUserData($id, $update_data);
+    
+    if ($update) {
+        if (Wo_DeleteMonetizationRequest($monetization_id) === true) {
+            return true;
+        }
+    }
+}
 ?>

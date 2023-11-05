@@ -32,7 +32,7 @@ if ($f == 'status') {
             $registration_data            = array();
             $registration_data['user_id'] = $wo['user']['id'];
             $registration_data['posted']  = time();
-            $registration_data['expire']  = time() + (60 * 60 * 24);
+            $registration_data['expire']  = time() + (72 * 60 * 60); // **change the expiration time from 24 hours to 72 hours**; old => [time() + (60 * 60 * 24)]
             if (isset($_POST['title']) && strlen($_POST['title']) >= 2) {
                 $registration_data['title'] = Wo_Secure($_POST['title']);
             }
@@ -47,7 +47,7 @@ if ($f == 'status') {
                     $thumb   = '';
                     foreach ($files as $fileInfo) {
                         $registration_data['posted']  += 1;
-                        $registration_data['expire']  = time() + (60 * 60 * 24);
+                        $registration_data['expire']  = time() + (72 * 60 * 60); // **change the expiration time from 24 hours to 72 hours**; old => [time() + (60 * 60 * 24)]
                         $last_id = Wo_InsertUserStory($registration_data);
                         if (!in_array(strtolower(pathinfo($fileInfo['name'], PATHINFO_EXTENSION)), array(
                             "m4v",
@@ -132,7 +132,7 @@ if ($f == 'status') {
                                     'story_id' => $last_id,
                                     'type' => $file_type[0],
                                     'filename' => $media['filename'],
-                                    'expire' => time() + (60 * 60 * 24)
+                                    'expire' =>  time() + (72 * 60 * 60) // **change the expiration time from 24 hours to 72 hours**; old => [time() + (60 * 60 * 24)]
                                 );
                             }
                             if (empty($thumb)) {
