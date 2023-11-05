@@ -1,10 +1,16 @@
 <div class="modal fade" id="verify_code" role="dialog">
-	<div class="modal-dialog modal-md wow_mat_mdl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button>
-				<h4 class="modal-title" id="two_factor_title">
-					<?php 
+    <div class="modal-dialog modal-md wow_mat_mdl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg></span></button>
+                <h4 class="modal-title" id="two_factor_title">
+                    <?php 
 						if ($wo['config']['two_factor_type'] == 'both') {
 							echo $wo['lang']['confirmation_message_email_sent'];
 						}
@@ -15,14 +21,18 @@
 							echo $wo['lang']['confirmation_message_sent'];
 						}
 					?>
-				</h4>
-			</div>
-			<form id="confirmation_code_form" class="confirmation_code_form" method="POST">
-				<div class="modal-body">
-					<div id="confirmation_code_form_alert"></div>
-					<span class="verfy_sett_email_phone_ico hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21,13.34C20.37,13.12 19.7,13 19,13A6,6 0 0,0 13,19C13,19.34 13.03,19.67 13.08,20H3A2,2 0 0,1 1,18V6C1,4.89 1.89,4 3,4H19A2,2 0 0,1 21,6V13.34M23.5,17L18.5,22L15,18.5L16.5,17L18.5,19L22,15.5L23.5,17M3,6V8L11,13L19,8V6L11,11L3,6Z" /></svg></span>
-					<p id="two_factor_desc">
-						<?php 
+                </h4>
+            </div>
+            <form id="confirmation_code_form" class="confirmation_code_form" method="POST">
+                <div class="modal-body">
+                    <div id="confirmation_code_form_alert"></div>
+                    <span class="verfy_sett_email_phone_ico hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M21,13.34C20.37,13.12 19.7,13 19,13A6,6 0 0,0 13,19C13,19.34 13.03,19.67 13.08,20H3A2,2 0 0,1 1,18V6C1,4.89 1.89,4 3,4H19A2,2 0 0,1 21,6V13.34M23.5,17L18.5,22L15,18.5L16.5,17L18.5,19L22,15.5L23.5,17M3,6V8L11,13L19,8V6L11,11L3,6Z" />
+                        </svg></span>
+                    <p id="two_factor_desc">
+                        <?php 
 							if ($wo['config']['two_factor_type'] == 'both') {
 								echo $wo['lang']['confirmation_email_message_text'];
 							}
@@ -33,28 +43,39 @@
 								echo $wo['lang']['confirmation_message_text'];
 							}
 						?>
-					</p>
-					<div class="wow_form_fields verfy_sett_email_phone">
-						<label for="code"><?php echo $wo['lang']['confirmation_code']; ?></label>  
-						<input id="code" name="code" type="text" autocomplete="off">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<div class="ball-pulse"><div></div><div></div><div></div></div>
-					<button id="confirmation_code_form_btn" type="submit" class="btn main btn-mat"><?php echo $wo['lang']['verify']; ?></button>
-				</div>
-			</form>
-		</div>
-	</div>
+                    </p>
+                    <div class="wow_form_fields verfy_sett_email_phone">
+                        <label for="code"><?php echo $wo['lang']['confirmation_code']; ?></label>
+                        <input id="code" name="code" type="text" autocomplete="off">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="ball-pulse">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <button id="confirmation_code_form_btn" type="submit"
+                        class="btn main btn-mat"><?php echo $wo['lang']['verify']; ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="verify_email_phone" role="dialog">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button>
-				<h4 class="modal-title" id="verify_email_phone_title">
-					<?php 
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg></span></button>
+                <h4 class="modal-title" id="verify_email_phone_title">
+                    <?php 
 						if ($wo['config']['sms_or_email'] == 'mail') {
 							echo $wo['lang']['confirmation_message_email_sent'];
 						}
@@ -62,14 +83,18 @@
 							echo $wo['lang']['confirmation_message_sent'];
 						}
 					?>
-				</h4>
-			</div>
-			<form id="verify_email_phone_form" class="verify_email_phone_form" method="POST">
-				<div class="modal-body">
-					<div id="verify_email_phone_form_alert"></div>
-					<span class="verfy_sett_email_phone_ico"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,19V5H7V19H17M17,1A2,2 0 0,1 19,3V21A2,2 0 0,1 17,23H7C5.89,23 5,22.1 5,21V3C5,1.89 5.89,1 7,1H17M9,7H15V9H9V7M9,11H13V13H9V11Z" /></svg></span>
-					<p id="verify_email_phone_desc">
-						<?php 
+                </h4>
+            </div>
+            <form id="verify_email_phone_form" class="verify_email_phone_form" method="POST">
+                <div class="modal-body">
+                    <div id="verify_email_phone_form_alert"></div>
+                    <span class="verfy_sett_email_phone_ico"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M17,19V5H7V19H17M17,1A2,2 0 0,1 19,3V21A2,2 0 0,1 17,23H7C5.89,23 5,22.1 5,21V3C5,1.89 5.89,1 7,1H17M9,7H15V9H9V7M9,11H13V13H9V11Z" />
+                        </svg></span>
+                    <p id="verify_email_phone_desc">
+                        <?php 
 							if ($wo['config']['sms_or_email'] == 'mail') {
 								echo $wo['lang']['confirmation_email_text'];
 							}
@@ -77,18 +102,24 @@
 								echo $wo['lang']['confirmation_message_text'];
 							}
 						?>
-					</p>
-					<div class="form-group verfy_sett_email_phone">
-						<input type="text" class="form-control" name="code" placeholder="<?php echo $wo['lang']['confirmation_code']; ?>">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<div class="ball-pulse"><div></div><div></div><div></div></div>
-					<button id="verify_email_phone_form_btn" type="submit" class="btn btn-main"><?php echo $wo['lang']['send']; ?></button>
-				</div>
-			</form>
-		</div>
-	</div>
+                    </p>
+                    <div class="form-group verfy_sett_email_phone">
+                        <input type="text" class="form-control" name="code"
+                            placeholder="<?php echo $wo['lang']['confirmation_code']; ?>">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="ball-pulse">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <button id="verify_email_phone_form_btn" type="submit"
+                        class="btn btn-main"><?php echo $wo['lang']['send']; ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -129,6 +160,7 @@ $pages_array = array(
    'transaction_log',
    'my_points',
    'manage-sessions',
+   'monetization-settings',
    'notifications-settings',
    'two-factor',
    'my_info',
@@ -154,6 +186,7 @@ if ($wo['setting']['user_id'] == $wo['user']['user_id']) {
    'transaction_log',
    'my_points',
    'manage-sessions',
+   'monetization-settings',
    'notifications-settings',
    'two-factor',
    'my_info',
@@ -291,8 +324,10 @@ if ($wo['setting_page'] == 'projects') {
 ?>
 
 <div class="page-margin">
-	<div class="row setting-panel" style="position:relative;">
-		<div class="col-md-4 sidebar sett_page wo_new_sett_sidee" id="wo_main_sett_side"><?php echo Wo_LoadPage('setting/user-setting-sidebar');?></div>
-		<div class="col-md-8 sett_page wo_new_sett_pagee" id="wo_main_sett_mid"><?php echo Wo_LoadPage("setting/" . $wo['setting_page']); ?></div>
-	</div>
+    <div class="row setting-panel" style="position:relative;">
+        <div class="col-md-4 sidebar sett_page wo_new_sett_sidee" id="wo_main_sett_side">
+            <?php echo Wo_LoadPage('setting/user-setting-sidebar');?></div>
+        <div class="col-md-8 sett_page wo_new_sett_pagee" id="wo_main_sett_mid">
+            <?php echo Wo_LoadPage("setting/" . $wo['setting_page']); ?></div>
+    </div>
 </div>
