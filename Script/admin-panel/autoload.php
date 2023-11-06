@@ -24,6 +24,7 @@ $pages = array(
     'edit-profile-field',
     'manage-verification-reqeusts',
     'payment-reqeuests',
+    'user-monetization-system',
     'manage-monetization-reqeusts',
     'affiliates-settings',
     'referrals-list',
@@ -1203,6 +1204,9 @@ if (!empty($_COOKIE['mode']) && $_COOKIE['mode'] == 'night') {
 
                                         <li>
                                             <a <?php echo ($page == 'manage-monetization-reqeusts') ? 'class="active"' : ''; ?> href="<?php echo Wo_LoadAdminLinkSettings('manage-monetization-reqeusts'); ?>" data-ajax="?path=manage-monetization-reqeusts">Manage Monetization Requests</a>
+                                        </li>
+                                        <li>
+                                            <a <?php echo ($page == 'user-monetization-system') ? 'class="active"' : ''; ?> href="<?php echo Wo_LoadAdminLinkSettings('user-monetization-system'); ?>" data-ajax="?path=user-monetization-system">Manage Monetization System</a>
                                         </li>
 
                                         <li>
